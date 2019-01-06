@@ -9,7 +9,7 @@ namespace StsLibWin.Windows.Forms
       get;
       private set;
     }
-    protected FolderBrowserControl()
+    public FolderBrowserControl()
     {
       Dialog = new FolderBrowserDialog();
     }
