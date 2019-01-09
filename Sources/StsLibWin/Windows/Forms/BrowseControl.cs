@@ -2,19 +2,44 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using StsLib.Diagnostics;
 
 namespace StsLibWin.Windows.Forms
 {
   public class BrowseControl : UserControl
   {
     private Button _btnBrowse;
+    private bool _changed;
     private TextBox _txtPath;
     protected BrowseControl()
     {
       InitializeComponent();
     }
-    public string SelectedPath => _txtPath.Text;
+    public string SelectedPath
+
+    {
+      get
+      {
+        _changed = false;
+        return _txtPath.Text;
+      }
+      set
+      {
+        _txtPath.Text = value;
+        _changed = false;
+      }
+    }
+    public event EventHandler PathChanged;
+    private void CallOnPathChanged()
+    {
+      if (_changed)
+      {
+        OnPathChanged();
+      }
+    }
+    protected virtual void OnPathChanged()
+    {
+      StsLib.Delegates.Utils.RaiseEvent(PathChanged, this, new EventArgs());
+    }
     private void _btnBrowse_Click(object sender, EventArgs e)
     {
       ShowDialog();
@@ -30,9 +55,10 @@ namespace StsLibWin.Windows.Forms
       {
         return;
       }
-
+      _changed = true;
       _txtPath.Text = r.Item2;
       _txtPath.Focus();
+      CallOnPathChanged();
     }
     private void _txtPath_DoubleClick(object sender, EventArgs e)
     {
@@ -40,7 +66,7 @@ namespace StsLibWin.Windows.Forms
       {
         if (Directory.Exists(_txtPath.Text))
         {
-          Process.ShellExecute(_txtPath.Text);
+          StsLib.Diagnostics.Process.ShellExecute(_txtPath.Text);
         }
 
         return;
@@ -74,7 +100,9 @@ namespace StsLibWin.Windows.Forms
       _txtPath.Name = "_txtPath";
       _txtPath.Size = new Size(664, 22);
       _txtPath.TabIndex = 2;
+      _txtPath.TextChanged += _txtPath_TextChanged;
       _txtPath.DoubleClick += _txtPath_DoubleClick;
+      _txtPath.Validated += _txtPath_Validated;
       // 
       // BrowseControl
       // 
@@ -85,6 +113,16 @@ namespace StsLibWin.Windows.Forms
       Size = new Size(694, 22);
       ResumeLayout(false);
       PerformLayout();
+    }
+
+    private void _txtPath_TextChanged(object sender, EventArgs e)
+    {
+      _changed = true;
+    }
+
+    private void _txtPath_Validated(object sender, EventArgs e)
+    {
+      CallOnPathChanged();
     }
   }
 }
