@@ -30,15 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Extensions.Configuration">
-      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.configuration\2.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,6 +49,9 @@
     <Compile Include="Diagnostics\Log\Implementations\CommonLogPermissions.cs" />
     <Compile Include="Diagnostics\Log\Implementations\EventLogWriter.cs" />
     <Compile Include="Diagnostics\Utils.cs" />
+    <Compile Include="Reflection\Plugins\PluginContainer.cs" />
+    <Compile Include="Reflection\Plugins\PluginContainerSetup.cs" />
+    <Compile Include="Reflection\Plugins\Specialized\SimpleAppDomain.cs" />
     <Compile Include="ServiceProcess\ServiceBase.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -96,15 +97,15 @@
     <Compile Include="Windows\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\StsLib\Sources\StsLib\StsLib.csproj">
-      <Project>{61d4e01e-8702-49e8-ac65-02e704338582}</Project>
-      <Name>StsLib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Windows\Forms\BrowseControl.resx">
       <DependentUpon>BrowseControl.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\StsLib\Sources\StsLib\StsLib.csproj">
+      <Project>{243902fb-e591-418d-b0d8-7f734f518edf}</Project>
+      <Name>StsLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
