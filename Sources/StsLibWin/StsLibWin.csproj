@@ -30,9 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Configuration">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.configuration\2.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Diagnostics\Log\Implementations\CommonLogPermissions.cs" />
+    <Compile Include="Diagnostics\Log\Implementations\EventLogWriter.cs" />
+    <Compile Include="Diagnostics\Utils.cs" />
+    <Compile Include="ServiceProcess\ServiceBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\BrowseControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
