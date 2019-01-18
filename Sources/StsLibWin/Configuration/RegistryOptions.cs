@@ -32,10 +32,7 @@ namespace StsLibWin.Configuration
 
         return _companyName;
       }
-      set
-      {
-        _companyName = value;
-      }
+      set => _companyName = value;
     }
     protected RegistryValue<T> NewRegistryValue<T>(string name, T Default, bool createValueIfNotExists)
     {

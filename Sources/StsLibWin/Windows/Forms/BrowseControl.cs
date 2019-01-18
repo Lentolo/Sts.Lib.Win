@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using StsLib.Diagnostics;
 
 namespace StsLibWin.Windows.Forms
 {
@@ -15,7 +16,6 @@ namespace StsLibWin.Windows.Forms
       InitializeComponent();
     }
     public string SelectedPath
-
     {
       get
       {
@@ -55,6 +55,7 @@ namespace StsLibWin.Windows.Forms
       {
         return;
       }
+
       _changed = true;
       _txtPath.Text = r.Item2;
       _txtPath.Focus();
@@ -66,7 +67,7 @@ namespace StsLibWin.Windows.Forms
       {
         if (Directory.Exists(_txtPath.Text))
         {
-          StsLib.Diagnostics.Process.ShellExecute(_txtPath.Text);
+          Process.ShellExecute(_txtPath.Text);
         }
 
         return;
@@ -114,12 +115,10 @@ namespace StsLibWin.Windows.Forms
       ResumeLayout(false);
       PerformLayout();
     }
-
     private void _txtPath_TextChanged(object sender, EventArgs e)
     {
       _changed = true;
     }
-
     private void _txtPath_Validated(object sender, EventArgs e)
     {
       CallOnPathChanged();

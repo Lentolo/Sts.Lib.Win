@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Configuration.Install;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using StsLib.Diagnostics.Log;
-using StsLibWin.Diagnostics;
-using StsLibWin.Diagnostics.Log;
-//using StsLibWin.Diagnostics.Log;
 using StsLibWin.Windows.Forms;
 using MessageBox = System.Windows.Forms.MessageBox;
-using Process = System.Diagnostics.Process;
+//using StsLibWin.Diagnostics.Log;
 
 namespace StsLibWin.ServiceProcess
 {
@@ -97,7 +95,7 @@ namespace StsLibWin.ServiceProcess
         {
           var serviceProcessInstaller = new ServiceProcessInstaller
           {
-            Account = ServiceAccount
+              Account = ServiceAccount
           };
           var context = new InstallContext();
           var processPath = Process.GetCurrentProcess().MainModule.FileName;
@@ -107,8 +105,8 @@ namespace StsLibWin.ServiceProcess
             var path = $"/assemblypath={fi.FullName}";
             string[] cmdline =
             {
-                            path
-                        };
+                path
+            };
             context = new InstallContext("", cmdline);
           }
 
@@ -166,7 +164,6 @@ namespace StsLibWin.ServiceProcess
       {
         Logger.Instance.Debug("ServiceBase", text, null);
       }
-
 
       if (!silent)
       {

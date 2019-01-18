@@ -4,14 +4,13 @@ namespace StsLibWin.Windows.Forms
 {
   public class OpenFileControl : BrowseControl
   {
-    public OpenFileDialog Dialog
-    {
-      get;
-      private set;
-    }
     protected OpenFileControl()
     {
       Dialog = new OpenFileDialog();
+    }
+    public OpenFileDialog Dialog
+    {
+      get;
     }
     protected override (bool, string) OnShowDialog()
     {
@@ -19,6 +18,7 @@ namespace StsLibWin.Windows.Forms
       {
         return (true, Dialog.FileName);
       }
+
       return (false, "");
     }
   }

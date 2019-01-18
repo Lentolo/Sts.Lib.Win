@@ -4,14 +4,13 @@ namespace StsLibWin.Windows.Forms
 {
   public class FolderBrowserControl : BrowseControl
   {
-    public FolderBrowserDialog Dialog
-    {
-      get;
-      private set;
-    }
     public FolderBrowserControl()
     {
       Dialog = new FolderBrowserDialog();
+    }
+    public FolderBrowserDialog Dialog
+    {
+      get;
     }
     protected override (bool, string) OnShowDialog()
     {
