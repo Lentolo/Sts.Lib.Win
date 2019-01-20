@@ -4,7 +4,7 @@ namespace StsLibWin.Windows.Forms
 {
   public class OpenFileControl : BrowseControl
   {
-    protected OpenFileControl()
+    public OpenFileControl()
     {
       Dialog = new OpenFileDialog();
     }
