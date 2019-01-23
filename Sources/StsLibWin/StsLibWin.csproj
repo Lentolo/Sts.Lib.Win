@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Diagnostics\Log\Implementations\CommonLogPermissions.cs" />
     <Compile Include="Diagnostics\Log\Implementations\EventLogWriter.cs" />
+    <Compile Include="Diagnostics\ProcessUtils.cs" />
     <Compile Include="Diagnostics\Utils.cs" />
     <Compile Include="Reflection\Plugins\PluginContainer.cs" />
     <Compile Include="Reflection\Plugins\PluginContainerSetup.cs" />

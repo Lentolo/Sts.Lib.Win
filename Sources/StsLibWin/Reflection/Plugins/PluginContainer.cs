@@ -54,7 +54,7 @@ namespace StsLibWin.Reflection.Plugins
           DisallowCodeDownload = true
       };
 
-      AssemblyName TryGetAssemblyName(string path)
+      AssemblyName tryGetAssemblyName(string path)
       {
         try
         {
@@ -74,7 +74,7 @@ namespace StsLibWin.Reflection.Plugins
         var ass = Directory.GetFiles(((AppDomain) sender).BaseDirectory, "*.dll").Select(f => new
         {
             Path = f,
-            AssemblyName = TryGetAssemblyName(f)
+            AssemblyName = tryGetAssemblyName(f)
         }).FirstOrDefault(i =>
         {
           Debug.WriteLine("AssemblyResolve Found: " + i?.AssemblyName?.FullName + " [" + i?.Path + "]");

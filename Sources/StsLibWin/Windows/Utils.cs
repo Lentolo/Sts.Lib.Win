@@ -44,7 +44,7 @@ namespace StsLibWin.Windows
           break;
       }
 
-      Win32.SystemParametersInfo(Win32.Spi_Setdeskwallpaper, 0, path, Win32.Spif_Sendwininichange | Win32.Spif_Updateinifile);
+      Win32.SystemParametersInfo(Win32.SpiSetdeskwallpaper, 0, path, Win32.SpifSendwininichange | Win32.SpifUpdateinifile);
     }
     public static void SetWaveVolume(int leftChannel, int rightChannel)
     {
