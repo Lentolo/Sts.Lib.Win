@@ -55,9 +55,9 @@ namespace StsLibWin.Diagnostics.Log.Implementations
           ok = ok && Enum.TryParse(n.TryGetAttributeValue("value", ""), out policy);
           return new
           {
-              LogTypes = logTypes,
-              Policy = policy,
-              Result = ok
+            LogTypes = logTypes,
+            Policy = policy,
+            Result = ok
           };
         }).Where(i => i.Result).Select(i => new KeyValuePair<LogTypes, InheritablePolicy>(i.LogTypes, i.Policy)).Distinct(i => i.Key.ToString()).ToDictionary(i => i.Key, i => i.Value));
         rval.CategoriesPermissions.CopyFrom(xml.TrySelectNodes("/CommonLogPermissions/CategoriesPermissions/Item").Select(n =>
@@ -67,15 +67,21 @@ namespace StsLibWin.Diagnostics.Log.Implementations
           var ok = Enum.TryParse(n.TryGetAttributeValue("value", ""), out policy);
           return new
           {
-              Name = na,
-              Policy = policy,
-              Result = ok
+            Name = na,
+            Policy = policy,
+            Result = ok
           };
         }).Where(i => i.Result).Select(i => new KeyValuePair<string, InheritablePolicy>(i.Name, i.Policy)).Distinct(i => i.Key.ToLowerInvariant()).ToDictionary(i => i.Key, i => i.Value));
         return rval;
       }
-      catch
+      catch (Exception exc)
       {
+        try
+        {
+          System.IO.File.WriteAllText("c:\\temp\\log.txt", StsLib.Diagnostics.Utils.ExtractError(exc));
+        }
+        catch
+        { }
         // ignored
       }
 
