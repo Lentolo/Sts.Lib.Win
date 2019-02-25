@@ -53,6 +53,7 @@
     <Compile Include="Reflection\Plugins\PluginContainer.cs" />
     <Compile Include="Reflection\Plugins\PluginContainerSetup.cs" />
     <Compile Include="Reflection\Plugins\Specialized\SimpleAppDomain.cs" />
+    <Compile Include="Security\ThreadImpersonificationObject.cs" />
     <Compile Include="ServiceProcess\ServiceBase.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -65,6 +66,7 @@
     <Compile Include="Windows\Forms\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\Utils.cs" />
     <Compile Include="Windows\Forms\ComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -74,6 +76,7 @@
     <Compile Include="Windows\Forms\FolderBrowserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\ISaveStateControl.cs" />
     <Compile Include="Windows\Forms\Label.cs">
       <SubType>Component</SubType>
     </Compile>
