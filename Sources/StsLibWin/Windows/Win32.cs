@@ -7,6 +7,124 @@ namespace StsLibWin.Windows
 {
   public static class Win32
   {
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Lastinputinfo
+    {
+      public static readonly int SizeOf = Marshal.SizeOf(typeof(Lastinputinfo));
+      [MarshalAs(UnmanagedType.U4)]
+      public uint cbSize;
+      [MarshalAs(UnmanagedType.U4)]
+      public uint dwTime;
+    }
+    [Flags]
+    internal enum AccessMask : uint
+    {
+      Delete = 0x00010000,
+      ReadControl = 0x00020000,
+      WriteDac = 0x00040000,
+      WriteOwner = 0x00080000,
+      Synchronize = 0x00100000,
+      StandardRightsRequired = 0x000F0000,
+      StandardRightsRead = 0x00020000,
+      StandardRightsWrite = 0x00020000,
+      StandardRightsExecute = 0x00020000,
+      StandardRightsAll = 0x001F0000,
+      SpecificRightsAll = 0x0000FFFF,
+      AccessSystemSecurity = 0x01000000,
+      MaximumAllowed = 0x02000000,
+      GenericRead = 0x80000000,
+      GenericWrite = 0x40000000,
+      GenericExecute = 0x20000000,
+      GenericAll = 0x10000000,
+      DesktopReadobjects = 0x00000001,
+      DesktopCreatewindow = 0x00000002,
+      DesktopCreatemenu = 0x00000004,
+      DesktopHookcontrol = 0x00000008,
+      DesktopJournalrecord = 0x00000010,
+      DesktopJournalplayback = 0x00000020,
+      DesktopEnumerate = 0x00000040,
+      DesktopWriteobjects = 0x00000080,
+      DesktopSwitchdesktop = 0x00000100,
+      WinstaEnumdesktops = 0x00000001,
+      WinstaReadattributes = 0x00000002,
+      WinstaAccessclipboard = 0x00000004,
+      WinstaCreatedesktop = 0x00000008,
+      WinstaWriteattributes = 0x00000010,
+      WinstaAccessglobalatoms = 0x00000020,
+      WinstaExitwindows = 0x00000040,
+      WinstaEnumerate = 0x00000100,
+      WinstaReadscreen = 0x00000200,
+      WinstaAllAccess = 0x0000037F
+    }
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    internal struct DocInfo_1W
+    {
+      [MarshalAs(UnmanagedType.LPWStr)]
+      internal readonly string pDocName;
+      [MarshalAs(UnmanagedType.LPWStr)]
+      internal readonly string pOutputFile;
+      [MarshalAs(UnmanagedType.LPWStr)]
+      internal readonly string pDataType;
+    }
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    internal class PrinterDefaults
+    {
+      /// <summary>
+      ///   Specifies desired access rights for a printer.
+      ///   The <see cref="OpenPrinter(string, out IntPtr, IntPtr)" /> function uses
+      ///   this member to set access rights to the printer. These rights can affect
+      ///   the operation of the SetPrinter and DeletePrinter functions.
+      /// </summary>
+      internal AccessMask DesiredAccess;
+      /// <summary>
+      ///   Pointer to a null-terminated string that specifies the
+      ///   default data type for a printer.
+      /// </summary>
+      internal IntPtr pDatatype;
+      /// <summary>
+      ///   Pointer to a DEVMODE structure that identifies the
+      ///   default environment and initialization data for a printer.
+      /// </summary>
+      internal IntPtr pDevMode;
+    }
+    internal struct ProcessInformation
+    {
+      internal IntPtr Process;
+      internal int ProcessId;
+      internal IntPtr Thread;
+      internal int ThreadId;
+    }
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    internal struct StartupInfo
+    {
+      internal int cb;
+      internal string reserved;
+      internal string desktop;
+      internal string title;
+      internal int x;
+      internal int y;
+      internal int xSize;
+      internal int ySize;
+      internal int xCountChars;
+      internal int yCountChars;
+      internal int fillAttribute;
+      internal int flags;
+      internal ushort showWindow;
+      internal ushort reserved2;
+      internal byte reserved3;
+      internal IntPtr stdInput;
+      internal IntPtr stdOutput;
+      internal IntPtr stdError;
+    }
+    internal delegate bool EnumWindowsProc(IntPtr intPtr, int lParam);
+    public struct KeyboardHookStruct
+    {
+      public int VkCode;
+      public int ScanCode;
+      public int Flags;
+      public int Time;
+      public int DwExtraInfo;
+    }
     public delegate int KeyboardHookProc(int code, int wParam, ref KeyboardHookStruct lParam);
     public delegate int Win32WndProc(IntPtr hWnd, int msg, int wParam, int lParam);
     public enum HTCodes
@@ -141,7 +259,6 @@ namespace StsLibWin.Windows
     public static readonly uint ScMaximize = 61488;
     public static readonly uint GwlWndproc = 0xFFFFFFFC;
     public static readonly uint GwlExstyle = 0xFFFFFFEC;
-
     public static readonly uint CreateDefaultErrorMode = 0x04000000;
     public static readonly uint CreateNewConsole = 0x00000010;
     public static readonly uint CreateNewProcessGroup = 0x00000200;
@@ -257,123 +374,5 @@ namespace StsLibWin.Windows
     public static extern bool DuplicateToken(IntPtr existingTokenHandle, int securityImpersonationLevel, ref IntPtr duplicateTokenHandle);
     [DllImport("user32.dll")]
     public static extern bool GetLastInputInfo(ref Lastinputinfo plii);
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Lastinputinfo
-    {
-      public static readonly int SizeOf = Marshal.SizeOf(typeof(Lastinputinfo));
-      [MarshalAs(UnmanagedType.U4)]
-      public uint cbSize;
-      [MarshalAs(UnmanagedType.U4)]
-      public uint dwTime;
-    }
-    [Flags]
-    internal enum AccessMask : uint
-    {
-      Delete = 0x00010000,
-      ReadControl = 0x00020000,
-      WriteDac = 0x00040000,
-      WriteOwner = 0x00080000,
-      Synchronize = 0x00100000,
-      StandardRightsRequired = 0x000F0000,
-      StandardRightsRead = 0x00020000,
-      StandardRightsWrite = 0x00020000,
-      StandardRightsExecute = 0x00020000,
-      StandardRightsAll = 0x001F0000,
-      SpecificRightsAll = 0x0000FFFF,
-      AccessSystemSecurity = 0x01000000,
-      MaximumAllowed = 0x02000000,
-      GenericRead = 0x80000000,
-      GenericWrite = 0x40000000,
-      GenericExecute = 0x20000000,
-      GenericAll = 0x10000000,
-      DesktopReadobjects = 0x00000001,
-      DesktopCreatewindow = 0x00000002,
-      DesktopCreatemenu = 0x00000004,
-      DesktopHookcontrol = 0x00000008,
-      DesktopJournalrecord = 0x00000010,
-      DesktopJournalplayback = 0x00000020,
-      DesktopEnumerate = 0x00000040,
-      DesktopWriteobjects = 0x00000080,
-      DesktopSwitchdesktop = 0x00000100,
-      WinstaEnumdesktops = 0x00000001,
-      WinstaReadattributes = 0x00000002,
-      WinstaAccessclipboard = 0x00000004,
-      WinstaCreatedesktop = 0x00000008,
-      WinstaWriteattributes = 0x00000010,
-      WinstaAccessglobalatoms = 0x00000020,
-      WinstaExitwindows = 0x00000040,
-      WinstaEnumerate = 0x00000100,
-      WinstaReadscreen = 0x00000200,
-      WinstaAllAccess = 0x0000037F
-    }
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    internal struct DocInfo_1W
-    {
-      [MarshalAs(UnmanagedType.LPWStr)]
-      internal readonly string pDocName;
-      [MarshalAs(UnmanagedType.LPWStr)]
-      internal readonly string pOutputFile;
-      [MarshalAs(UnmanagedType.LPWStr)]
-      internal readonly string pDataType;
-    }
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    internal class PrinterDefaults
-    {
-      /// <summary>
-      ///   Specifies desired access rights for a printer.
-      ///   The <see cref="OpenPrinter(string, out IntPtr, IntPtr)" /> function uses
-      ///   this member to set access rights to the printer. These rights can affect
-      ///   the operation of the SetPrinter and DeletePrinter functions.
-      /// </summary>
-      internal AccessMask DesiredAccess;
-      /// <summary>
-      ///   Pointer to a null-terminated string that specifies the
-      ///   default data type for a printer.
-      /// </summary>
-      internal IntPtr pDatatype;
-      /// <summary>
-      ///   Pointer to a DEVMODE structure that identifies the
-      ///   default environment and initialization data for a printer.
-      /// </summary>
-      internal IntPtr pDevMode;
-    }
-    internal struct ProcessInformation
-    {
-      internal IntPtr Process;
-      internal int ProcessId;
-      internal IntPtr Thread;
-      internal int ThreadId;
-    }
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    internal struct StartupInfo
-    {
-      internal int cb;
-      internal string reserved;
-      internal string desktop;
-      internal string title;
-      internal int x;
-      internal int y;
-      internal int xSize;
-      internal int ySize;
-      internal int xCountChars;
-      internal int yCountChars;
-      internal int fillAttribute;
-      internal int flags;
-      internal ushort showWindow;
-      internal ushort reserved2;
-      internal byte reserved3;
-      internal IntPtr stdInput;
-      internal IntPtr stdOutput;
-      internal IntPtr stdError;
-    }
-    internal delegate bool EnumWindowsProc(IntPtr intPtr, int lParam);
-    public struct KeyboardHookStruct
-    {
-      public int VkCode;
-      public int ScanCode;
-      public int Flags;
-      public int Time;
-      public int DwExtraInfo;
-    }
   }
 }

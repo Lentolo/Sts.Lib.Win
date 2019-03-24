@@ -30,7 +30,8 @@ namespace StsLibWin.Windows.Forms
     }
   }
   public class Form : System.Windows.Forms.Form
-  { }
+  {
+  }
   public class TempCursor : IDisposable
   {
     private readonly Control _control;

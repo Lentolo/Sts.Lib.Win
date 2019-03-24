@@ -1516,13 +1516,13 @@ namespace StsLibWin.Windows.Forms
     }
     private int StopUpdateUi()
     {
-      Win32.SendMessage(Handle, (int)Win32.WmConstants.WmSetredraw, 0, IntPtr.Zero);
+      Win32.SendMessage(Handle, (int) Win32.WmConstants.WmSetredraw, 0, IntPtr.Zero);
       return Win32.SendMessage(Handle, Win32.EmGeteventmask, 0, IntPtr.Zero);
     }
     private void StartUpdateUi(int eventMask)
     {
-      Win32.SendMessage(Handle, Win32.EmSeteventmask, 0, (IntPtr)eventMask);
-      Win32.SendMessage(Handle, (int)Win32.WmConstants.WmSetredraw, 1, IntPtr.Zero);
+      Win32.SendMessage(Handle, Win32.EmSeteventmask, 0, (IntPtr) eventMask);
+      Win32.SendMessage(Handle, (int) Win32.WmConstants.WmSetredraw, 1, IntPtr.Zero);
     }
     private void HighLight(int selStart, int selEnd)
     {

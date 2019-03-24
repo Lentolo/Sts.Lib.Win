@@ -88,9 +88,6 @@
     <Compile Include="Windows\Forms\ComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Windows\Forms\DatabaseConnectionBuilderBase.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Windows\Forms\FolderBrowserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

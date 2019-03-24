@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using StsLib.Reflection;
 
 namespace StsLibWin.Windows.Forms.Data
 {
@@ -40,17 +40,8 @@ namespace StsLibWin.Windows.Forms.Data
       GrpControl.SuspendLayout();
       CmbCnType.Items.Clear();
       GrpControl.Controls.Clear();
-      foreach (var ctl in StsLib.Reflection.Utils.GetAssemblies().SelectMany(a =>
-     {
-       try
-       {
-         return a.GetTypes();
-       }
-       catch
-       {
-       }
-       return new Type[0];
-     }).Where(T => typeof(DatabaseConnectionBuilderBase).IsAssignableFrom(T) && T.GetConstructors().Any(c => !c.GetParameters().Any())).Select(T => StsLib.Reflection.Utils.CreateInstance<DatabaseConnectionBuilderBase>(T)))
+      var builderType = typeof(DatabaseConnectionBuilderBase);
+      foreach (var ctl in StsLib.Reflection.Utils.LoadTypeFromFolder(Path.GetDirectoryName(GetType().Assembly.Location), type => type != builderType && StsLib.Linq.Utils.GetAncestorsUntil(type, t => t.BaseType, t => t != null).Any(t => builderType.FullName == t.FullName) && type.GetConstructors().Any(c => !c.GetParameters().Any())).Select(T => StsLib.Reflection.Utils.CreateInstance<DatabaseConnectionBuilderBase>(T)))
       {
         CmbCnType.Items.Add(ctl.DatabaseTypeName);
         ctl.Visible = false;
@@ -58,6 +49,7 @@ namespace StsLibWin.Windows.Forms.Data
         ctl.Dock = DockStyle.Fill;
         GrpControl.Controls.Add(ctl);
       }
+
       GrpControl.ResumeLayout();
       GrpControl.PerformLayout();
     }

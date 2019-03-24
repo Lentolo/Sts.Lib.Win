@@ -5,6 +5,10 @@ namespace StsLibWin.Windows.Forms
 {
   public class FolderBrowserControl : BrowseControl
   {
+    public FolderBrowserControl()
+    {
+      Dialog = new FolderBrowserDialog();
+    }
     public bool CreateFolderIfNotExits
     {
       get;
@@ -18,17 +22,10 @@ namespace StsLibWin.Windows.Forms
         {
           StsLib.IO.Utils.EnsureDirectory(base.Text);
         }
+
         return base.Text;
       }
-
-      set
-      {
-        base.Text = value;
-      }
-    }
-    public FolderBrowserControl()
-    {
-      Dialog = new FolderBrowserDialog();
+      set => base.Text = value;
     }
     public FolderBrowserDialog Dialog
     {
