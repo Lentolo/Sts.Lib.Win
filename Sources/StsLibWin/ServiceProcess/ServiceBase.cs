@@ -47,7 +47,7 @@ namespace StsLibWin.ServiceProcess
     }
     public virtual void ParseCommandLine(string[] commandLine)
     {
-      var commandLineParser = new CommandLineParser(commandLine);
+      var commandLineParser = new StsLib.Common.CommandLineParser(commandLine);
       if (commandLineParser.HasParameter("install"))
       {
         Install(commandLineParser.HasParameter("silent"), commandLineParser.HasParameter("force"));
