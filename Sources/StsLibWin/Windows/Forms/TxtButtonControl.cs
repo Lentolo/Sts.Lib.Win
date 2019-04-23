@@ -2,10 +2,19 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace StsLib.Windows.Forms
+namespace StsLibWin.Windows.Forms
 {
   public class TxtButtonControl : UserControl
   {
+    protected override void OnResize(EventArgs e)
+    {
+      base.OnResize(e);
+      _btn.Left = Width - _btn.Width - _btn.Margin.Left - _btn.Margin.Right;
+      _btn.Top = 0;
+      _txt.Left = 0;
+      _txt.Width = Width - _btn.Width - _txt.Margin.Left - _txt.Margin.Right;
+      _txt.Top = (_btn.Height - _txt.Height) / 2;
+    }
     private Button _btn;
     private TextBox _txt;
     public TxtButtonControl()
@@ -19,40 +28,39 @@ namespace StsLib.Windows.Forms
     }
     private void InitializeComponent()
     {
-      _btn = new Button();
-      _txt = new TextBox();
-      SuspendLayout();
+      this._btn = new StsLibWin.Windows.Forms.Button();
+      this._txt = new StsLibWin.Windows.Forms.TextBox();
+      this.SuspendLayout();
       // 
-      // m_Btn
+      // _btn
       // 
-      _btn.Dock = DockStyle.Right;
-      _btn.Location = new Point(563, 0);
-      _btn.Name = "_btn";
-      _btn.Size = new Size(34, 27);
-      _btn.TabIndex = 0;
-      _btn.Text = "...";
-      _btn.UseVisualStyleBackColor = true;
-      _btn.Click += Btn_Click;
+      this._btn.Location = new System.Drawing.Point(563, 3);
+      this._btn.Margin = new System.Windows.Forms.Padding(0);
+      this._btn.Name = "_btn";
+      this._btn.Size = new System.Drawing.Size(34, 20);
+      this._btn.TabIndex = 1;
+      this._btn.Text = "...";
+      this._btn.UseVisualStyleBackColor = true;
+      this._btn.Click += new System.EventHandler(this.Btn_Click);
       // 
-      // m_Txt
+      // _txt
       // 
-      _txt.Dock = DockStyle.Fill;
-      _txt.Location = new Point(0, 0);
-      _txt.Multiline = true;
-      _txt.Name = "_txt";
-      _txt.Size = new Size(563, 27);
-      _txt.TabIndex = 1;
-      _txt.DoubleClick += Txt_DoubleClick;
+      this._txt.Location = new System.Drawing.Point(0, 3);
+      this._txt.Margin = new System.Windows.Forms.Padding(0);
+      this._txt.Name = "_txt";
+      this._txt.Size = new System.Drawing.Size(563, 20);
+      this._txt.TabIndex = 0;
+      this._txt.DoubleClick += new System.EventHandler(this.Txt_DoubleClick);
       // 
       // TxtButtonControl
       // 
-      Controls.Add(_txt);
-      Controls.Add(_btn);
-      Margin = new Padding(0);
-      Name = "TxtButtonControl";
-      Size = new Size(597, 27);
-      ResumeLayout(false);
-      PerformLayout();
+      this.Controls.Add(this._txt);
+      this.Controls.Add(this._btn);
+      this.Name = "TxtButtonControl";
+      this.Size = new System.Drawing.Size(597, 27);
+      this.ResumeLayout(false);
+      this.PerformLayout();
+
     }
     protected virtual void OnBtnClick()
     {

@@ -2,11 +2,11 @@
 using System.Windows.Forms;
 using StsLib.Data;
 using StsLib.Data.Interfaces;
-using StsLib.Windows.Forms;
+using StsLibWin.Windows.Forms;
 
 namespace StsLibWin.Windows.Forms.Data
 {
-  public partial class TxtConnectionStringBuilder : TxtButtonControl
+  public partial class TxtConnectionStringBuilder : TxtButtonControl,ISaveStateControl
   {
     protected override void OnBtnClick()
     {
@@ -75,6 +75,21 @@ namespace StsLibWin.Windows.Forms.Data
     private void TxtCn_Leave(object sender, EventArgs e)
     {
       RaiseOnConnectionAvailable();
+    }
+    public string GetControlKey()
+    {
+      return "";
+    }
+    public bool CanSaveValue()
+    {
+      return false;
+    }
+    public object GetControlValue()
+    {
+      return null;
+    }
+    public void SetControlValue(object value)
+    {
     }
   }
 }
