@@ -1,13 +1,23 @@
-﻿using System;
-using System.Windows.Forms;
-using StsLib.Data;
+﻿using StsLib.Data;
 using StsLib.Data.Interfaces;
-using StsLibWin.Windows.Forms;
+using System;
+using System.Windows.Forms;
 
 namespace StsLibWin.Windows.Forms.Data
 {
-  public partial class TxtConnectionStringBuilder : TxtButtonControl,ISaveStateControl
+  public partial class TxtConnectionStringBuilder : TxtButtonControl, ISaveStateControl
   {
+    public bool CanSaveState()
+    {
+      return false;
+    }
+    public object GetControlState()
+    {
+      return null;
+    }
+    public void SetControlState(object value)
+    {
+    }
     protected override void OnBtnClick()
     {
       var dlg = new DlgConnectionstringBuilder
@@ -75,21 +85,6 @@ namespace StsLibWin.Windows.Forms.Data
     private void TxtCn_Leave(object sender, EventArgs e)
     {
       RaiseOnConnectionAvailable();
-    }
-    public string GetControlKey()
-    {
-      return "";
-    }
-    public bool CanSaveValue()
-    {
-      return false;
-    }
-    public object GetControlValue()
-    {
-      return null;
-    }
-    public void SetControlValue(object value)
-    {
     }
   }
 }

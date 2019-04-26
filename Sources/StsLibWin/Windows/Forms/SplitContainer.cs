@@ -8,14 +8,12 @@ namespace StsLibWin.Windows.Forms
     protected override void OnPaint(PaintEventArgs e)
     {
       base.OnPaint(e);
-
       var points = new Point[5];
       var w = Width;
       var h = Height;
       var d = SplitterDistance;
       var sW = SplitterWidth;
       var distance = 5;
-
       if (Orientation == Orientation.Horizontal)
       {
         points[0] = new Point(w / 2, d + sW / 2);

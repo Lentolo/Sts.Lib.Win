@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using StsLib.Diagnostics;
 
 namespace StsLibWin.Windows.Forms
 {
@@ -67,7 +66,7 @@ namespace StsLibWin.Windows.Forms
       {
         if (Directory.Exists(_txtPath.Text))
         {
-          Process.ShellExecute(_txtPath.Text);
+          StsLib.Diagnostics.Process.ShellExecute(_txtPath.Text);
         }
 
         return;

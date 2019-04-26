@@ -66,6 +66,9 @@
     <Compile Include="Windows\Forms\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\DataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\Data\DatabaseConnectionBuilderBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -83,6 +86,9 @@
     </Compile>
     <Compile Include="Windows\Forms\Form.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\GroupBox.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Forms\MdiChildForm.cs">
       <SubType>Form</SubType>
