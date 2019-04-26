@@ -9,26 +9,21 @@ namespace StsLibWin.Windows.Forms
   {
     private static object GetControlValue(Control control)
     {
-      if (control as ISaveStateControl != null && (control as ISaveStateControl).CanSaveValue())
+      switch (control)
       {
-        return (control as ISaveStateControl).GetControlValue();
-      }
-
-      if (control as TextBox != null)
-      {
-        return (control as TextBox).Text;
-      }
-
-      if (control as CheckBox != null)
-      {
-        return (control as CheckBox).Checked;
+        case ISaveStateControl stateControl when stateControl.CanSaveValue():
+          return stateControl.GetControlValue();
+        case TextBox textBox:
+          return textBox.Text;
+        case CheckBox checkBox:
+          return checkBox.Checked;
       }
 
       return null;
     }
     public static KeyValuePair<string, object>[] GetChildControlsData(Control control)
     {
-      return StsLib.Linq.Utils.FlattenHierarchy(Tuple.Create(control, control.Name), c => c.Item1.Controls.OfType<Control>().Select(cc => Tuple.Create(cc, c.Item2 + "-" + cc.Name)), c => c != null, null, true, true, true).Select(i => new KeyValuePair<string, object>(i.Object.Item2, GetControlValue(i.Object.Item1))).ToArray();
+      return StsLib.Linq.Utils.FlattenHierarchy(Tuple.Create(control, control.Name), c => c.Item1.Controls.OfType<Control>().Select(cc => Tuple.Create(cc, c.Item2 + "-" + cc.Name)), c => c != null).Select(i => new KeyValuePair<string, object>(i.Object.Item2, GetControlValue(i.Object.Item1))).ToArray();
     }
   }
 }
