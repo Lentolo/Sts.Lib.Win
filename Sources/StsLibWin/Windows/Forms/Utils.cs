@@ -23,7 +23,7 @@ namespace StsLibWin.Windows.Forms
     }
     public static KeyValuePair<string, object>[] GetChildControlsData(Control control)
     {
-      return StsLib.Linq.Utils.FlattenHierarchy(Tuple.Create(control, control.Name), c => c.Item1.Controls.OfType<Control>().Select(cc => Tuple.Create(cc, c.Item2 + "-" + cc.Name)), c => c != null).Select(i => new KeyValuePair<string, object>(i.Object.Item2, GetControlValue(i.Object.Item1))).ToArray();
+      return StsLib.Linq.Utils.FlattenHierarchy(Tuple.Create(control, control.Name), c => c.Item1.Controls.OfType<Control>().Select(cc => Tuple.Create(cc, c.Item2 + "-" + cc.Name)), (p,c,l) => c != null).Select(i => new KeyValuePair<string, object>(i.Item.Item2, GetControlValue(i.Item.Item1))).ToArray();
     }
   }
 }
