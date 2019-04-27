@@ -1,10 +1,11 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using StsLib.Collections.Generic;
 
 namespace StsLibWin.Windows.Forms
 {
-  public class TxtButtonControl : UserControl
+  public class TxtButtonControl : UserControl, ControlStatePersister.ISaveStateControl
   {
     private Button _btn;
     private TextBox _txt;
@@ -17,6 +18,8 @@ namespace StsLibWin.Windows.Forms
       get => _txt.Text;
       set => _txt.Text = value;
     }
+    public virtual bool CanSaveControlState { get ; set ; }
+
     protected override void OnResize(EventArgs e)
     {
       base.OnResize(e);
@@ -74,6 +77,16 @@ namespace StsLibWin.Windows.Forms
     private void Txt_DoubleClick(object sender, EventArgs e)
     {
       OnTxtDblClick();
+    }
+
+    public virtual void LoadControlStateData(Dictionary<string, object> data)
+    {
+      throw new NotImplementedException();
+    }
+
+    public virtual void SaveControlStateData(Dictionary<string, object> data)
+    {
+      throw new NotImplementedException();
     }
   }
 }
