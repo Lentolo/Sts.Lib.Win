@@ -99,6 +99,9 @@
     <Compile Include="Windows\Forms\SplitContainer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\ToolStripDateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\TxtButtonControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
