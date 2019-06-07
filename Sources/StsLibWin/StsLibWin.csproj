@@ -87,6 +87,10 @@
     <Compile Include="Windows\Forms\Form.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\Gantt.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\Gantt.Designer.cs" />
     <Compile Include="Windows\Forms\GroupBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -112,7 +116,7 @@
     <Compile Include="Windows\Forms\FolderBrowserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Windows\Forms\ISaveStateControl.cs" />
+    <Compile Include="Windows\Forms\ControlStatePersister.cs" />
     <Compile Include="Windows\Forms\Label.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -150,6 +154,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\Data\TxtConnectionStringBuilder.resx">
       <DependentUpon>TxtConnectionStringBuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\Gantt.resx">
+      <DependentUpon>Gantt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\TxtButtonControl.resx">
       <DependentUpon>TxtButtonControl.cs</DependentUpon>
