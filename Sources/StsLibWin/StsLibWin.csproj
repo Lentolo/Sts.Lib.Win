@@ -87,11 +87,11 @@
     <Compile Include="Windows\Forms\Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\Forms\Gannt.cs">
+    <Compile Include="Windows\Forms\Gantt.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Windows\Forms\Gannt.Designer.cs">
-      <DependentUpon>Gannt.cs</DependentUpon>
+    <Compile Include="Windows\Forms\Gantt.Designer.cs">
+      <DependentUpon>Gantt.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\GroupBox.cs">
       <SubType>Component</SubType>
@@ -157,8 +157,8 @@
     <EmbeddedResource Include="Windows\Forms\Data\TxtConnectionStringBuilder.resx">
       <DependentUpon>TxtConnectionStringBuilder.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\Gannt.resx">
-      <DependentUpon>Gannt.cs</DependentUpon>
+    <EmbeddedResource Include="Windows\Forms\Gantt.resx">
+      <DependentUpon>Gantt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\TxtButtonControl.resx">
       <DependentUpon>TxtButtonControl.cs</DependentUpon>
@@ -169,9 +169,6 @@
       <Project>{243902fb-e591-418d-b0d8-7f734f518edf}</Project>
       <Name>StsLib</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -49,6 +49,20 @@ namespace StsLibWin.Windows.Forms
         return _blockSize;
       }
     }
+    SizeF _ganttDimensions = SizeF.Empty;
+    SizeF GanttDimensions
+    {
+      get
+      {
+        if (StsLib.Linq.Utils.ToEnumerableOrEmpty(Data).Any() && _ganttDimensions == SizeF.Empty)
+        {
+          var min = Data.Select(i => i.DateFrom).Min();
+          var max = Data.Select(i => i.DateFrom).Max();
+          _ganttDimensions = new SizeF(BlockSize.Width * (float)(max - min).TotalHours, BlockSize.Height * Data.Count);
+        }
+        return _ganttDimensions;
+      }
+    }
 
     public class GanttItem
     {
@@ -68,6 +82,8 @@ namespace StsLibWin.Windows.Forms
 
     private void PnlDrawBottomLeft_Paint(object sender, PaintEventArgs e)
     {
+      if (!StsLib.Linq.Utils.ToEnumerableOrEmpty(Data).Any())
+        return;
       var data = StsLib.Linq.Utils.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
       foreach (var activities in data.GroupBy(ii => ii.Activity).ToItemsList())
       {
@@ -82,9 +98,17 @@ namespace StsLibWin.Windows.Forms
       pnlDrawBottomLeft.Left = 0;
       pnlDrawBottomRight.Top = 0;
       pnlDrawBottomRight.Left = 0;
+      pnlDrawTopLeft.Top = 0;
+      pnlDrawTopLeft.Left = 0;
+      pnlDrawTopLeft.Height = (int)Math.Ceiling(BlockSize.Height);
+      pnlDrawTopRight.Top = 0;
+      pnlDrawTopRight.Left = 0;
+      pnlDrawTopRight.Height = (int)Math.Ceiling(BlockSize.Height);
     }
     private void PnlDrawBottomRight_Paint(object sender, PaintEventArgs e)
     {
+      if (!StsLib.Linq.Utils.ToEnumerableOrEmpty(Data).Any())
+        return;
       var data = StsLib.Linq.Utils.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
       var minDate = data.Select(i => i.DateFrom).DefaultIfEmpty(DateTime.MinValue).Min();
       foreach (var activities in data.GroupBy(ii => ii.Activity).ToItemsList())
