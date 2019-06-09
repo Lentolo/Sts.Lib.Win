@@ -139,6 +139,13 @@ namespace StsLibWin.Windows
       HtBottomleft = 16,
       HtBottomright = 17
     }
+
+    public enum EndSession : long
+    {
+      EndsessionCloseapp = 0x00000001,
+      EndsessionCritical = 0x40000000,
+      EndsessionLogoff = 0x80000000
+    }
     public enum LogonProvider
     {
       /// <summary>
@@ -248,7 +255,7 @@ namespace StsLibWin.Windows
       WmChar = 0x0102,
       WmPaste = 0x0302,
       WmUser = 0x0400,
-      WmQueryendsession = 0x11
+      WmQueryEndSession = 0x11
     }
     public static readonly uint Httransparent = 0xFFFFFFFF;
     public static readonly uint Htclient = 1;
@@ -271,10 +278,10 @@ namespace StsLibWin.Windows
     public static readonly int SpiSetdeskwallpaper = 0x14;
     public static readonly int SpifUpdateinifile = 0x01;
     public static readonly int SpifSendwininichange = 0x02;
-    public static readonly int EmGetscrollpos = (int) WmConstants.WmUser + 221;
-    public static readonly int EmSetscrollpos = (int) WmConstants.WmUser + 222;
-    public static readonly int EmGeteventmask = (int) WmConstants.WmUser + 59;
-    public static readonly int EmSeteventmask = (int) WmConstants.WmUser + 69;
+    public static readonly int EmGetscrollpos = (int)WmConstants.WmUser + 221;
+    public static readonly int EmSetscrollpos = (int)WmConstants.WmUser + 222;
+    public static readonly int EmGeteventmask = (int)WmConstants.WmUser + 59;
+    public static readonly int EmSeteventmask = (int)WmConstants.WmUser + 69;
     public static readonly short KsOn = 0x01;
     public static readonly short KsKeydown = 0x80;
     /*
