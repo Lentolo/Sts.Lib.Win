@@ -12,7 +12,18 @@ namespace StsLibWin.Windows.Forms
     protected virtual void OnWmQueryEndSession(StsLib.Common.ReadonlyDataArgs<Win32.EndSession> e)
     {
     }
-
+    protected virtual void OnFirstShown(EventArgs e)
+    { }
+    bool _firstShown = true;
+    protected override void OnShown(EventArgs e)
+    {
+      base.OnShown(e);
+      if (_firstShown)
+      {
+        _firstShown = false;
+        OnFirstShown(e);
+      }
+    }
     protected override void WndProc(ref Message m)
     {
       base.WndProc(ref m);
