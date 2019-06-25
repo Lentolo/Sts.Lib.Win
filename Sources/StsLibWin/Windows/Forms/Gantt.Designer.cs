@@ -42,14 +42,14 @@ namespace StsLibWin.Windows.Forms
     private void InitializeComponent()
     {
       this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-      this.pnlBottomLeft = new System.Windows.Forms.Panel();
-      this.pnlDrawBottomLeft = new System.Windows.Forms.Panel();
-      this.pnlTopLeft = new System.Windows.Forms.Panel();
-      this.pnlDrawTopLeft = new System.Windows.Forms.Panel();
-      this.pnlBottomRight = new System.Windows.Forms.Panel();
-      this.pnlDrawBottomRight = new System.Windows.Forms.Panel();
-      this.pnlTopRight = new System.Windows.Forms.Panel();
-      this.pnlDrawTopRight = new System.Windows.Forms.Panel();
+      this.pnlBottomLeft = new StsLibWin.Windows.Forms.Panel();
+      this.pnlDrawBottomLeft = new StsLibWin.Windows.Forms.Panel();
+      this.pnlTopLeft = new StsLibWin.Windows.Forms.Panel();
+      this.pnlDrawTopLeft = new StsLibWin.Windows.Forms.Panel();
+      this.pnlBottomRight = new StsLibWin.Windows.Forms.Panel();
+      this.pnlDrawBottomRight = new StsLibWin.Windows.Forms.Panel();
+      this.pnlTopRight = new StsLibWin.Windows.Forms.Panel();
+      this.pnlDrawTopRight = new StsLibWin.Windows.Forms.Panel();
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
       this.splitContainer1.Panel1.SuspendLayout();
       this.splitContainer1.Panel2.SuspendLayout();
