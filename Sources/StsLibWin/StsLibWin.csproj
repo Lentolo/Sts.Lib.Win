@@ -66,6 +66,9 @@
     <Compile Include="Windows\Forms\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\ContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\DataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -84,6 +87,9 @@
     <Compile Include="Windows\Forms\Data\TxtConnectionStringBuilder.Designer.cs">
       <DependentUpon>TxtConnectionStringBuilder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Forms\DateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,13 +105,40 @@
     <Compile Include="Windows\Forms\MdiChildForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\Panel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\RadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Forms\SplitContainer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\StatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\Timer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ToolStripButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\ToolStripDateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ToolStripLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ToolStripMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ToolStripSeparator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ToolStripStatusLabel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Forms\TxtButtonControl.cs">
