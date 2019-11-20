@@ -43,13 +43,14 @@ namespace StsLibWin.Security
     {
       LogOff();
     }
-    SafeTokenHandle _safeTokenHandle;
-    WindowsImpersonationContext _impersonatedUser;
+
+    private SafeTokenHandle _safeTokenHandle;
+    private WindowsImpersonationContext _impersonatedUser;
     public bool Login(string userName, string password)
     {
       LogOff();
-      string domain = userName.SubstringBeforeToken("\\");
-      string user = string.IsNullOrEmpty(domain) ? userName : userName.SubstringAfterToken("\\");
+      var domain = userName.SubstringBeforeToken("\\");
+      var user = string.IsNullOrEmpty(domain) ? userName : userName.SubstringAfterToken("\\");
       if (LogonUser(user, domain, password, 2, 0, out _safeTokenHandle))
       {
         _impersonatedUser = WindowsIdentity.Impersonate(_safeTokenHandle.DangerousGetHandle());
