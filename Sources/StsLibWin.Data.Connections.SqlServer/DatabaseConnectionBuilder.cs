@@ -46,7 +46,7 @@ namespace StsLibWin.Data.Connections.SqlServer
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.Size = new System.Drawing.Size(50, 17);
             this.label1.TabIndex = 0;
             this.label1.Text = "Server";
             // 
@@ -57,8 +57,9 @@ namespace StsLibWin.Data.Connections.SqlServer
             this.txtSrv.CanSaveControlState = false;
             this.txtSrv.Location = new System.Drawing.Point(78, 15);
             this.txtSrv.Name = "txtSrv";
-            this.txtSrv.Size = new System.Drawing.Size(370, 20);
+            this.txtSrv.Size = new System.Drawing.Size(370, 22);
             this.txtSrv.TabIndex = 1;
+            this.txtSrv.Leave += new System.EventHandler(this.field_Leave);
             // 
             // txtPort
             // 
@@ -66,7 +67,7 @@ namespace StsLibWin.Data.Connections.SqlServer
             this.txtPort.CanSaveControlState = false;
             this.txtPort.Location = new System.Drawing.Point(364, 99);
             this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(84, 20);
+            this.txtPort.Size = new System.Drawing.Size(84, 22);
             this.txtPort.TabIndex = 9;
             this.txtPort.Text = "1433";
             this.txtPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -78,7 +79,7 @@ namespace StsLibWin.Data.Connections.SqlServer
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(3, 102);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.Size = new System.Drawing.Size(69, 17);
             this.label2.TabIndex = 6;
             this.label2.Text = "Database";
             // 
@@ -90,15 +91,16 @@ namespace StsLibWin.Data.Connections.SqlServer
             this.txtPwd.Location = new System.Drawing.Point(78, 71);
             this.txtPwd.Name = "txtPwd";
             this.txtPwd.PasswordChar = '*';
-            this.txtPwd.Size = new System.Drawing.Size(370, 20);
+            this.txtPwd.Size = new System.Drawing.Size(370, 22);
             this.txtPwd.TabIndex = 5;
+            this.txtPwd.Leave += new System.EventHandler(this.field_Leave);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(3, 74);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 13);
+            this.label3.Size = new System.Drawing.Size(69, 17);
             this.label3.TabIndex = 4;
             this.label3.Text = "Password";
             // 
@@ -109,15 +111,16 @@ namespace StsLibWin.Data.Connections.SqlServer
             this.txtUid.CanSaveControlState = false;
             this.txtUid.Location = new System.Drawing.Point(78, 43);
             this.txtUid.Name = "txtUid";
-            this.txtUid.Size = new System.Drawing.Size(370, 20);
+            this.txtUid.Size = new System.Drawing.Size(370, 22);
             this.txtUid.TabIndex = 3;
+            this.txtUid.Leave += new System.EventHandler(this.field_Leave);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(3, 46);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(29, 13);
+            this.label4.Size = new System.Drawing.Size(38, 17);
             this.label4.TabIndex = 2;
             this.label4.Text = "User";
             // 
@@ -129,16 +132,16 @@ namespace StsLibWin.Data.Connections.SqlServer
             this.cmbDB.FormattingEnabled = true;
             this.cmbDB.Location = new System.Drawing.Point(78, 99);
             this.cmbDB.Name = "cmbDB";
-            this.cmbDB.Size = new System.Drawing.Size(240, 21);
+            this.cmbDB.Size = new System.Drawing.Size(240, 24);
             this.cmbDB.TabIndex = 7;
             // 
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(332, 102);
+            this.label5.Location = new System.Drawing.Point(324, 102);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(26, 13);
+            this.label5.Size = new System.Drawing.Size(34, 17);
             this.label5.TabIndex = 8;
             this.label5.Text = "Port";
             // 
@@ -171,7 +174,7 @@ namespace StsLibWin.Data.Connections.SqlServer
         {
             get
             {
-                var connectionStringNoProvider = $"User ID={txtUid.Text};Server={txtSrv.Text};";
+                var connectionStringNoProvider = $"MultipleActiveResultSets=True;User ID={txtUid.Text};Server={txtSrv.Text};";
                 if (!string.IsNullOrEmpty(txtPort.Text) && txtPort.Text != "1433")
                 {
                     connectionStringNoProvider = $"User ID={txtUid.Text};Server={txtSrv.Text},{txtPort.Text};";
