@@ -248,7 +248,7 @@ namespace StsLibWin.Data.Connections.SqlServer
                     })
                     {
                         db.Open();
-                        cmbDB.Items.AddRange(db.ServerSchema.Databases.Select(d => d.Name).ToArray());
+                        cmbDB.Items.AddRange(db.ExecuteReaderAndMap("SELECT NAME FROM SYS.DATABASES;",r=>r["NAME"] as string).ToArray());
                     }
                 }
                 catch
