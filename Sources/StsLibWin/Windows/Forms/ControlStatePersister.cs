@@ -33,7 +33,7 @@ namespace StsLibWin.Windows.Forms
     {
       return StsLib.Linq.Utils.FlattenHierarchy(root, c => c.Controls.OfType<Control>(), (p, c, l) => !(p is ISaveStateControl) && c != null).Select(itm => itm.Item).Where(i => i is ISaveStateControl s && s.CanSaveControlState).Select(itm =>
       {
-        var sha256 = StsLib.Security.Cryptography.Utils.Sha256(StsLib.Linq.Utils.GetAncestorsUntil(itm, cc => cc.Parent, cc => cc != root).Aggregate("", (s, c) => s + "/" + c.Name.CleanString()));
+        var sha256 = StsLib.Security.Cryptography.Utils.Sha256(StsLib.Linq.Utils.GetAncestorsWhile(itm, cc => cc.Parent, cc => cc != root).Aggregate("", (s, c) => s + "/" + c.Name.CleanString()));
         return (sha256, (ISaveStateControl)itm);
       }).ToList();
     }
