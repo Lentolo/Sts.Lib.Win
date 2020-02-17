@@ -26,133 +26,133 @@ namespace StsLibWin.Data.Connections.Oracle
 
         private void InitializeComponent()
         {
-            label1 = new Label();
-            txtSrv = new TextBox();
-            txtPort = new TextBox();
-            label2 = new Label();
-            txtPwd = new TextBox();
-            label3 = new Label();
-            txtUid = new TextBox();
-            label4 = new Label();
-            label5 = new Label();
-            txtSid = new TextBox();
-            SuspendLayout();
+            this.label1 = new StsLibWin.Windows.Forms.Label();
+            this.txtSrv = new StsLibWin.Windows.Forms.TextBox();
+            this.txtPort = new StsLibWin.Windows.Forms.TextBox();
+            this.label2 = new StsLibWin.Windows.Forms.Label();
+            this.txtPwd = new StsLibWin.Windows.Forms.TextBox();
+            this.label3 = new StsLibWin.Windows.Forms.Label();
+            this.txtUid = new StsLibWin.Windows.Forms.TextBox();
+            this.label4 = new StsLibWin.Windows.Forms.Label();
+            this.label5 = new StsLibWin.Windows.Forms.Label();
+            this.txtSid = new StsLibWin.Windows.Forms.TextBox();
+            this.SuspendLayout();
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(3, 18);
-            label1.Name = "label1";
-            label1.Size = new Size(38, 13);
-            label1.TabIndex = 0;
-            label1.Text = "Server";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Server";
             // 
             // txtSrv
             // 
-            txtSrv.Anchor = (AnchorStyles.Top | AnchorStyles.Left) 
-                            | AnchorStyles.Right;
-            txtSrv.CanSaveControlState = false;
-            txtSrv.Location = new Point(62, 15);
-            txtSrv.Name = "txtSrv";
-            txtSrv.Size = new Size(386, 20);
-            txtSrv.TabIndex = 0;
+            this.txtSrv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSrv.CanSaveControlState = false;
+            this.txtSrv.Location = new System.Drawing.Point(62, 15);
+            this.txtSrv.Name = "txtSrv";
+            this.txtSrv.Size = new System.Drawing.Size(386, 20);
+            this.txtSrv.TabIndex = 0;
             // 
             // txtPort
             // 
-            txtPort.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            txtPort.CanSaveControlState = false;
-            txtPort.Location = new Point(364, 41);
-            txtPort.Name = "txtPort";
-            txtPort.Size = new Size(84, 20);
-            txtPort.TabIndex = 2;
-            txtPort.Text = "1521";
-            txtPort.TextAlign = HorizontalAlignment.Right;
-            txtPort.KeyPress += txtPort_KeyPress;
+            this.txtPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPort.CanSaveControlState = false;
+            this.txtPort.Location = new System.Drawing.Point(364, 41);
+            this.txtPort.Name = "txtPort";
+            this.txtPort.Size = new System.Drawing.Size(84, 20);
+            this.txtPort.TabIndex = 2;
+            this.txtPort.Text = "1521";
+            this.txtPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(3, 44);
-            label2.Name = "label2";
-            label2.Size = new Size(22, 13);
-            label2.TabIndex = 6;
-            label2.Text = "Sid";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 44);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(22, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Sid";
             // 
             // txtPwd
             // 
-            txtPwd.Anchor = (AnchorStyles.Top | AnchorStyles.Left) 
-                            | AnchorStyles.Right;
-            txtPwd.CanSaveControlState = false;
-            txtPwd.Location = new Point(62, 93);
-            txtPwd.Name = "txtPwd";
-            txtPwd.PasswordChar = '*';
-            txtPwd.Size = new Size(386, 20);
-            txtPwd.TabIndex = 4;
+            this.txtPwd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPwd.CanSaveControlState = false;
+            this.txtPwd.Location = new System.Drawing.Point(62, 93);
+            this.txtPwd.Name = "txtPwd";
+            this.txtPwd.PasswordChar = '*';
+            this.txtPwd.Size = new System.Drawing.Size(386, 20);
+            this.txtPwd.TabIndex = 4;
             // 
             // label3
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(3, 96);
-            label3.Name = "label3";
-            label3.Size = new Size(53, 13);
-            label3.TabIndex = 4;
-            label3.Text = "Password";
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 96);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Password";
             // 
             // txtUid
             // 
-            txtUid.Anchor = (AnchorStyles.Top | AnchorStyles.Left) 
-                            | AnchorStyles.Right;
-            txtUid.CanSaveControlState = false;
-            txtUid.Location = new Point(62, 67);
-            txtUid.Name = "txtUid";
-            txtUid.Size = new Size(386, 20);
-            txtUid.TabIndex = 3;
+            this.txtUid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtUid.CanSaveControlState = false;
+            this.txtUid.Location = new System.Drawing.Point(62, 67);
+            this.txtUid.Name = "txtUid";
+            this.txtUid.Size = new System.Drawing.Size(386, 20);
+            this.txtUid.TabIndex = 3;
             // 
             // label4
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(3, 70);
-            label4.Name = "label4";
-            label4.Size = new Size(29, 13);
-            label4.TabIndex = 2;
-            label4.Text = "User";
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 70);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(29, 13);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "User";
             // 
             // label5
             // 
-            label5.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            label5.AutoSize = true;
-            label5.Location = new Point(332, 44);
-            label5.Name = "label5";
-            label5.Size = new Size(26, 13);
-            label5.TabIndex = 8;
-            label5.Text = "Port";
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(332, 44);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(26, 13);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Port";
             // 
             // txtSid
             // 
-            txtSid.Anchor = (AnchorStyles.Top | AnchorStyles.Left) 
-                            | AnchorStyles.Right;
-            txtSid.CanSaveControlState = false;
-            txtSid.Location = new Point(62, 41);
-            txtSid.Name = "txtSid";
-            txtSid.Size = new Size(264, 20);
-            txtSid.TabIndex = 1;
+            this.txtSid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSid.CanSaveControlState = false;
+            this.txtSid.Location = new System.Drawing.Point(62, 41);
+            this.txtSid.Name = "txtSid";
+            this.txtSid.Size = new System.Drawing.Size(264, 20);
+            this.txtSid.TabIndex = 1;
+            this.txtSid.Text = "orcl";
             // 
             // DatabaseConnectionBuilder
             // 
-            Controls.Add(txtSid);
-            Controls.Add(label5);
-            Controls.Add(txtUid);
-            Controls.Add(label4);
-            Controls.Add(txtPwd);
-            Controls.Add(label3);
-            Controls.Add(txtPort);
-            Controls.Add(label2);
-            Controls.Add(txtSrv);
-            Controls.Add(label1);
-            Name = "DatabaseConnectionBuilder";
-            Size = new Size(451, 124);
-            ResumeLayout(false);
-            PerformLayout();
+            this.Controls.Add(this.txtSid);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtUid);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtPwd);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.txtPort);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.txtSrv);
+            this.Controls.Add(this.label1);
+            this.Name = "DatabaseConnectionBuilder";
+            this.Size = new System.Drawing.Size(451, 124);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
         public override string ConnectionString

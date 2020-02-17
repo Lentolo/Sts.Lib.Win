@@ -111,7 +111,7 @@ namespace StsLibWin.Data.Connections.SqlServer
         {
             get
             {
-                var connectionStringNoProvider = $"Data Source={txtSrv.Text};Version=3;";
+                var connectionStringNoProvider = $"Data Source={txtSrv.Text};";
                 if (!string.IsNullOrEmpty(txtPwd.Text))
                 {
                     connectionStringNoProvider += $"Password={txtPwd.Text};";

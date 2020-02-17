@@ -8,47 +8,27 @@ namespace StsLibWin.Data.Connections.Oracle
   {
     public string ToSql(object val)
     {
-      if (val == null)
+      switch (val)
       {
-        return "NULL";
+          case null:
+              return "NULL";
+          case string s:
+              return ToSql(s);
+          case int i:
+              return ToSql(i);
+          case DateTime dateTime:
+              return ToSql(dateTime);
+          case double d:
+              return ToSql(d);
+          case long l:
+              return ToSql(l);
+          case decimal dec:
+              return ToSql(dec);
+          case bool b:
+              return ToSql(b);
+          default:
+              throw new Exception("Invalid data type");
       }
-
-      if (val is string)
-      {
-        return ToSql((string)val);
-      }
-
-      if (val is int)
-      {
-        return ToSql((int)val);
-      }
-
-      if (val is DateTime)
-      {
-        return ToSql((DateTime)val);
-      }
-
-      if (val is double)
-      {
-        return ToSql((double)val);
-      }
-
-      if (val is long)
-      {
-        return ToSql((long)val);
-      }
-
-      if (val is decimal)
-      {
-        return ToSql((decimal)val);
-      }
-
-      if (val is bool)
-      {
-        return ToSql((bool)val);
-      }
-
-      throw new Exception("Invalid data type");
     }
     public string ToSql(int val)
     {
@@ -77,7 +57,7 @@ namespace StsLibWin.Data.Connections.Oracle
     }
     public string ToSql(DateTime val)
     {
-      return "CONVERT(datetime,'" + val.ToString("yyyy-MM-ddTHH:mm:ss.fff") + "',126)";
+      return $"TO_DATE('{val:yyyy/MM/dd HH:mm:ss}', 'YYYY/MM/DD HH:MI:SS')";
     }
     public string ToSql(long val)
     {
@@ -85,7 +65,7 @@ namespace StsLibWin.Data.Connections.Oracle
     }
     public string WrapIdentifier(string val)
     {
-      return "[" + val + "]";
+      return "\"" + val + "\"";
     }
     public string ToSql(decimal val)
     {
