@@ -2,8 +2,10 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using StsLib.Data.Connections.SqLite;
+using StsLib.Data.Connections.OleDB;
+using StsLibWin.Windows.Forms;
 using StsLibWin.Windows.Forms.Data;
+using Button = StsLibWin.Windows.Forms.Button;
 using ComboBox = StsLibWin.Windows.Forms.ComboBox;
 using Label = StsLibWin.Windows.Forms.Label;
 using TextBox = StsLibWin.Windows.Forms.TextBox;
@@ -29,7 +31,7 @@ namespace StsLibWin.Data.Connections.SqlServer
             this.txtSrv = new StsLibWin.Windows.Forms.TextBox();
             this.txtPwd = new StsLibWin.Windows.Forms.TextBox();
             this.label3 = new StsLibWin.Windows.Forms.Label();
-            this.btnBrowse = new System.Windows.Forms.Button();
+            this.btnBrowse = new StsLibWin.Windows.Forms.Button();
             this.ofdBrowseDB = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
@@ -111,10 +113,10 @@ namespace StsLibWin.Data.Connections.SqlServer
         {
             get
             {
-                var connectionStringNoProvider = $"Data Source={txtSrv.Text};";
+                var connectionStringNoProvider = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={txtSrv.Text};";
                 if (!string.IsNullOrEmpty(txtPwd.Text))
                 {
-                    connectionStringNoProvider += $"Password={txtPwd.Text};";
+                    connectionStringNoProvider += $"Database Password={txtPwd.Text};";
                 }
 
                 return connectionStringNoProvider;
@@ -124,7 +126,7 @@ namespace StsLibWin.Data.Connections.SqlServer
         {
             get
             {
-                return "SqLite";
+                return "OleDB";
             }
         }
         public override Type DatabaseConnectionType

@@ -160,7 +160,7 @@ namespace StsLibWin.Data.Connections.Postgres
         {
             get
             {
-                return "Provider=" + typeof(StsLib.Data.Connections.Postgres.DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
+                return "Sts Provider=" + typeof(StsLib.Data.Connections.Postgres.DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
             }
         }
         public override string ConnectionStringNoProvider

@@ -21,9 +21,9 @@ namespace StsLibWin.Data.Connections.Oracle
     {
       throw new NotImplementedException();
     }
-    public override DatabaseTypes GetDbConnectionType()
+    public override string GetDbConnectionType()
     {
-      return DatabaseTypes.SqlServer;
+      return "Oracle";
     }
   }
 }

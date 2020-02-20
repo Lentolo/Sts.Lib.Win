@@ -33,9 +33,9 @@ namespace StsLibWin.Data.Connections.Oracle
         {
             return BeginTransaction(IsolationLevel.ReadCommitted);
         }
-        public override DatabaseTypes GetDbConnectionType()
+        public override string GetDbConnectionType()
         {
-            return DatabaseTypes.Oracle;
+            return "Oracle";
         }
     }
 }

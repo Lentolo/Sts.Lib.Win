@@ -159,7 +159,7 @@ namespace StsLibWin.Data.Connections.Oracle
         {
             get
             {
-                return "Provider=" + typeof(DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
+                return "Sts Provider=" + typeof(DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
             }
         }
         public override string ConnectionStringNoProvider

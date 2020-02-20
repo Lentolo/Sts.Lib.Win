@@ -167,7 +167,7 @@ namespace StsLibWin.Data.Connections.SqlServer
         {
             get
             {
-                return "Provider=" + typeof(DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
+                return "Sts Provider=" + typeof(DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
             }
         }
         public override string ConnectionStringNoProvider
