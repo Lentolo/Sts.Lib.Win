@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Management;
 using System.Text;
+using System.Threading;
 using StsLib.Common;
 using StsLibWin.Windows;
 
@@ -9,6 +11,44 @@ namespace StsLibWin.Diagnostics
 {
     public static class ProcessUtils
     {
+        public static void KillProcessAndChildren(Process process)
+        {
+            KillProcessAndChildren(process.Id);
+        }
+        static void KillProcessAndChildren(int pid)
+        {
+            if (pid == 0)
+            {
+                return;
+            }
+
+            using (var searcher = new ManagementObjectSearcher("Select ProcessID From Win32_Process Where ParentProcessID = " + pid))
+            {
+                using (var moc = searcher.Get())
+                {
+                    foreach (var o in moc)
+                    {
+                        using (var mo = (ManagementObject)o)
+                        {
+                            KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
+                        }
+                    }
+                    try
+                    {
+                        var proc = Process.GetProcessById(pid);
+                        do
+                        {
+                            proc.Kill();
+                            Thread.Sleep(100);
+                        } while (!proc.WaitForExit(500));
+                    }
+                    catch (ArgumentException)
+                    {
+                    }
+                }
+            }
+        }
+
         public static bool CreateProcessWithLogonW(string domain, string user, string password, string fileName, string arguments)
         {
             var startupInfo = new Win32.StartupInfo();
