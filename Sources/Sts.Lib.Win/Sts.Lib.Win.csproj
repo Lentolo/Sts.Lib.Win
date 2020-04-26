@@ -199,7 +199,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Sts.Lib\Sources\StsLib\Sts.Lib.csproj">
+    <ProjectReference Include="..\..\..\Sts.Lib\Sources\Sts.Lib\Sts.Lib.csproj">
       <Project>{ad0c21f4-e176-483b-b708-0712e541309a}</Project>
       <Name>Sts.Lib</Name>
     </ProjectReference>
