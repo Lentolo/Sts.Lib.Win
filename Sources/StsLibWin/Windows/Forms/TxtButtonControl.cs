@@ -1,9 +1,9 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using StsLib.Collections.Generic;
+using Sts.Lib.Collections.Generic;
 
-namespace StsLibWin.Windows.Forms
+namespace Sts.Lib.Win.Windows.Forms
 {
   public class TxtButtonControl : UserControl, ControlStatePersister.ISaveStateControl
   {

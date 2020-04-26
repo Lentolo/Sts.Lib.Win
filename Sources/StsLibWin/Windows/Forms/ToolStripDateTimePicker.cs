@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using StsLib.Collections.Generic;
+using Sts.Lib.Collections.Generic;
 
-namespace StsLibWin.Windows.Forms
+namespace Sts.Lib.Win.Windows.Forms
 {
   //Declare a class that inherits from ToolStripControlHost.
   public class ToolStripDateTimePicker : ToolStripControlHost, ControlStatePersister.ISaveStateControl

@@ -4,6 +4,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Sts.Lib.Win.Windows.Forms.Data;
+using Form = Sts.Lib.Win.Windows.Forms.Form;
 
 namespace StsLibWin.Windows.Forms.Data
 {
@@ -41,7 +43,7 @@ namespace StsLibWin.Windows.Forms.Data
       CmbCnType.Items.Clear();
       GrpControl.Controls.Clear();
       var builderType = typeof(DatabaseConnectionBuilderBase);
-      foreach (var ctl in StsLib.Reflection.Utils.LoadTypesFromFolder(Path.GetDirectoryName(GetType().Assembly.Location), type => type != builderType && StsLib.Linq.Utils.GetAncestorsWhile(type, t => t.BaseType, t => t != null).Any(t => builderType.FullName == t.FullName) && type.GetConstructors().Any(c => !c.GetParameters().Any())).Select(T => StsLib.Reflection.Utils.CreateInstance<DatabaseConnectionBuilderBase>(T)))
+      foreach (var ctl in Sts.Lib.Reflection.Utils.LoadTypesFromFolder(Path.GetDirectoryName(GetType().Assembly.Location), type => type != builderType && Sts.Lib.Linq.Utils.GetAncestorsWhile(type, t => t.BaseType, t => t != null).Any(t => builderType.FullName == t.FullName) && type.GetConstructors().Any(c => !c.GetParameters().Any())).Select(T => Sts.Lib.Reflection.Utils.CreateInstance<DatabaseConnectionBuilderBase>(T)))
       {
         CmbCnType.Items.Add(ctl.DatabaseTypeName);
         ctl.Visible = false;

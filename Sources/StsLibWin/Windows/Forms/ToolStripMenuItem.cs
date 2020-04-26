@@ -1,4 +1,4 @@
-﻿namespace StsLibWin.Windows.Forms
+﻿namespace Sts.Lib.Win.Windows.Forms
 {
   public class ToolStripMenuItem : System.Windows.Forms.ToolStripMenuItem
   { }

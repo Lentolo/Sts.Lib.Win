@@ -1,4 +1,4 @@
-﻿namespace StsLibWin.Reflection.Plugins
+﻿namespace Sts.Lib.Win.Reflection.Plugins
 {
   public sealed class PluginContainerSetup
   {

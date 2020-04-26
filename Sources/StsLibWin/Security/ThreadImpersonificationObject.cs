@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using StsLib.Common.Extensions;
 using Microsoft.Win32.SafeHandles;
+using Sts.Lib.Common.Extensions;
 
-
-namespace StsLibWin.Security
+namespace Sts.Lib.Win.Security
 {
 
 
-  public class ThreadImpersonificationObject : StsLib.Security.IThreadImpersonificationObject
+  public class ThreadImpersonificationObject : Sts.Lib.Security.IThreadImpersonificationObject
   {
     [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword, int dwLogonType, int dwLogonProvider, out SafeTokenHandle phToken);

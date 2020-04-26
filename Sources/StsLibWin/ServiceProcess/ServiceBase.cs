@@ -7,12 +7,11 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Windows.Forms;
 using Microsoft.Win32;
-using StsLib.Diagnostics.Log;
-using StsLibWin.Windows.Forms;
+using Sts.Lib.Diagnostics.Log;
 using MessageBox = System.Windows.Forms.MessageBox;
 //using StsLibWin.Diagnostics.Log;
 
-namespace StsLibWin.ServiceProcess
+namespace Sts.Lib.Win.ServiceProcess
 {
     public class ServiceBase : System.ServiceProcess.ServiceBase
     {
@@ -47,8 +46,8 @@ namespace StsLibWin.ServiceProcess
         }
         public virtual void ParseCommandLine(string[] commandLine)
         {
-            var commandLineParser = new StsLib.Common.CommandLineParser.Parser(commandLine,
-                new StsLib.Common.CommandLineParser.Parser.Option()
+            var commandLineParser = new Sts.Lib.Common.CommandLineParser.Parser(commandLine,
+                new Sts.Lib.Common.CommandLineParser.Parser.Option()
                 {
                     Key = "install",
                     Options = new[] { "/install" },
@@ -56,7 +55,7 @@ namespace StsLibWin.ServiceProcess
                     Default = false,
                     NoValue = true,
                 },
-                new StsLib.Common.CommandLineParser.Parser.Option()
+                new Sts.Lib.Common.CommandLineParser.Parser.Option()
                 {
                     Key = "silent",
                     Options = new[] { "/silent" },
@@ -64,7 +63,7 @@ namespace StsLibWin.ServiceProcess
                     Default = false,
                     NoValue = true,
                 },
-                new StsLib.Common.CommandLineParser.Parser.Option()
+                new Sts.Lib.Common.CommandLineParser.Parser.Option()
                 {
                     Key = "force",
                     Options = new[] { "/force" },
@@ -72,7 +71,7 @@ namespace StsLibWin.ServiceProcess
                     Default = false,
                     NoValue = true,
                 },
-                new StsLib.Common.CommandLineParser.Parser.Option()
+                new Sts.Lib.Common.CommandLineParser.Parser.Option()
                 {
                     Key = "uninstall",
                     Options = new[] { "/uninstall" },
@@ -80,7 +79,7 @@ namespace StsLibWin.ServiceProcess
                     Default = false,
                     NoValue = true,
                 },
-                new StsLib.Common.CommandLineParser.Parser.Option()
+                new Sts.Lib.Common.CommandLineParser.Parser.Option()
                 {
                     Key = "start",
                     Options = new[] { "/start" },
@@ -88,7 +87,7 @@ namespace StsLibWin.ServiceProcess
                     Default = false,
                     NoValue = true,
                 },
-                new StsLib.Common.CommandLineParser.Parser.Option()
+                new Sts.Lib.Common.CommandLineParser.Parser.Option()
                 {
                     Key = "stop",
                     Options = new[] { "/stop" },

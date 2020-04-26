@@ -3,7 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace StsLibWin.Windows.Forms
+namespace Sts.Lib.Win.Windows.Forms
 {
   public class BrowseControl : UserControl
   {
@@ -37,7 +37,7 @@ namespace StsLibWin.Windows.Forms
     }
     protected virtual void OnPathChanged()
     {
-      StsLib.Delegates.Utils.RaiseEvent(PathChanged, this, new EventArgs());
+      Sts.Lib.Delegates.Utils.RaiseEvent(PathChanged, this, new EventArgs());
     }
     private void _btnBrowse_Click(object sender, EventArgs e)
     {
@@ -66,7 +66,7 @@ namespace StsLibWin.Windows.Forms
       {
         if (Directory.Exists(_txtPath.Text))
         {
-          StsLib.Diagnostics.Process.ShellExecute(_txtPath.Text);
+          Sts.Lib.Diagnostics.Process.ShellExecute(_txtPath.Text);
         }
 
         return;

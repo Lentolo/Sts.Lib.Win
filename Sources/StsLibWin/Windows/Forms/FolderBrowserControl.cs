@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Forms;
 
-namespace StsLibWin.Windows.Forms
+namespace Sts.Lib.Win.Windows.Forms
 {
   public class FolderBrowserControl : BrowseControl
   {
@@ -20,7 +20,7 @@ namespace StsLibWin.Windows.Forms
       {
         if (CreateFolderIfNotExits && !string.IsNullOrEmpty(base.Text) && !Directory.Exists(base.Text))
         {
-          StsLib.IO.Utils.EnsureDirectory(base.Text);
+          Sts.Lib.IO.Utils.EnsureDirectory(base.Text);
         }
 
         return base.Text;

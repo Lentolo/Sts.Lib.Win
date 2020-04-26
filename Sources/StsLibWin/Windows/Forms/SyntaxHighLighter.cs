@@ -1,13 +1,12 @@
-using StsLib.Common;
-using StsLib.Threading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
+using Sts.Lib.Common;
+using Sts.Lib.Threading;
 
-namespace StsLibWin.Windows.Forms
+namespace Sts.Lib.Win.Windows.Forms
 {
   public class SyntaxHighLighter : RichTextBox
   {
@@ -1237,7 +1236,7 @@ namespace StsLibWin.Windows.Forms
       bool GetCaseSensitiveLanguage();
     }
     private delegate void HighLightDelegate();
-    private readonly StsLib.Threading.Thread _hilightThread = new StsLib.Threading.Thread();
+    private readonly Sts.Lib.Threading.Thread _hilightThread = new Sts.Lib.Threading.Thread();
     private List<string> _functions = new List<string>();
     private bool _hilightSintax = true;
     private List<string> _keyWords = new List<string>();
@@ -1345,7 +1344,7 @@ namespace StsLibWin.Windows.Forms
       KeyWords = languageElements.GetKeyWords();
       Functions = languageElements.GetFunctions();
     }
-    private void m_HilightThread_ThreadJob(StsLib.Threading.Thread instance, object parameters)
+    private void m_HilightThread_ThreadJob(Sts.Lib.Threading.Thread instance, object parameters)
     {
       System.Threading.Thread.Sleep(1000);
       instance.SynchronizeInvoke(new HighLightDelegate(HighLight), null);

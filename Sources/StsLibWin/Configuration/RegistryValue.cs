@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using Microsoft.Win32;
-using StsLib.Common;
-using Convert = StsLib.Common.Convert;
-using Utils = StsLib.Runtime.Serialization.Utils;
+using Sts.Lib.Common;
+using Utils = Sts.Lib.Runtime.Serialization.Utils;
 
 //using Convert = System.Convert;
-namespace StsLibWin.Configuration
+namespace Sts.Lib.Win.Configuration
 {
     [Serializable]
     public class RegistryValue<T> : RegistryValueBase
@@ -59,23 +58,23 @@ namespace StsLibWin.Configuration
                 {
                     if (typeof(T) == typeof(bool))
                     {
-                        rValue = StsLib.Common.Convert.Utils.TryParseTo((string)value, _default);
+                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo((string)value, _default);
                     }
                     else if (typeof(T) == typeof(float))
                     {
-                        rValue = StsLib.Common.Convert.Utils.TryParseTo((string)value, _default, CultureInfo.InvariantCulture, NumberStyles.Number);
+                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo((string)value, _default, CultureInfo.InvariantCulture, NumberStyles.Number);
                     }
                     else if (typeof(T) == typeof(double))
                     {
-                        rValue = StsLib.Common.Convert.Utils.TryParseTo((string)value, _default, CultureInfo.InvariantCulture, NumberStyles.Number);
+                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo((string)value, _default, CultureInfo.InvariantCulture, NumberStyles.Number);
                     }
                     else if (typeof(T) == typeof(DateTime))
                     {
-                        rValue = StsLib.Common.Convert.Utils.TryParseTo((string)value, _default, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo((string)value, _default, CultureInfo.InvariantCulture, DateTimeStyles.None);
                     }
                     else if (typeof(T).IsEnum)
                     {
-                        rValue = StsLib.Common.Convert.Utils.TryParseTo((string)value, _default, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo((string)value, _default, CultureInfo.InvariantCulture, DateTimeStyles.None);
                     }
                     else
                     {

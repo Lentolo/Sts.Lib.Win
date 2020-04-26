@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using StsLib.Collections.Generic;
-using StsLib.Configuration;
-using StsLib.Diagnostics.Log;
-using StsLib.Linq.Extensions;
-using StsLib.Security.Permissions;
-using StsLib.Xml.Extensions;
+using Sts.Lib.Collections.Generic;
+using Sts.Lib.Configuration;
+using Sts.Lib.Diagnostics.Log;
+using Sts.Lib.Linq.Extensions;
+using Sts.Lib.Security.Permissions;
+using Sts.Lib.Xml.Extensions;
 
-namespace StsLibWin.Diagnostics.Log.Implementations
+namespace Sts.Lib.Win.Diagnostics.Log.Implementations
 {
     [Serializable]
     public class CommonLogPermissions : ILogPermissions
@@ -17,10 +17,10 @@ namespace StsLibWin.Diagnostics.Log.Implementations
         protected CommonLogPermissions()
         { }
 
-        public StsLib.Collections.Generic.Dictionary<LogTypes, InheritablePolicy> LogTypesPermissions
+        public Sts.Lib.Collections.Generic.Dictionary<LogTypes, InheritablePolicy> LogTypesPermissions
         {
             get;
-        } = new StsLib.Collections.Generic.Dictionary<LogTypes, InheritablePolicy>(InheritablePolicy.Inherit);
+        } = new Sts.Lib.Collections.Generic.Dictionary<LogTypes, InheritablePolicy>(InheritablePolicy.Inherit);
 
         public CaseInsensitiveDictionary<InheritablePolicy> CategoriesPermissions
         {
@@ -50,8 +50,8 @@ namespace StsLibWin.Diagnostics.Log.Implementations
             {
                 var rval = new CommonLogPermissions();
                 var xml = ConfigurationSection.GetSection("CommonLogPermissions");
-                rval.LogEnabled = StsLib.Common.Convert.Utils.TryParseTo(xml.GetNodeProperty("/CommonLogPermissions/LogEnabled", x => x.InnerText, "false"), false);
-                rval.DefaultPolicy = StsLib.Common.Convert.Utils.TryParseTo(xml.GetNodeProperty("/CommonLogPermissions/DefaultPolicy", x => x.InnerText, "Deny"), Policy.Deny);
+                rval.LogEnabled = Sts.Lib.Common.Convert.Utils.TryParseTo(xml.GetNodeProperty("/CommonLogPermissions/LogEnabled", x => x.InnerText, "false"), false);
+                rval.DefaultPolicy = Sts.Lib.Common.Convert.Utils.TryParseTo(xml.GetNodeProperty("/CommonLogPermissions/DefaultPolicy", x => x.InnerText, "Deny"), Policy.Deny);
                 rval.LogTypesPermissions.CopyFrom(xml.TrySelectNodes("/CommonLogPermissions/LogTypesPermissions/Item").Select(n =>
                 {
                     var ok = Enum.TryParse(n.TryGetAttributeValue("name", ""), out LogTypes logTypes);
@@ -82,7 +82,7 @@ namespace StsLibWin.Diagnostics.Log.Implementations
             {
                 try
                 {
-                    File.WriteAllText("c:\\temp\\log.txt", StsLib.Diagnostics.Utils.ExtractError(exc));
+                    File.WriteAllText("c:\\temp\\log.txt", Sts.Lib.Diagnostics.Utils.ExtractError(exc));
                 }
                 catch
                 { }

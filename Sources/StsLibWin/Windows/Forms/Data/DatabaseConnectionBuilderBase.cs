@@ -1,6 +1,6 @@
 using System;
 
-namespace StsLibWin.Windows.Forms.Data
+namespace Sts.Lib.Win.Windows.Forms.Data
 {
     public class DatabaseConnectionBuilderBase : UserControl
     {

@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using StsLib.Common.Extensions;
-using StsLib.Diagnostics.Log;
-using StsLib.Reflection;
+using Sts.Lib.Common.Extensions;
+using Sts.Lib.Diagnostics.Log;
+using Sts.Lib.Reflection;
 
-namespace StsLibWin.Reflection.Plugins
+namespace Sts.Lib.Win.Reflection.Plugins
 {
   public abstract class PluginContainer<TIn, TOut> : IDisposable
   {
@@ -67,7 +67,7 @@ namespace StsLibWin.Reflection.Plugins
         return null;
       }
 
-      _domain = AppDomain.CreateDomain(StsLib.Common.Utils.NewGuid(), null, ads);
+      _domain = AppDomain.CreateDomain(Sts.Lib.Common.Utils.NewGuid(), null, ads);
       _domain.AssemblyResolve += (sender, args) =>
       {
         Debug.WriteLine("AssemblyResolve Request: " + args.Name);

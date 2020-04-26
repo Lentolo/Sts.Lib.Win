@@ -1,6 +1,6 @@
 using System;
 
-namespace StsLibWin.Configuration
+namespace Sts.Lib.Win.Configuration
 {
   [Serializable]
   public class StsRegistryOptions : RegistryOptions

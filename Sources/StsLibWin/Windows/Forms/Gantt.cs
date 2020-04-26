@@ -7,7 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using StsLib.Linq.Extensions;
+using Sts.Lib.Linq.Extensions;
+using UserControl = Sts.Lib.Win.Windows.Forms.UserControl;
 
 namespace StsLibWin.Windows.Forms
 {
@@ -54,7 +55,7 @@ namespace StsLibWin.Windows.Forms
     {
       get
       {
-        if (StsLib.Linq.Utils.ToEnumerableOrEmpty(Data).Any() && _ganttDimensions == SizeF.Empty)
+        if (Sts.Lib.Linq.Utils.ToEnumerableOrEmpty(Data).Any() && _ganttDimensions == SizeF.Empty)
         {
           var min = Data.Select(i => i.DateFrom).Min();
           var max = Data.Select(i => i.DateFrom).Max();
@@ -82,9 +83,9 @@ namespace StsLibWin.Windows.Forms
 
     private void PnlDrawBottomLeft_Paint(object sender, PaintEventArgs e)
     {
-      if (!StsLib.Linq.Utils.ToEnumerableOrEmpty(Data).Any())
+      if (!Sts.Lib.Linq.Utils.ToEnumerableOrEmpty(Data).Any())
         return;
-      var data = StsLib.Linq.Utils.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
+      var data = Sts.Lib.Linq.Utils.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
       foreach (var activities in data.GroupBy(ii => ii.Activity).ToItemsList())
       {
         e.Graphics.DrawString(activities.Data.Key, Font, Brushes.Black, 0, activities.Index * BlockSize.Height);
@@ -107,9 +108,9 @@ namespace StsLibWin.Windows.Forms
     }
     private void PnlDrawBottomRight_Paint(object sender, PaintEventArgs e)
     {
-      if (!StsLib.Linq.Utils.ToEnumerableOrEmpty(Data).Any())
+      if (!Sts.Lib.Linq.Utils.ToEnumerableOrEmpty(Data).Any())
         return;
-      var data = StsLib.Linq.Utils.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
+      var data = Sts.Lib.Linq.Utils.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
       var minDate = data.Select(i => i.DateFrom).DefaultIfEmpty(DateTime.MinValue).Min();
       foreach (var activities in data.GroupBy(ii => ii.Activity).ToItemsList())
       {

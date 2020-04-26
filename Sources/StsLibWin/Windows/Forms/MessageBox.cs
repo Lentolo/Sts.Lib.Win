@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace StsLibWin.Windows.Forms
+namespace Sts.Lib.Win.Windows.Forms
 {
   public static class MessageBox
   {

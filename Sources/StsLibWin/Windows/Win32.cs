@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace StsLibWin.Windows
+namespace Sts.Lib.Win.Windows
 {
     public static class Win32
     {

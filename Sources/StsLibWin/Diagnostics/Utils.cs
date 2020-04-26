@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using StsLib.Diagnostics.Log;
+using Sts.Lib.Diagnostics.Log;
 
-namespace StsLibWin.Diagnostics
+namespace Sts.Lib.Win.Diagnostics
 {
   public static class Utils
   {
@@ -56,7 +56,7 @@ namespace StsLibWin.Diagnostics
     {
       try
       {
-        EventLog.WriteEntry("Application", Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "\r\n\r\n" + StsLib.Diagnostics.Utils.ExtractError(exc), EventLogEntryType.Error);
+        EventLog.WriteEntry("Application", Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "\r\n\r\n" + Sts.Lib.Diagnostics.Utils.ExtractError(exc), EventLogEntryType.Error);
       }
       catch
       {

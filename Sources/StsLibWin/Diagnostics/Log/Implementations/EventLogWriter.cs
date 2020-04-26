@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
-using StsLib.Common.Extensions;
-using StsLib.Diagnostics.Log;
+using Sts.Lib.Common.Extensions;
+using Sts.Lib.Diagnostics.Log;
 
-namespace StsLibWin.Diagnostics.Log.Implementations
+namespace Sts.Lib.Win.Diagnostics.Log.Implementations
 {
   [Serializable]
   public class EventLogWriter : ILogWriter

@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Management;
 using System.Text;
 using System.Threading;
-using StsLib.Common;
-using StsLibWin.Windows;
+using Sts.Lib.Win.Windows;
 
-namespace StsLibWin.Diagnostics
+namespace Sts.Lib.Win.Diagnostics
 {
     public static class ProcessUtils
     {

@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
-namespace StsLibWin.Windows
+namespace Sts.Lib.Win.Windows
 {
   public static class Utils
   {
@@ -49,8 +49,8 @@ namespace StsLibWin.Windows
     public static void SetWaveVolume(int leftChannel, int rightChannel)
     {
       uint volume = 0;
-      rightChannel = Math.Max(0, Math.Min(rightChannel, 100));
-      leftChannel = Math.Max(0, Math.Min(leftChannel, 100));
+      rightChannel = System.Math.Max(0, System.Math.Min(rightChannel, 100));
+      leftChannel = System.Math.Max(0, System.Math.Min(leftChannel, 100));
       volume = ((0xFFFF * (uint) rightChannel / 100) << 16) + 0xFFFF * (uint) leftChannel / 100;
       Win32.waveOutSetVolume(IntPtr.Zero, volume);
     }
@@ -63,7 +63,7 @@ namespace StsLibWin.Windows
     }
     public static DateTime GetLastInputDateTime()
     {
-      return DateTime.Now.AddMilliseconds(-1 * Math.Max(0, (uint) Environment.TickCount - GetLastInputInfo()));
+      return DateTime.Now.AddMilliseconds(-1 * System.Math.Max(0, (uint) Environment.TickCount - GetLastInputInfo()));
     }
     public static uint GetLastInputInfo()
     {

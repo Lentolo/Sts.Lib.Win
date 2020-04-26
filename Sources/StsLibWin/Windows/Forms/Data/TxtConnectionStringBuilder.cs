@@ -1,8 +1,9 @@
-﻿using StsLib.Collections.Generic;
-using StsLib.Data;
-using StsLib.Data.Interfaces;
+﻿using Sts.Lib.Collections.Generic;
+using Sts.Lib.Data;
+using Sts.Lib.Data.Interfaces;
 using System;
 using System.Windows.Forms;
+using Sts.Lib.Win.Windows.Forms;
 
 namespace StsLibWin.Windows.Forms.Data
 {
@@ -36,12 +37,12 @@ namespace StsLibWin.Windows.Forms.Data
     public event EventHandler ConnectionAvailable;
     protected virtual void OnConnectionAvailable()
     {
-      StsLib.Delegates.Utils.RaiseEvent(ConnectionAvailable, (object)this, EventArgs.Empty);
+      Sts.Lib.Delegates.Utils.RaiseEvent(ConnectionAvailable, (object)this, EventArgs.Empty);
     }
     private void RaiseOnConnectionAvailable()
     {
       var raise = false;
-      StsLib.Delegates.Utils.TryExecuteExecuteAction(() =>
+      Sts.Lib.Delegates.Utils.TryExecuteExecuteAction(() =>
       {
         using (var cn = CreateConnection())
         {

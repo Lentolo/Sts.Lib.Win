@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace StsLibWin.Reflection.Plugins.Specialized
+namespace Sts.Lib.Win.Reflection.Plugins.Specialized
 {
   [Serializable]
   public class SimpleAppDomain<TO> : PluginContainer<Func<TO>, TO>

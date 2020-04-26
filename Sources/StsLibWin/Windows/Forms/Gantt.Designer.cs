@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using Panel = Sts.Lib.Win.Windows.Forms.Panel;
 
 namespace StsLibWin.Windows.Forms
 {
@@ -42,14 +43,14 @@ namespace StsLibWin.Windows.Forms
     private void InitializeComponent()
     {
       this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-      this.pnlBottomLeft = new StsLibWin.Windows.Forms.Panel();
-      this.pnlDrawBottomLeft = new StsLibWin.Windows.Forms.Panel();
-      this.pnlTopLeft = new StsLibWin.Windows.Forms.Panel();
-      this.pnlDrawTopLeft = new StsLibWin.Windows.Forms.Panel();
-      this.pnlBottomRight = new StsLibWin.Windows.Forms.Panel();
-      this.pnlDrawBottomRight = new StsLibWin.Windows.Forms.Panel();
-      this.pnlTopRight = new StsLibWin.Windows.Forms.Panel();
-      this.pnlDrawTopRight = new StsLibWin.Windows.Forms.Panel();
+      this.pnlBottomLeft = new Panel();
+      this.pnlDrawBottomLeft = new Panel();
+      this.pnlTopLeft = new Panel();
+      this.pnlDrawTopLeft = new Panel();
+      this.pnlBottomRight = new Panel();
+      this.pnlDrawBottomRight = new Panel();
+      this.pnlTopRight = new Panel();
+      this.pnlDrawTopRight = new Panel();
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
       this.splitContainer1.Panel1.SuspendLayout();
       this.splitContainer1.Panel2.SuspendLayout();

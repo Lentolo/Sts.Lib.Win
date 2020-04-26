@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Win32;
 
-namespace StsLibWin.Configuration
+namespace Sts.Lib.Win.Configuration
 {
   [Serializable]
   public class RegistryValueBase
