@@ -1,4 +1,4 @@
-﻿namespace StsLibWin.Windows.Forms.Data
+﻿namespace Sts.Lib.Win.Windows.Forms.Data
 {
     partial class DlgConnectionstringBuilder
     {

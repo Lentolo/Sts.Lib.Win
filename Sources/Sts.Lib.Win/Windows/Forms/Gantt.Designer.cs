@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Panel = Sts.Lib.Win.Windows.Forms.Panel;
 
-namespace StsLibWin.Windows.Forms
+namespace Sts.Lib.Win.Windows.Forms
 {
   partial class Gantt
   {

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using Sts.Lib.Linq.Extensions;
 using UserControl = Sts.Lib.Win.Windows.Forms.UserControl;
 
-namespace StsLibWin.Windows.Forms
+namespace Sts.Lib.Win.Windows.Forms
 {
   public partial class Gantt : UserControl
   {
@@ -93,18 +93,18 @@ namespace StsLibWin.Windows.Forms
     }
     protected override void OnLoad(EventArgs e)
     {
-      pnlTopLeft.Height = (int)Math.Ceiling(BlockSize.Height);
-      pnlTopRight.Height = (int)Math.Ceiling(BlockSize.Height);
+      pnlTopLeft.Height = (int)System.Math.Ceiling(BlockSize.Height);
+      pnlTopRight.Height = (int)System.Math.Ceiling(BlockSize.Height);
       pnlDrawBottomLeft.Top = 0;
       pnlDrawBottomLeft.Left = 0;
       pnlDrawBottomRight.Top = 0;
       pnlDrawBottomRight.Left = 0;
       pnlDrawTopLeft.Top = 0;
       pnlDrawTopLeft.Left = 0;
-      pnlDrawTopLeft.Height = (int)Math.Ceiling(BlockSize.Height);
+      pnlDrawTopLeft.Height = (int)System.Math.Ceiling(BlockSize.Height);
       pnlDrawTopRight.Top = 0;
       pnlDrawTopRight.Left = 0;
-      pnlDrawTopRight.Height = (int)Math.Ceiling(BlockSize.Height);
+      pnlDrawTopRight.Height = (int)System.Math.Ceiling(BlockSize.Height);
     }
     private void PnlDrawBottomRight_Paint(object sender, PaintEventArgs e)
     {

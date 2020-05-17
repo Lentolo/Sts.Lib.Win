@@ -5,7 +5,7 @@ using System;
 using System.Windows.Forms;
 using Sts.Lib.Win.Windows.Forms;
 
-namespace StsLibWin.Windows.Forms.Data
+namespace Sts.Lib.Win.Windows.Forms.Data
 {
   public partial class TxtConnectionStringBuilder : TxtButtonControl
   {
