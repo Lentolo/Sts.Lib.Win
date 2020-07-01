@@ -1,37 +1,37 @@
 ﻿using System;
 using System.Linq;
 
-namespace StsLibWin.Data.Connections.Postgres
+namespace Sts.Lib.Win.Data.Connections.Postgres
 {
-    public class DatabaseConnectionBuilder : StsLibWin.Windows.Forms.Data.DatabaseConnectionBuilderBase
+    public class DatabaseConnectionBuilder : Sts.Lib.Win.Windows.Forms.Data.DatabaseConnectionBuilderBase
     {
         public DatabaseConnectionBuilder()
         {
             InitializeComponent();
         }
-        private StsLibWin.Windows.Forms.Label label1;
-        private StsLibWin.Windows.Forms.TextBox txtSrv;
-        private StsLibWin.Windows.Forms.TextBox txtPort;
-        private StsLibWin.Windows.Forms.Label label2;
-        private StsLibWin.Windows.Forms.TextBox txtPwd;
-        private StsLibWin.Windows.Forms.Label label3;
-        private StsLibWin.Windows.Forms.TextBox txtUid;
-        private StsLibWin.Windows.Forms.ComboBox cmbDB;
-        private StsLibWin.Windows.Forms.Label label5;
-        private StsLibWin.Windows.Forms.Label label4;
+        private Sts.Lib.Win.Windows.Forms.Label label1;
+        private Sts.Lib.Win.Windows.Forms.TextBox txtSrv;
+        private Sts.Lib.Win.Windows.Forms.TextBox txtPort;
+        private Sts.Lib.Win.Windows.Forms.Label label2;
+        private Sts.Lib.Win.Windows.Forms.TextBox txtPwd;
+        private Sts.Lib.Win.Windows.Forms.Label label3;
+        private Sts.Lib.Win.Windows.Forms.TextBox txtUid;
+        private Sts.Lib.Win.Windows.Forms.ComboBox cmbDB;
+        private Sts.Lib.Win.Windows.Forms.Label label5;
+        private Sts.Lib.Win.Windows.Forms.Label label4;
 
         private void InitializeComponent()
         {
-            this.label1 = new StsLibWin.Windows.Forms.Label();
-            this.txtSrv = new StsLibWin.Windows.Forms.TextBox();
-            this.txtPort = new StsLibWin.Windows.Forms.TextBox();
-            this.label2 = new StsLibWin.Windows.Forms.Label();
-            this.txtPwd = new StsLibWin.Windows.Forms.TextBox();
-            this.label3 = new StsLibWin.Windows.Forms.Label();
-            this.txtUid = new StsLibWin.Windows.Forms.TextBox();
-            this.label4 = new StsLibWin.Windows.Forms.Label();
-            this.cmbDB = new StsLibWin.Windows.Forms.ComboBox();
-            this.label5 = new StsLibWin.Windows.Forms.Label();
+            this.label1 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.txtSrv = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.txtPort = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.label2 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.txtPwd = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.label3 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.txtUid = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.label4 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.cmbDB = new Sts.Lib.Win.Windows.Forms.ComboBox();
+            this.label5 = new Sts.Lib.Win.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -160,7 +160,7 @@ namespace StsLibWin.Data.Connections.Postgres
         {
             get
             {
-                return "Sts Provider=" + typeof(StsLib.Data.Connections.Postgres.DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
+                return "Sts Provider=" + typeof(Sts.Lib.Data.Connections.Postgres.DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
             }
         }
         public override string ConnectionStringNoProvider
@@ -195,14 +195,14 @@ namespace StsLibWin.Data.Connections.Postgres
         {
             get
             {
-                return typeof(StsLib.Data.Connections.Postgres.DatabaseConnection);
+                return typeof(Sts.Lib.Data.Connections.Postgres.DatabaseConnection);
             }
         }
         public override bool Test()
         {
             try
             {
-                using (var db = new StsLib.Data.Connections.Postgres.DatabaseConnection()
+                using (var db = new Sts.Lib.Data.Connections.Postgres.DatabaseConnection()
                 {
                     ConnectionString = ConnectionStringNoProvider
                 })
@@ -245,7 +245,7 @@ namespace StsLibWin.Data.Connections.Postgres
             {
                 try
                 {
-                    using (var db = new StsLib.Data.Connections.Postgres.DatabaseConnection()
+                    using (var db = new Sts.Lib.Data.Connections.Postgres.DatabaseConnection()
                     {
                         ConnectionString = ConnectionStringNoProvider
                     })

@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using Sts.Lib.Diagnostics.Log;
 using MessageBox = System.Windows.Forms.MessageBox;
-//using StsLibWin.Diagnostics.Log;
+//using Sts.Lib.Win.Diagnostics.Log;
 
 namespace Sts.Lib.Win.ServiceProcess
 {

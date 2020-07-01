@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("StsLib.Data.Connections.PostgresWin")]
+[assembly: AssemblyTitle("Sts.Lib.Data.Connections.PostgresWin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("StsLib.Data.Connections.PostgresWin")]
+[assembly: AssemblyProduct("Sts.Lib.Data.Connections.PostgresWin")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
