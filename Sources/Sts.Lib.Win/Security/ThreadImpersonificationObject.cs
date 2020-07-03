@@ -8,8 +8,6 @@ using Sts.Lib.Common.Extensions;
 
 namespace Sts.Lib.Win.Security
 {
-
-
   public class ThreadImpersonificationObject : Sts.Lib.Security.IThreadImpersonificationObject
   {
     [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
