@@ -47,7 +47,7 @@ namespace Sts.Lib.Win.Data.Connections.Postgres
             // 
             this.txtSrv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSrv.CanSaveControlState = false;
+            this.txtSrv.SaveControlState = false;
             this.txtSrv.Location = new System.Drawing.Point(78, 15);
             this.txtSrv.Name = "txtSrv";
             this.txtSrv.Size = new System.Drawing.Size(370, 20);
@@ -57,7 +57,7 @@ namespace Sts.Lib.Win.Data.Connections.Postgres
             // txtPort
             // 
             this.txtPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPort.CanSaveControlState = false;
+            this.txtPort.SaveControlState = false;
             this.txtPort.Location = new System.Drawing.Point(364, 99);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(84, 20);
@@ -80,7 +80,7 @@ namespace Sts.Lib.Win.Data.Connections.Postgres
             // 
             this.txtPwd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPwd.CanSaveControlState = false;
+            this.txtPwd.SaveControlState = false;
             this.txtPwd.Location = new System.Drawing.Point(78, 71);
             this.txtPwd.Name = "txtPwd";
             this.txtPwd.PasswordChar = '*';
@@ -101,7 +101,7 @@ namespace Sts.Lib.Win.Data.Connections.Postgres
             // 
             this.txtUid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtUid.CanSaveControlState = false;
+            this.txtUid.SaveControlState = false;
             this.txtUid.Location = new System.Drawing.Point(78, 43);
             this.txtUid.Name = "txtUid";
             this.txtUid.Size = new System.Drawing.Size(370, 20);

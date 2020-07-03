@@ -53,41 +53,7 @@ namespace Sts.Lib.Win.Diagnostics
             var startupInfo = new Win32.StartupInfo();
             return Win32.CreateProcessWithLogonW(user, domain, password, Win32.LogonWithProfile, fileName, arguments, Win32.CreateNewConsole, 0, null, ref startupInfo, out _);
         }
-        public static string StartWaitAndGetOutput(ProcessStartInfo processStartInfo)
-        {
-            processStartInfo.UseShellExecute = false;
-            processStartInfo.RedirectStandardOutput = true;
-            using (var process = Process.Start(processStartInfo))
-            {
-                var rVal = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
-                return rVal;
-            }
-        }
-        public static string StartWaitAndGetOutput(string fileName, string arguments)
-        {
-            return StartWaitAndGetOutput(new ProcessStartInfo
-            {
-                Arguments = arguments,
-                FileName = fileName,
-                UseShellExecute = false,
-                RedirectStandardOutput = true
-            });
-        }
-        public static Process ShellExecute(string fileName)
-        {
-            return ShellExecute(fileName, null);
-        }
-        public static Process ShellExecute(string fileName, string arguments)
-        {
-            var processStartInfo = new ProcessStartInfo
-            {
-                FileName = Environment.ExpandEnvironmentVariables(fileName),
-                Arguments = arguments,
-                UseShellExecute = true
-            };
-            return Process.Start(processStartInfo);
-        }
+
         public static IEnumerable<ProcessWindow> GetWindows()
         {
             var rval = new List<ProcessWindow>();

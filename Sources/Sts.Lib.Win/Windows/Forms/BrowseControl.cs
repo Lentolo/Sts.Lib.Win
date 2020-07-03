@@ -66,7 +66,7 @@ namespace Sts.Lib.Win.Windows.Forms
       {
         if (Directory.Exists(_txtPath.Text))
         {
-          Sts.Lib.Diagnostics.Process.ShellExecute(_txtPath.Text);
+          Sts.Lib.Diagnostics.ProcessUtils.ShellExecute(_txtPath.Text);
         }
 
         return;

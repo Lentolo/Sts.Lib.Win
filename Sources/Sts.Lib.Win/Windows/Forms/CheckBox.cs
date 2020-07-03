@@ -2,14 +2,14 @@
 {
   public class CheckBox : System.Windows.Forms.CheckBox, ControlStatePersister.ISaveStateControl
   {
-    public bool CanSaveControlState { get; set; }
+    public bool SaveControlState { get; set; }
 
-    public void LoadControlStateData(Sts.Lib.Collections.Generic.Dictionary<string, object> data)
+    public void SetControlStateData(Sts.Lib.Collections.Generic.Dictionary<string, object> data)
     {
       Checked = data["Checked"] as bool? ?? false;
     }
 
-    public void SaveControlStateData(Sts.Lib.Collections.Generic.Dictionary<string, object> data)
+    public void RetrieveControlStateData(Sts.Lib.Collections.Generic.Dictionary<string, object> data)
     {
       data["Checked"] = Checked;
     }

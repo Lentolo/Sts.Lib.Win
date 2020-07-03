@@ -22,16 +22,16 @@ namespace Sts.Lib.Win.Windows.Forms
 
     public interface ISaveStateControl
     {
-      bool CanSaveControlState
+      bool SaveControlState
       {
         get; set;
       }
-      void LoadControlStateData(Sts.Lib.Collections.Generic.Dictionary<string, object> data);
-      void SaveControlStateData(Sts.Lib.Collections.Generic.Dictionary<string, object> data);
+      void SetControlStateData(Sts.Lib.Collections.Generic.Dictionary<string, object> data);
+      void RetrieveControlStateData(Sts.Lib.Collections.Generic.Dictionary<string, object> data);
     }
     private List<(string Key, ISaveStateControl Control)> GetControls(Control root)
     {
-      return Sts.Lib.Linq.Utils.FlattenHierarchy(root, c => c.Controls.OfType<Control>(), (p, c, l) => !(p is ISaveStateControl) && c != null).Select(itm => itm.Item).Where(i => i is ISaveStateControl s && s.CanSaveControlState).Select(itm =>
+      return Sts.Lib.Linq.Utils.FlattenHierarchy(root, c => c.Controls.OfType<Control>(), (p, c, l) => !(p is ISaveStateControl) && c != null).Select(itm => itm.Item).Where(i => i is ISaveStateControl s && s.SaveControlState).Select(itm =>
       {
         var sha256 = Sts.Lib.Security.Cryptography.Utils.Sha256(Sts.Lib.Linq.Utils.GetAncestorsWhile(itm, cc => cc.Parent, cc => cc != root).Aggregate("", (s, c) => s + "/" + c.Name.CleanString()));
         return (sha256, (ISaveStateControl)itm);
@@ -60,7 +60,7 @@ namespace Sts.Lib.Win.Windows.Forms
       foreach (var ctl in GetControls(root))
       {
         var controlData = data[ctl.Key] ?? new Sts.Lib.Collections.Generic.Dictionary<string, object>(null);
-        ctl.Control.SaveControlStateData(controlData);
+        ctl.Control.RetrieveControlStateData(controlData);
         data[ctl.Key] = controlData;
       }
 
@@ -81,7 +81,7 @@ namespace Sts.Lib.Win.Windows.Forms
       foreach (var ctl in GetControls(root))
       {
         var controlData = data[ctl.Key] ?? new Sts.Lib.Collections.Generic.Dictionary<string, object>(null);
-        ctl.Control.LoadControlStateData(controlData);
+        ctl.Control.SetControlStateData(controlData);
         data[ctl.Key] = controlData;
       }
     }

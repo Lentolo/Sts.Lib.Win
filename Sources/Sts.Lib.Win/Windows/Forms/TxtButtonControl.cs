@@ -18,7 +18,7 @@ namespace Sts.Lib.Win.Windows.Forms
       get => _txt.Text;
       set => _txt.Text = value;
     }
-    public virtual bool CanSaveControlState { get ; set ; }
+    public virtual bool SaveControlState { get ; set ; }
 
     protected override void OnResize(EventArgs e)
     {
@@ -79,12 +79,12 @@ namespace Sts.Lib.Win.Windows.Forms
       OnTxtDblClick();
     }
 
-    public virtual void LoadControlStateData(Dictionary<string, object> data)
+    public virtual void SetControlStateData(Dictionary<string, object> data)
     {
       throw new NotImplementedException();
     }
 
-    public virtual void SaveControlStateData(Dictionary<string, object> data)
+    public virtual void RetrieveControlStateData(Dictionary<string, object> data)
     {
       throw new NotImplementedException();
     }

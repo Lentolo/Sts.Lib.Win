@@ -58,6 +58,6 @@ namespace Sts.Lib.Win.Windows.Forms.Data
     {
       RaiseOnConnectionAvailable();
     }
-    public override bool CanSaveControlState { get => false; set { } }
+    public override bool SaveControlState { get => false; set { } }
   }
 }

@@ -51,19 +51,19 @@ namespace Sts.Lib.Win.Windows.Forms
 
     // Declare the DateChanged event.
     public event EventHandler DateChanged;
-    public bool CanSaveControlState
+    public bool SaveControlState
     {
       get;
       set;
     }
-    public void LoadControlStateData(Dictionary<string, object> data)
+    public void SetControlStateData(Dictionary<string, object> data)
     {
       if (data["SelectedDate"] is DateTime d)
       {
         DateTimePickerControl.Value = d;
       }
     }
-    public void SaveControlStateData(Dictionary<string, object> data)
+    public void RetrieveControlStateData(Dictionary<string, object> data)
     {
       data["SelectedDate"] = DateTimePickerControl.Value;
     }

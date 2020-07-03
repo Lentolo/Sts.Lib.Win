@@ -6,14 +6,14 @@ namespace Sts.Lib.Win.Windows.Forms
 {
     public class TextBox : System.Windows.Forms.TextBox, ControlStatePersister.ISaveStateControl
     {
-        public bool CanSaveControlState { get; set; }
+        public bool SaveControlState { get; set; }
 
-        public void LoadControlStateData(Dictionary<string, object> data)
+        public void SetControlStateData(Dictionary<string, object> data)
         {
             Text = data["Text"] as string ?? "";
         }
 
-        public void SaveControlStateData(Dictionary<string, object> data)
+        public void RetrieveControlStateData(Dictionary<string, object> data)
         {
             data["Text"] = Text;
         }
