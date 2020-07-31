@@ -2,28 +2,25 @@ using System;
 
 namespace Sts.Lib.Win.Windows.Forms.Data
 {
-    public class DatabaseConnectionBuilderBase : UserControl
+    public abstract class DatabaseConnectionBuilderBase : UserControl
     {
-        public virtual string ConnectionString
+        public abstract string ConnectionString
         {
             get;
         }
-        public virtual string ConnectionStringNoProvider
+        public abstract string ConnectionStringNoProvider
         {
             get;
         }
-        public virtual string DatabaseTypeName
+        public abstract string DatabaseTypeName
         {
             get;
         }
 
-        public virtual Type DatabaseConnectionType 
+        public abstract Type DatabaseConnectionType 
         {
             get;
         }
-        public virtual bool Test()
-        {
-            return false;
-        }
+        public abstract bool Test();
     }
 }
