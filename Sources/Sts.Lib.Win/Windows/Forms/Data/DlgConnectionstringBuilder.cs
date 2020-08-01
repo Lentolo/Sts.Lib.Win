@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -11,6 +12,11 @@ namespace Sts.Lib.Win.Windows.Forms.Data
 {
   public partial class DlgConnectionstringBuilder : Form
   {
+    public Type DatabaseConnectionType
+    {
+      get;
+      private set;
+    }
     public DlgConnectionstringBuilder()
     {
       InitializeComponent();
@@ -32,6 +38,11 @@ namespace Sts.Lib.Win.Windows.Forms.Data
         return GrpControl.Controls.OfType<DatabaseConnectionBuilderBase>().FirstOrDefault(c => string.Compare(c.DatabaseTypeName, CmbCnType.SelectedItem as string, StringComparison.OrdinalIgnoreCase) == 0);
       }
     }
+
+    public List<DatabaseConnectionBuilderBase> DatabaseConnectionBuilders
+    {
+      get;
+    } = new List<DatabaseConnectionBuilderBase>();
     protected override void OnLoad(EventArgs e)
     {
       base.OnLoad(e);
@@ -43,7 +54,12 @@ namespace Sts.Lib.Win.Windows.Forms.Data
       CmbCnType.Items.Clear();
       GrpControl.Controls.Clear();
       var builderType = typeof(DatabaseConnectionBuilderBase);
-      foreach (var ctl in Sts.Lib.Reflection.Utils.LoadTypesFromFolder(Path.GetDirectoryName(GetType().Assembly.Location), type => type != builderType && Sts.Lib.Linq.Utils.GetAncestorsWhile(type, t => t.BaseType, t => t != null).Any(t => builderType.FullName == t.FullName) && type.GetConstructors().Any(c => !c.GetParameters().Any())).Select(T => Sts.Lib.Reflection.Utils.CreateInstance<DatabaseConnectionBuilderBase>(T)))
+      var connectionBuilders = DatabaseConnectionBuilders;
+      if (!connectionBuilders.Any())
+      {
+        connectionBuilders = Sts.Lib.Reflection.Utils.LoadTypesFromFolder(Path.GetDirectoryName(GetType().Assembly.Location), type => type != builderType && Sts.Lib.Linq.Utils.GetAncestorsWhile(type, t => t.BaseType, t => t != null).Any(t => builderType.FullName == t.FullName) && type.GetConstructors().Any(c => !c.GetParameters().Any())).Select(T => Sts.Lib.Reflection.Utils.CreateInstance<DatabaseConnectionBuilderBase>(T)).ToList();
+      }
+      foreach (var ctl in connectionBuilders)
       {
         CmbCnType.Items.Add(ctl.DatabaseTypeName);
         ctl.Visible = false;
@@ -51,7 +67,6 @@ namespace Sts.Lib.Win.Windows.Forms.Data
         ctl.Dock = DockStyle.Fill;
         GrpControl.Controls.Add(ctl);
       }
-
       GrpControl.ResumeLayout();
       GrpControl.PerformLayout();
     }
@@ -69,6 +84,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
         {
           Connectionstring = CurrentControl?.ConnectionString;
           ConnectionStringNoProvider = CurrentControl?.ConnectionStringNoProvider;
+          DatabaseConnectionType = CurrentControl?.DatabaseConnectionType;
         }
       }
     }

@@ -147,7 +147,7 @@
     <Compile Include="Windows\Forms\TxtButtonControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Windows\Forms\Utils.cs" />
+    <Compile Include="Windows\Forms\Extensions\Utils.cs" />
     <Compile Include="Windows\Forms\ComboBox.cs">
       <SubType>Component</SubType>
     </Compile>

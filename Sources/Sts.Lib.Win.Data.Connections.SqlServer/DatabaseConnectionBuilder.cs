@@ -2,13 +2,14 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using StsLib.Data.Connections.SqlServer;
-using StsLibWin.Windows.Forms.Data;
-using ComboBox = StsLibWin.Windows.Forms.ComboBox;
-using Label = StsLibWin.Windows.Forms.Label;
-using TextBox = StsLibWin.Windows.Forms.TextBox;
+using Sts.Lib.Win.Windows.Forms.Data;
+using Sts.Lib.Data.Connections.SqlServer;
+using Sts.Lib.Win.Windows.Forms.Data;
+using ComboBox = Sts.Lib.Win.Windows.Forms.ComboBox;
+using Label = Sts.Lib.Win.Windows.Forms.Label;
+using TextBox = Sts.Lib.Win.Windows.Forms.TextBox;
 
-namespace StsLibWin.Data.Connections.SqlServer
+namespace Sts.Lib.Win.Data.Connections.SqlServer
 {
     public class DatabaseConnectionBuilder : DatabaseConnectionBuilderBase
     {
@@ -29,16 +30,16 @@ namespace StsLibWin.Data.Connections.SqlServer
 
         private void InitializeComponent()
         {
-            this.label1 = new StsLibWin.Windows.Forms.Label();
-            this.txtSrv = new StsLibWin.Windows.Forms.TextBox();
-            this.txtPort = new StsLibWin.Windows.Forms.TextBox();
-            this.label2 = new StsLibWin.Windows.Forms.Label();
-            this.txtPwd = new StsLibWin.Windows.Forms.TextBox();
-            this.label3 = new StsLibWin.Windows.Forms.Label();
-            this.txtUid = new StsLibWin.Windows.Forms.TextBox();
-            this.label4 = new StsLibWin.Windows.Forms.Label();
-            this.cmbDB = new StsLibWin.Windows.Forms.ComboBox();
-            this.label5 = new StsLibWin.Windows.Forms.Label();
+            this.label1 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.txtSrv = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.txtPort = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.label2 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.txtPwd = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.label3 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.txtUid = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.label4 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.cmbDB = new Sts.Lib.Win.Windows.Forms.ComboBox();
+            this.label5 = new Sts.Lib.Win.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1

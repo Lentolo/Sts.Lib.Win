@@ -65,7 +65,7 @@
       <Project>{1f760436-a070-4868-a637-29e4f7e26c29}</Project>
       <Name>StsLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StsLibWin\StsLibWin.csproj">
+    <ProjectReference Include="..\Sts.Lib.Win\Sts.Lib.Win.csproj">
       <Project>{6888c442-2b84-4265-a886-b07238d7936d}</Project>
       <Name>StsLibWin</Name>
     </ProjectReference>
