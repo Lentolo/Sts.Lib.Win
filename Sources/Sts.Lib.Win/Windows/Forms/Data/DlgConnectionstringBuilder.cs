@@ -12,7 +12,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
 {
   public partial class DlgConnectionstringBuilder : Form
   {
-    public Type DatabaseConnectionType
+    public Type ConnectionType
     {
       get;
       private set;
@@ -21,7 +21,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
     {
       InitializeComponent();
     }
-    public string Connectionstring
+    public string ConnectionString
     {
       get;
       private set;
@@ -39,7 +39,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
       }
     }
 
-    public List<DatabaseConnectionBuilderBase> DatabaseConnectionBuilders
+    public List<DatabaseConnectionBuilderBase> ConnectionStringBuilders
     {
       get;
     } = new List<DatabaseConnectionBuilderBase>();
@@ -54,7 +54,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
       CmbCnType.Items.Clear();
       GrpControl.Controls.Clear();
       var builderType = typeof(DatabaseConnectionBuilderBase);
-      var connectionBuilders = DatabaseConnectionBuilders;
+      var connectionBuilders = ConnectionStringBuilders;
       if (!connectionBuilders.Any())
       {
         connectionBuilders = Sts.Lib.Reflection.Utils.LoadTypesFromFolder(Path.GetDirectoryName(GetType().Assembly.Location), type => type != builderType && Sts.Lib.Linq.Utils.GetAncestorsWhile(type, t => t.BaseType, t => t != null).Any(t => builderType.FullName == t.FullName) && type.GetConstructors().Any(c => !c.GetParameters().Any())).Select(T => Sts.Lib.Reflection.Utils.CreateInstance<DatabaseConnectionBuilderBase>(T)).ToList();
@@ -82,9 +82,9 @@ namespace Sts.Lib.Win.Windows.Forms.Data
         }
         else
         {
-          Connectionstring = CurrentControl?.ConnectionString;
+          ConnectionString = CurrentControl?.ConnectionString;
           ConnectionStringNoProvider = CurrentControl?.ConnectionStringNoProvider;
-          DatabaseConnectionType = CurrentControl?.DatabaseConnectionType;
+          ConnectionType = CurrentControl?.DatabaseConnectionType;
         }
       }
     }

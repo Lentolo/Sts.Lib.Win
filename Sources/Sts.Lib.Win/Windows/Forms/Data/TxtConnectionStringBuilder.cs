@@ -14,12 +14,12 @@ namespace Sts.Lib.Win.Windows.Forms.Data
       get;
       private set;
     }
-    public Type DatabaseConnectionType
+    public Type ConnectionType
     {
       get;
       private set;
     }
-    public string Connectionstring
+    public string ConnectionString
     {
       get;
       private set;
@@ -36,17 +36,17 @@ namespace Sts.Lib.Win.Windows.Forms.Data
       {
         StartPosition = FormStartPosition.CenterParent
       };
-      dlg.DatabaseConnectionBuilders.AddRange(DatabaseConnectionBuilders);
+      dlg.ConnectionStringBuilders.AddRange(ConnectionStringBuilders);
       if (dlg.ShowDialog(this) == DialogResult.OK)
       {
-        Text = NoProviderInConnectionString ? dlg.ConnectionStringNoProvider : dlg.Connectionstring;
+        Text = NoProviderInConnectionString ? dlg.ConnectionStringNoProvider : dlg.ConnectionString;
         ConnectionStringNoProvider = dlg.ConnectionStringNoProvider;
-        Connectionstring = dlg.Connectionstring;
-        DatabaseConnectionType = dlg.DatabaseConnectionType;
+        ConnectionString = dlg.ConnectionString;
+        ConnectionType = dlg.ConnectionType;
         RaiseOnConnectionAvailable();
       }
     }
-    public List<DatabaseConnectionBuilderBase> DatabaseConnectionBuilders
+    public List<DatabaseConnectionBuilderBase> ConnectionStringBuilders
     {
       get;
     } = new List<DatabaseConnectionBuilderBase>();
@@ -54,7 +54,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
     {
       try
       {
-        return DatabaseConnectionUtils.CreateAndOpen(this.Invoke(c => c.Connectionstring), null);
+        return DatabaseConnectionUtils.CreateAndOpen(this.Invoke(c => c.ConnectionString), null);
       }
       catch
       {
