@@ -36,10 +36,6 @@ namespace Sts.Lib.Win.Windows.Forms
         {
             Sts.Lib.Delegates.Utils.RaiseEvent(PathChanged, this, new EventArgs());
         }
-        private void _btnBrowse_Click(object sender, EventArgs e)
-        {
-            ShowDialog();
-        }
         protected virtual (bool, string) OnShowDialog()
         {
             return (false, "");
@@ -57,7 +53,7 @@ namespace Sts.Lib.Win.Windows.Forms
             CallOnPathChanged();
         }
         public override string Text { get => base.Text; set => base.Text = value; }
-        private void _txtPath_DoubleClick(object sender, EventArgs e)
+        protected override void OnTxtDblClick()
         {
             if (!string.IsNullOrEmpty(Text))
             {
@@ -71,11 +67,15 @@ namespace Sts.Lib.Win.Windows.Forms
 
             ShowDialog();
         }
-        private void _txtPath_TextChanged(object sender, EventArgs e)
+        protected override void OnBtnClick()
+        {
+            ShowDialog();
+        }
+        protected override void OnTextChanged()
         {
             _changed = true;
         }
-        private void _txtPath_Validated(object sender, EventArgs e)
+        protected override void OnTextValidated()
         {
             CallOnPathChanged();
         }
