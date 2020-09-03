@@ -81,9 +81,6 @@
     <Compile Include="Windows\Forms\Data\TxtConnectionStringBuilder.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Windows\Forms\Data\TxtConnectionStringBuilder.Designer.cs">
-      <DependentUpon>TxtConnectionStringBuilder.cs</DependentUpon>
-    </Compile>
     <Compile Include="Windows\Forms\DateTimePicker.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -189,9 +186,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\Data\DlgConnectionstringBuilder.resx">
       <DependentUpon>DlgConnectionstringBuilder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\Data\TxtConnectionStringBuilder.resx">
-      <DependentUpon>TxtConnectionStringBuilder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\Gantt.resx">
       <DependentUpon>Gantt.cs</DependentUpon>

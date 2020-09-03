@@ -80,6 +80,7 @@ namespace Sts.Lib.Win.Windows.Forms
             _txt.DoubleClick += Txt_DoubleClick;
             _txt.TextChanged += _txt_TextChanged;
             _txt.Validated += _txt_Validated;
+            _txt.Leave += _txt_Leave;
             // 
             // TxtButtonControl
             // 
@@ -89,6 +90,11 @@ namespace Sts.Lib.Win.Windows.Forms
             Size = new Size(597, 27);
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        private void _txt_Leave(object sender, EventArgs e)
+        {
+            OnTextLeave();
         }
 
         private void _txt_Validated(object sender, EventArgs e)
@@ -101,6 +107,8 @@ namespace Sts.Lib.Win.Windows.Forms
             OnTextChanged();
         }
 
+        protected virtual void OnTextLeave()
+        { }
         protected virtual void OnTextChanged()
         { }
 

@@ -52,7 +52,6 @@ namespace Sts.Lib.Win.Windows.Forms
             Text = r.Item2;
             CallOnPathChanged();
         }
-        public override string Text { get => base.Text; set => base.Text = value; }
         protected override void OnTxtDblClick()
         {
             if (!string.IsNullOrEmpty(Text))
