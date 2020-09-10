@@ -7,8 +7,8 @@ namespace Sts.Lib.Win.Windows.Forms
 {
     public class TxtButtonControl : UserControl, ControlStatePersister.ISaveStateControl
     {
-        private Button _btn;
-        private TextBox _txt;
+        protected Button _btn;
+        protected TextBox _txt;
 
         public TxtButtonControl()
         {
@@ -53,7 +53,7 @@ namespace Sts.Lib.Win.Windows.Forms
             _txt.Top = (_btn.Height - _txt.Height) / 2;
         }
 
-        private void InitializeComponent()
+        protected virtual void InitializeComponent()
         {
             _btn = new Button();
             _txt = new TextBox();

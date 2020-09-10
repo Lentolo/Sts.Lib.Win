@@ -9,6 +9,12 @@ namespace Sts.Lib.Win.Windows.Forms
         {
             Dialog = new OpenFileDialog();
         }
+        protected override void InitializeComponent()
+        {
+            base.InitializeComponent();
+            _txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            _txt.AutoCompleteSource = AutoCompleteSource.FileSystem;
+        }
 
         public OpenFileDialog Dialog { get; }
 

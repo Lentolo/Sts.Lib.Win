@@ -5,9 +5,15 @@ namespace Sts.Lib.Win.Windows.Forms
 {
     public class FolderBrowserControl : BrowseControl
     {
-        public FolderBrowserControl()
+        public FolderBrowserControl() : base()
         {
             Dialog = new FolderBrowserDialog();
+        }
+        protected override void InitializeComponent()
+        {
+            base.InitializeComponent();
+            _txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            _txt.AutoCompleteSource = AutoCompleteSource.FileSystemDirectories;
         }
         public bool CreateFolderIfNotExits
         {
