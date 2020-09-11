@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Sts.Lib.Common.Extensions;
 using Sts.Lib.Win.Windows.Forms.Data;
 using Form = Sts.Lib.Win.Windows.Forms.Form;
 
@@ -35,7 +36,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
     {
       get
       {
-        return GrpControl.Controls.OfType<DatabaseConnectionBuilderBase>().FirstOrDefault(c => string.Compare(c.DatabaseTypeName, CmbCnType.SelectedItem as string, StringComparison.OrdinalIgnoreCase) == 0);
+        return GrpControl.Controls.OfType<DatabaseConnectionBuilderBase>().FirstOrDefault(c => (c.DatabaseTypeName).EqualsNoCase( CmbCnType.SelectedItem as string));
       }
     }
 

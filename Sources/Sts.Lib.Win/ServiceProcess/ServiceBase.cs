@@ -7,6 +7,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using Sts.Lib.Common.Extensions;
 using Sts.Lib.Diagnostics.Log;
 using MessageBox = System.Windows.Forms.MessageBox;
 //using Sts.Lib.Win.Diagnostics.Log;
@@ -41,7 +42,7 @@ namespace Sts.Lib.Win.ServiceProcess
         {
             get
             {
-                return _serviceController ?? (_serviceController = ServiceController.GetServices().FirstOrDefault(itm => string.Compare(itm.ServiceName, ServiceName, StringComparison.OrdinalIgnoreCase) == 0));
+                return _serviceController ?? (_serviceController = ServiceController.GetServices().FirstOrDefault(itm => (itm.ServiceName).EqualsNoCase( ServiceName)));
             }
         }
         public virtual void ParseCommandLine(string[] commandLine)
