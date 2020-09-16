@@ -151,11 +151,11 @@ namespace Sts.Lib.Win.Configuration
             {
                 if (isSerializing)
                 {
-                    stringValue = Utils.Serialize(value);
+                    stringValue =Sts.Lib.Runtime.Serialization. Utils.Serialize(value);
                 }
                 else
                 {
-                    value = Utils.DeSerialize<T>(stringValue);
+                    value = Sts.Lib.Runtime.Serialization.Utils.DeSerialize<T>(stringValue);
                 }
             }
         }
