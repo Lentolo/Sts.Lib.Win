@@ -34,7 +34,7 @@ namespace Sts.Lib.Win.Windows.Forms
         }
         protected virtual void OnPathChanged()
         {
-            Sts.Lib.Delegates.Utils.RaiseEvent(PathChanged, this, new EventArgs());
+            PathChanged?.Invoke(this, new EventArgs());
         }
         protected virtual (bool, string) OnShowDialog()
         {
