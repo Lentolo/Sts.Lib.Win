@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Sts.Lib.Diagnostics.Extensions;
 using Sts.Lib.Diagnostics.Log;
 
 namespace Sts.Lib.Win.Diagnostics
@@ -56,7 +57,7 @@ namespace Sts.Lib.Win.Diagnostics
     {
       try
       {
-        EventLog.WriteEntry("Application", Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "\r\n\r\n" + Sts.Lib.Diagnostics.Utils.ExtractError(exc), EventLogEntryType.Error);
+        EventLog.WriteEntry("Application", Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "\r\n\r\n" + Extensions.ExtractError(exc), EventLogEntryType.Error);
       }
       catch
       {

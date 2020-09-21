@@ -8,6 +8,7 @@ using Sts.Lib.Diagnostics.Log;
 using Sts.Lib.Linq.Extensions;
 using Sts.Lib.Security.Permissions;
 using Sts.Lib.Xml.Extensions;
+using Extensions = Sts.Lib.Diagnostics.Extensions.Extensions;
 
 namespace Sts.Lib.Win.Diagnostics.Log.Implementations
 {
@@ -82,7 +83,7 @@ namespace Sts.Lib.Win.Diagnostics.Log.Implementations
             {
                 try
                 {
-                    File.WriteAllText("c:\\temp\\log.txt", Sts.Lib.Diagnostics.Utils.ExtractError(exc));
+                    File.WriteAllText("c:\\temp\\log.txt", Extensions.ExtractError(exc));
                 }
                 catch
                 { }
