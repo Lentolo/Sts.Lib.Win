@@ -14,10 +14,10 @@ namespace Sts.Lib.Win.Windows.Hooks
         private IntPtr _keyboardHook = IntPtr.Zero;
         private readonly HookProc hookProc;
 
-        protected HookHelper()
+        public HookHelper()
         {
             hookProc = LowLevelKeyboardProc;
-            InstallHook();
+            InstallHooks();
         }
 
         protected abstract HookTypes HookType
@@ -27,7 +27,8 @@ namespace Sts.Lib.Win.Windows.Hooks
 
         public void Dispose()
         {
-            UninstallHook();
+            UninstallHooks();
+            GC.SuppressFinalize(this);
         }
 
         [DllImport("user32.dll")]
@@ -39,13 +40,13 @@ namespace Sts.Lib.Win.Windows.Hooks
         [DllImport("user32.dll")]
         private static extern IntPtr CallNextHookEx(IntPtr _, int nCode, UIntPtr wParam, IntPtr lParam);
 
-        private void UninstallHook()
+        private void UninstallHooks()
         {
             UnhookWindowsHookEx(_keyboardHook);
             _keyboardHook = IntPtr.Zero;
         }
 
-        private void InstallHook()
+        private void InstallHooks()
         {
             if (_keyboardHook == IntPtr.Zero)
             {

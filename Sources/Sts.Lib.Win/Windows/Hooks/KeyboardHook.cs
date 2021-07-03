@@ -21,11 +21,11 @@ namespace Sts.Lib.Win.Windows.Hooks
             }
         }
 
-        public event EventHandler<Sts.Lib.Common. ReadonlyDataArgs<(int KeyCode,KeyboardMessageTypes MessageType)>> KeyboardHookEvent;
+        public event EventHandler<Sts.Lib.Common. ReadonlyDataArgs<(int KeyCode,KeyboardMessageTypes MessageType)>> KeyboardMessage;
 
         protected override void OnHook(UIntPtr wParam, IntPtr lParam)
         {
-            KeyboardHookEvent?.Invoke(this, new Common.ReadonlyDataArgs<(int KeyCode,KeyboardMessageTypes MessageType)>((Marshal.PtrToStructure<KeyboardLowLevelHookStruct>(lParam).vkCode, (KeyboardMessageTypes) wParam)));
+            KeyboardMessage?.Invoke(this, new Common.ReadonlyDataArgs<(int KeyCode,KeyboardMessageTypes MessageType)>((Marshal.PtrToStructure<KeyboardLowLevelHookStruct>(lParam).vkCode, (KeyboardMessageTypes) wParam)));
         }
 
         [StructLayout(LayoutKind.Sequential)]

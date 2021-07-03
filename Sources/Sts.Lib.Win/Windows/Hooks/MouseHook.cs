@@ -31,11 +31,11 @@ namespace Sts.Lib.Win.Windows.Hooks
             }
         }
 
-        public event EventHandler<ReadonlyDataArgs<(Point Position, MouseMessageTypes MessageType)>> MouseHookEvent;
+        public event EventHandler<ReadonlyDataArgs<(Point Position, MouseMessageTypes MessageType)>> MouseMessage;
 
         protected override void OnHook(UIntPtr wParam, IntPtr lParam)
         {
-            MouseHookEvent?.Invoke(this, new ReadonlyDataArgs<(Point Position, MouseMessageTypes MessageType)>((Marshal.PtrToStructure<MouseLowLevelHookStruct>(lParam).pt, (MouseMessageTypes) wParam)));
+            MouseMessage?.Invoke(this, new ReadonlyDataArgs<(Point Position, MouseMessageTypes MessageType)>((Marshal.PtrToStructure<MouseLowLevelHookStruct>(lParam).pt, (MouseMessageTypes) wParam)));
         }
 
         [StructLayout(LayoutKind.Sequential)]
