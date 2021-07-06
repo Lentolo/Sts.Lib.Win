@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
-namespace Sts.Lib.Win.Windows.Forms
+namespace Sts.Lib.Win.Windows.Forms.Extensions
 {
   public static class Utils
   {

@@ -1,8 +1,8 @@
 using System;
 using System.Globalization;
-using StsLib.Data.Interfaces;
+using Sts.Lib.Data.Interfaces;
 
-namespace StsLibWin.Data.Connections.Oracle
+namespace Sts.Lib.Win.Data.Connections.Oracle
 {
   public class SqlConverter : ISqlConverter
   {

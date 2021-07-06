@@ -1,24 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 using Sts.Lib.Collections.Generic;
 
 namespace Sts.Lib.Win.Windows.Forms
 {
-    public class ToolStripTextBox : System.Windows.Forms.ToolStripTextBox
-    { }
-    public class ToolStripComboBox : System.Windows.Forms.ToolStripComboBox
-    { }
-    public class ToolStripDropDown : System.Windows.Forms.ToolStripDropDown
-    { }
-    
-    public class ToolTip : System.Windows.Forms.ToolTip
-    {
-        public ToolTip()
-        { }
-        public ToolTip(IContainer container):base(container)
-        { }
-    }
     public class TextBox : System.Windows.Forms.TextBox, ControlStatePersister.ISaveStateControl
     {
         public bool SaveControlState { get; set; }
