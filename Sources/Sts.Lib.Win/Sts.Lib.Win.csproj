@@ -9,12 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Class1.cs" />
+    <Compile Remove="Properties\**" />
+    <Compile Remove="Reflection\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <EmbeddedResource Remove="Reflection\**" />
+    <None Remove="Properties\**" />
+    <None Remove="Reflection\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\" />
-    <Folder Include="Reflection\" />
+    <Compile Remove="Class1.cs" />
   </ItemGroup>
 
   <ItemGroup>
