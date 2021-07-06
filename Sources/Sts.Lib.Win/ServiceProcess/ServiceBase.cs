@@ -1,274 +1,76 @@
 ﻿using System;
-using System.Collections.Specialized;
-using System.Configuration.Install;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.ServiceProcess;
-using System.Windows.Forms;
-using Microsoft.Win32;
-using Sts.Lib.Common.Extensions;
-using Sts.Lib.Diagnostics.Log;
-using MessageBox = System.Windows.Forms.MessageBox;
-//using Sts.Lib.Win.Diagnostics.Log;
+using Topshelf;
 
 namespace Sts.Lib.Win.ServiceProcess
 {
-    public class ServiceBase : System.ServiceProcess.ServiceBase
+    public abstract class ServiceBase<T>
+        where T : ServiceBase<T>, new()
     {
-        private string _displayName = "";
-        private ServiceController _serviceController;
-        public string DisplayName
+        protected abstract string ServiceName
         {
-            get => string.IsNullOrEmpty(_displayName) ? ServiceName : _displayName;
-            set => _displayName = value;
+            get;
         }
-        public string Description
+
+        protected abstract string ServiceDisplayName
         {
             get;
-            set;
-        } = "";
-        public ServiceStartMode StartType
+        }
+
+        protected abstract string ServiceDescription
         {
             get;
-            set;
-        } = ServiceStartMode.Disabled;
-        public ServiceAccount ServiceAccount
+        }
+
+        public virtual int Run(string[] commandLine)
         {
-            get;
-            set;
-        } = ServiceAccount.LocalService;
-        private ServiceController ServiceController
-        {
-            get
+            var code = HostFactory.Run(hostConfigurator =>
             {
-                return _serviceController ?? (_serviceController = ServiceController.GetServices().FirstOrDefault(itm => (itm.ServiceName).EqualsNoCase( ServiceName)));
-            }
-        }
-        public virtual void ParseCommandLine(string[] commandLine)
-        {
-            var commandLineParser = new Sts.Lib.Common.CommandLineParser.Parser(commandLine,
-                new Sts.Lib.Common.CommandLineParser.Parser.Option()
+                hostConfigurator.Service<T>(serviceConfigurator =>
                 {
-                    Key = "install",
-                    Options = new[] { "/install" },
-                    Required = false,
-                    Default = false,
-                    NoValue = true,
-                },
-                new Sts.Lib.Common.CommandLineParser.Parser.Option()
-                {
-                    Key = "silent",
-                    Options = new[] { "/silent" },
-                    Required = false,
-                    Default = false,
-                    NoValue = true,
-                },
-                new Sts.Lib.Common.CommandLineParser.Parser.Option()
-                {
-                    Key = "force",
-                    Options = new[] { "/force" },
-                    Required = false,
-                    Default = false,
-                    NoValue = true,
-                },
-                new Sts.Lib.Common.CommandLineParser.Parser.Option()
-                {
-                    Key = "uninstall",
-                    Options = new[] { "/uninstall" },
-                    Required = false,
-                    Default = false,
-                    NoValue = true,
-                },
-                new Sts.Lib.Common.CommandLineParser.Parser.Option()
-                {
-                    Key = "start",
-                    Options = new[] { "/start" },
-                    Required = false,
-                    Default = false,
-                    NoValue = true,
-                },
-                new Sts.Lib.Common.CommandLineParser.Parser.Option()
-                {
-                    Key = "stop",
-                    Options = new[] { "/stop" },
-                    Required = false,
-                    Default = false,
-                    NoValue = true,
+                    serviceConfigurator.ConstructUsing(name => new T());
+                    serviceConfigurator.WhenContinued(serviceBase => serviceBase.Continue());
+                    serviceConfigurator.WhenCustomCommandReceived((serviceBase, hostControl, command) => serviceBase.CustomCommandReceived(hostControl, command));
+                    serviceConfigurator.WhenPaused(serviceBase => serviceBase.Pause());
+                    serviceConfigurator.WhenPowerEvent((serviceBase, hostControl, powerEventArguments) => serviceBase.PowerEvent(hostControl, powerEventArguments));
+                    serviceConfigurator.WhenSessionChanged((serviceBase, hostControl, sessionChangedArguments) => serviceBase.SessionChanged(hostControl, sessionChangedArguments));
+                    serviceConfigurator.WhenShutdown(serviceBase => serviceBase.Shutdown());
+                    serviceConfigurator.WhenStarted(serviceBase => serviceBase.Start(commandLine));
+                    serviceConfigurator.WhenStopped(serviceBase => serviceBase.Stop());
                 });
-            if (commandLineParser.HasOption("install"))
-            {
-                Install(commandLineParser.HasOption("silent"), commandLineParser.HasOption("force"));
-            }
-            else if (commandLineParser.HasOption("uninstall"))
-            {
-                Uninstall(commandLineParser.HasOption("silent"));
-            }
-            else if (commandLineParser.HasOption("start"))
-            {
-                Start(commandLineParser.HasOption("silent"));
-            }
-            else if (commandLineParser.HasOption("stop"))
-            {
-                Stop(commandLineParser.HasOption("silent"));
-            }
-            else
-            {
-                Run(this);
-            }
-        }
-        public bool IsServiceInstalled()
-        {
-            return ServiceController != null;
-        }
-        protected virtual void OnInstall()
-        {
-            Logger.Instance.Debug("ServiceBase", "OnInstall", null);
-        }
-        protected virtual void OnUninstall()
-        {
-            Logger.Instance.Debug("ServiceBase", "OnUninstall", null);
-        }
-        protected void Install(bool silent, bool force)
-        {
-            try
-            {
-                if (force)
-                {
-                    Stop(true);
-                    Uninstall(true);
-                }
+                hostConfigurator.SetDescription(ServiceDescription);
+                hostConfigurator.SetDisplayName(ServiceDisplayName);
+                hostConfigurator.SetServiceName(ServiceName);
+                hostConfigurator.EnablePauseAndContinue();
+                hostConfigurator.EnableShutdown();
+                hostConfigurator.RunAsLocalSystem();
+                hostConfigurator.Disabled();
+            });
 
-                if (!IsServiceInstalled())
-                {
-                    var serviceProcessInstaller = new ServiceProcessInstaller
-                    {
-                        Account = ServiceAccount
-                    };
-                    var context = new InstallContext();
-                    var processPath = Process.GetCurrentProcess().MainModule.FileName;
-                    if (!string.IsNullOrWhiteSpace(processPath))
-                    {
-                        var fi = new FileInfo(processPath);
-                        var path = $"/assemblypath={fi.FullName}";
-                        var
-                        cmdline = new[] { path };
-                        context = new InstallContext("", cmdline);
-                    }
+            return (int) Convert.ChangeType(code, code.GetTypeCode());
+        }
 
-                    var serviceInstaller = new ServiceInstaller();
-                    serviceInstaller.Context = context;
-                    serviceInstaller.ServiceName = ServiceName;
-                    serviceInstaller.DisplayName = DisplayName;
-                    serviceInstaller.Description = Description;
-                    serviceInstaller.StartType = StartType;
-                    serviceInstaller.Parent = serviceProcessInstaller;
-                    var state = new ListDictionary();
-                    serviceInstaller.Install(state);
-                    using (var oKey = Registry.LocalMachine.OpenSubKey($"SYSTEM\\CurrentControlSet\\Services\\{ServiceName}", true))
-                    {
-                        try
-                        {
-                            var sValue = oKey?.GetValue("ImagePath");
-                            oKey?.SetValue("ImagePath", sValue);
-                        }
-                        catch (Exception exc)
-                        {
-                            Logger.Instance.Exception("ServiceBase", exc);
-                        }
-                    }
+        protected virtual void SessionChanged(HostControl hostControl, SessionChangedArguments changedArguments)
+        { }
 
-                    OnInstall();
-                    ShowMessage(silent, @"Service installed", ServiceName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    ShowMessage(silent, @"Service already installed, please uninstall first", ServiceName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Instance.Exception("ServiceBase", exc);
-                ShowMessage(silent, exc.Message, ServiceName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        private void ShowMessage(bool silent, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
+        protected virtual bool PowerEvent(HostControl hostControl, PowerEventArguments powerEventArguments)
         {
-            if (icon == MessageBoxIcon.Error || icon == MessageBoxIcon.Stop || icon == MessageBoxIcon.Hand)
-            {
-                Logger.Instance.Error("ServiceBase", text, null);
-            }
-            else if (icon == MessageBoxIcon.Warning || icon == MessageBoxIcon.Exclamation)
-            {
-                Logger.Instance.Warning("ServiceBase", text, null);
-            }
-            else if (icon == MessageBoxIcon.Asterisk || icon == MessageBoxIcon.Information)
-            {
-                Logger.Instance.Info("ServiceBase", text, null);
-            }
-            else
-            {
-                Logger.Instance.Debug("ServiceBase", text, null);
-            }
+            return false;
+        }
 
-            if (!silent)
-            {
-                MessageBox.Show(text, caption, buttons, icon);
-            }
-        }
-        protected void Uninstall(bool silent)
-        {
-            try
-            {
-                if (IsServiceInstalled())
-                {
-                    var serviceInstaller = new ServiceInstaller();
-                    var context = new InstallContext();
-                    serviceInstaller.Context = context;
-                    serviceInstaller.ServiceName = ServiceName;
-                    serviceInstaller.Uninstall(null);
-                    OnUninstall();
-                    ShowMessage(silent, @"Service uninstalled", ServiceName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    ShowMessage(silent, @"Service not found", ServiceName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            catch (Exception exc)
-            {
-                ShowMessage(silent, exc.Message, ServiceName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        protected void Start(bool silent)
-        {
-            try
-            {
-                if (IsServiceInstalled() && ServiceController.Status == ServiceControllerStatus.Stopped)
-                {
-                    ServiceController.Start();
-                    ShowMessage(silent, @"Service started", ServiceName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception exc)
-            {
-                ShowMessage(silent, exc.Message, ServiceName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        protected void Stop(bool silent)
-        {
-            try
-            {
-                if (IsServiceInstalled() && ServiceController.Status == ServiceControllerStatus.Running && ServiceController.CanStop)
-                {
-                    ServiceController.Stop();
-                    ShowMessage(silent, @"Service stopped", ServiceName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception exc)
-            {
-                ShowMessage(silent, exc.Message, ServiceName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        protected abstract void Start(string[] commandLine);
+
+        protected virtual void Continue()
+        { }
+
+        protected virtual void Shutdown()
+        { }
+
+        protected virtual void Pause()
+        { }
+
+        protected abstract void Stop();
+
+        protected virtual void CustomCommandReceived(HostControl hostControl, int command)
+        { }
     }
 }

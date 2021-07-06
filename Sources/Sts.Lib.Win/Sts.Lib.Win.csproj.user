@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Update="Windows\Forms\BrowseControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\Button.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\CheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\DataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\Data\DatabaseConnectionBuilderBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\Data\DlgConnectionstringBuilder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\Data\TxtConnectionStringBuilder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\DateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\FolderBrowserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\Gantt.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\GroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\Label.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\MdiChildForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\MenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\OpenFileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\Panel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\RadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\SaveFileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\SplitContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\StatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\SyntaxHighLighter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\TabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\TabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\TextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\Timer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ToolStripButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ToolStripComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ToolStripDateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ToolStripDropDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ToolStripDropDownButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ToolStripLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ToolStripMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ToolStripSeparator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ToolStripStatusLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ToolStripTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\ToolTip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\TreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\TxtButtonControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Windows\Forms\UserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>

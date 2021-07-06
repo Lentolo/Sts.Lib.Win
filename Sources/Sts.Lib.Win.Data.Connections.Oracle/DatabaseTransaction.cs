@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Data;
 using Oracle.ManagedDataAccess.Client;
-using StsLib.Data;
-using StsLib.Data.Generic;
-using StsLib.Data.Interfaces;
+using Sts.Lib.Data;
+using Sts.Lib.Data.Generic;
+using Sts.Lib.Data.Interfaces;
 
-namespace StsLibWin.Data.Connections.Oracle
+namespace Sts.Lib.Win.Data.Connections.Oracle
 {
   public class DatabaseTransaction : GenericDatabaseTransaction<OracleTransaction>
   {

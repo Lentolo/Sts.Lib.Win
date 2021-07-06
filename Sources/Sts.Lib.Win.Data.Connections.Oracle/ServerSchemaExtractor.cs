@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
-using StsLib.Collections.Generic;
-using StsLib.Data.Interfaces;
-using StsLib.Data.Schema;
-using StsLib.Linq.Extensions;
-using StsLib.Text.RegularExpressions;
+using Sts.Lib.Data.Schema;
+using Sts.Lib.Collections.Generic;
+using Sts.Lib.Data.Interfaces;
+using Sts.Lib.Data.Schema;
+using Sts.Lib.Linq.Extensions;
+using Sts.Lib.Text.RegularExpressions;
 
-namespace StsLibWin.Data.Connections.Oracle
+namespace Sts.Lib.Win.Data.Connections.Oracle
 {
     public class ServerSchemaExtractor : IServerSchemaExtractor
     {
         internal ServerSchemaExtractor(IDatabaseCommadPerformer databaseCommadPerformer)
         {
             DatabaseCommadPerformer = databaseCommadPerformer;
-            _tableColumns = new StsLib.Common.ReadonlyTimeExpireValue<List<(string TABLE_NAME, string COLUMN_NAME, string DATA_TYPE, string DATA_TYPE_MOD, string DATA_TYPE_OWNER, decimal DATA_LENGTH, decimal? DATA_PRECISION, decimal? DATA_SCALE, string NULLABLE, decimal? COLUMN_ID, decimal? DEFAULT_LENGTH, string DATA_DEFAULT, decimal? NUM_DISTINCT, byte[] LOW_VALUE, byte[] HIGH_VALUE, decimal? DENSITY, decimal? NUM_NULLS, decimal? NUM_BUCKETS, DateTime? LAST_ANALYZED, decimal? SAMPLE_SIZE, string CHARACTER_SET_NAME, decimal? CHAR_COL_DECL_LENGTH, string GLOBAL_STATS, string USER_STATS, decimal? AVG_COL_LEN, decimal? CHAR_LENGTH, string CHAR_USED, string V80_FMT_IMAGE, string DATA_UPGRADED, string HISTOGRAM)>>(60);
+            _tableColumns = new Sts.Lib.Common.ReadonlyTimeExpireValue<List<(string TABLE_NAME, string COLUMN_NAME, string DATA_TYPE, string DATA_TYPE_MOD, string DATA_TYPE_OWNER, decimal DATA_LENGTH, decimal? DATA_PRECISION, decimal? DATA_SCALE, string NULLABLE, decimal? COLUMN_ID, decimal? DEFAULT_LENGTH, string DATA_DEFAULT, decimal? NUM_DISTINCT, byte[] LOW_VALUE, byte[] HIGH_VALUE, decimal? DENSITY, decimal? NUM_NULLS, decimal? NUM_BUCKETS, DateTime? LAST_ANALYZED, decimal? SAMPLE_SIZE, string CHARACTER_SET_NAME, decimal? CHAR_COL_DECL_LENGTH, string GLOBAL_STATS, string USER_STATS, decimal? AVG_COL_LEN, decimal? CHAR_LENGTH, string CHAR_USED, string V80_FMT_IMAGE, string DATA_UPGRADED, string HISTOGRAM)>>(60);
             _tableColumns.ExpiredValue += _tableColumns_ExpiredValue;
         }
         private IDatabaseCommadPerformer DatabaseCommadPerformer
@@ -33,12 +34,12 @@ namespace StsLibWin.Data.Connections.Oracle
             return ver;
         }
 
-        private void _tableColumns_ExpiredValue(object sender, StsLib.Common.DataArgs<List<(string TABLE_NAME, string COLUMN_NAME, string DATA_TYPE, string DATA_TYPE_MOD, string DATA_TYPE_OWNER, decimal DATA_LENGTH, decimal? DATA_PRECISION, decimal? DATA_SCALE, string NULLABLE, decimal? COLUMN_ID, decimal? DEFAULT_LENGTH, string DATA_DEFAULT, decimal? NUM_DISTINCT, byte[] LOW_VALUE, byte[] HIGH_VALUE, decimal? DENSITY, decimal? NUM_NULLS, decimal? NUM_BUCKETS, DateTime? LAST_ANALYZED, decimal? SAMPLE_SIZE, string CHARACTER_SET_NAME, decimal? CHAR_COL_DECL_LENGTH, string GLOBAL_STATS, string USER_STATS, decimal? AVG_COL_LEN, decimal? CHAR_LENGTH, string CHAR_USED, string V80_FMT_IMAGE, string DATA_UPGRADED, string HISTOGRAM)>> eventArg)
+        private void _tableColumns_ExpiredValue(object sender, Sts.Lib.Common.DataArgs<List<(string TABLE_NAME, string COLUMN_NAME, string DATA_TYPE, string DATA_TYPE_MOD, string DATA_TYPE_OWNER, decimal DATA_LENGTH, decimal? DATA_PRECISION, decimal? DATA_SCALE, string NULLABLE, decimal? COLUMN_ID, decimal? DEFAULT_LENGTH, string DATA_DEFAULT, decimal? NUM_DISTINCT, byte[] LOW_VALUE, byte[] HIGH_VALUE, decimal? DENSITY, decimal? NUM_NULLS, decimal? NUM_BUCKETS, DateTime? LAST_ANALYZED, decimal? SAMPLE_SIZE, string CHARACTER_SET_NAME, decimal? CHAR_COL_DECL_LENGTH, string GLOBAL_STATS, string USER_STATS, decimal? AVG_COL_LEN, decimal? CHAR_LENGTH, string CHAR_USED, string V80_FMT_IMAGE, string DATA_UPGRADED, string HISTOGRAM)>> eventArg)
         {
             eventArg.Data = DatabaseCommadPerformer.ExecuteReaderAndMap($"SELECT * FROM USER_TAB_COLUMNS", r => (TABLE_NAME: r["TABLE_NAME"] as string, COLUMN_NAME: r["COLUMN_NAME"] as string, DATA_TYPE: r["DATA_TYPE"] as string, DATA_TYPE_MOD: r["DATA_TYPE_MOD"] as string, DATA_TYPE_OWNER: r["DATA_TYPE_OWNER"] as string, DATA_LENGTH: (decimal)r["DATA_LENGTH"], DATA_PRECISION: r["DATA_PRECISION"] as decimal?, DATA_SCALE: r["DATA_SCALE"] as decimal?, NULLABLE: r["NULLABLE"] as string, COLUMN_ID: r["COLUMN_ID"] as decimal?, DEFAULT_LENGTH: r["DEFAULT_LENGTH"] as decimal?, DATA_DEFAULT: r["DATA_DEFAULT"] as string, NUM_DISTINCT: r["NUM_DISTINCT"] as decimal?, LOW_VALUE: r["LOW_VALUE"] as byte[], HIGH_VALUE: r["HIGH_VALUE"] as byte[], DENSITY: r["DENSITY"] as decimal?, NUM_NULLS: r["NUM_NULLS"] as decimal?, NUM_BUCKETS: r["NUM_BUCKETS"] as decimal?, LAST_ANALYZED: r["LAST_ANALYZED"] as DateTime?, SAMPLE_SIZE: r["SAMPLE_SIZE"] as decimal?, CHARACTER_SET_NAME: r["CHARACTER_SET_NAME"] as string, CHAR_COL_DECL_LENGTH: r["CHAR_COL_DECL_LENGTH"] as decimal?, GLOBAL_STATS: r["GLOBAL_STATS"] as string, USER_STATS: r["USER_STATS"] as string, AVG_COL_LEN: r["AVG_COL_LEN"] as decimal?, CHAR_LENGTH: r["CHAR_LENGTH"] as decimal?, CHAR_USED: r["CHAR_USED"] as string, V80_FMT_IMAGE: r["V80_FMT_IMAGE"] as string, DATA_UPGRADED: r["DATA_UPGRADED"] as string, HISTOGRAM: r["HISTOGRAM"] as string)).ToList();
         }
 
-        StsLib.Common.ReadonlyTimeExpireValue<List<(string TABLE_NAME, string COLUMN_NAME, string DATA_TYPE, string DATA_TYPE_MOD, string DATA_TYPE_OWNER, decimal DATA_LENGTH, decimal? DATA_PRECISION, decimal? DATA_SCALE, string NULLABLE, decimal? COLUMN_ID, decimal? DEFAULT_LENGTH, string DATA_DEFAULT, decimal? NUM_DISTINCT, byte[] LOW_VALUE, byte[] HIGH_VALUE, decimal? DENSITY, decimal? NUM_NULLS, decimal? NUM_BUCKETS, DateTime? LAST_ANALYZED, decimal? SAMPLE_SIZE, string CHARACTER_SET_NAME, decimal? CHAR_COL_DECL_LENGTH, string GLOBAL_STATS, string USER_STATS, decimal? AVG_COL_LEN, decimal? CHAR_LENGTH, string CHAR_USED, string V80_FMT_IMAGE, string DATA_UPGRADED, string HISTOGRAM)>> _tableColumns = null;
+        Sts.Lib.Common.ReadonlyTimeExpireValue<List<(string TABLE_NAME, string COLUMN_NAME, string DATA_TYPE, string DATA_TYPE_MOD, string DATA_TYPE_OWNER, decimal DATA_LENGTH, decimal? DATA_PRECISION, decimal? DATA_SCALE, string NULLABLE, decimal? COLUMN_ID, decimal? DEFAULT_LENGTH, string DATA_DEFAULT, decimal? NUM_DISTINCT, byte[] LOW_VALUE, byte[] HIGH_VALUE, decimal? DENSITY, decimal? NUM_NULLS, decimal? NUM_BUCKETS, DateTime? LAST_ANALYZED, decimal? SAMPLE_SIZE, string CHARACTER_SET_NAME, decimal? CHAR_COL_DECL_LENGTH, string GLOBAL_STATS, string USER_STATS, decimal? AVG_COL_LEN, decimal? CHAR_LENGTH, string CHAR_USED, string V80_FMT_IMAGE, string DATA_UPGRADED, string HISTOGRAM)>> _tableColumns = null;
         public ReadOnlyCollection<ColumnItem> GetTableColumns(Table table)
         {
             var types = DatabaseCommadPerformer.ExecuteDataTable($"select * from {DatabaseCommadPerformer.SqlConverter.WrapIdentifier(table.Name)} where 0<>0").Columns.OfType<DataColumn>().ToCaseInsensitiveDictionary(c => c.ColumnName, c => c.DataType, null);
