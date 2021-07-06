@@ -1,11 +1,11 @@
 ﻿using System.Data;
 using Oracle.ManagedDataAccess.Client;
-using StsLib.Data;
-using StsLib.Data.Generic;
-using StsLib.Data.Interfaces;
-using StsLib.Data.Schema;
+using Sts.Lib.Data;
+using Sts.Lib.Data.Generic;
+using Sts.Lib.Data.Interfaces;
+using Sts.Lib.Data.Schema;
 
-namespace StsLibWin.Data.Connections.Oracle
+namespace Sts.Lib.Win.Data.Connections.Oracle
 {
     [ConnectionProviderName("StsOracle", "Sts Connection for Oracle")]
     public class DatabaseConnection : GenericDatabaseConnection<OracleConnection>
