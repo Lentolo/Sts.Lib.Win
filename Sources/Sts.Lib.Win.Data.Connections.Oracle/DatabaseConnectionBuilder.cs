@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using StsLibWin.Windows.Forms.Data;
-using Label = StsLibWin.Windows.Forms.Label;
-using TextBox = StsLibWin.Windows.Forms.TextBox;
+using Sts.Lib.Data;
+using Sts.Lib.Win.Windows.Forms.Data;
+using Label = Sts.Lib.Win.Windows.Forms.Label;
+using TextBox = Sts.Lib.Win.Windows.Forms.TextBox;
 
-namespace StsLibWin.Data.Connections.Oracle
+namespace Sts.Lib.Win.Data.Connections.Oracle
 {
     public class DatabaseConnectionBuilder : DatabaseConnectionBuilderBase
     {
@@ -26,16 +27,16 @@ namespace StsLibWin.Data.Connections.Oracle
 
         private void InitializeComponent()
         {
-            this.label1 = new StsLibWin.Windows.Forms.Label();
-            this.txtSrv = new StsLibWin.Windows.Forms.TextBox();
-            this.txtPort = new StsLibWin.Windows.Forms.TextBox();
-            this.label2 = new StsLibWin.Windows.Forms.Label();
-            this.txtPwd = new StsLibWin.Windows.Forms.TextBox();
-            this.label3 = new StsLibWin.Windows.Forms.Label();
-            this.txtUid = new StsLibWin.Windows.Forms.TextBox();
-            this.label4 = new StsLibWin.Windows.Forms.Label();
-            this.label5 = new StsLibWin.Windows.Forms.Label();
-            this.txtSid = new StsLibWin.Windows.Forms.TextBox();
+            this.label1 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.txtSrv = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.txtPort = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.label2 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.txtPwd = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.label3 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.txtUid = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.label4 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.label5 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.txtSid = new Sts.Lib.Win.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -51,7 +52,7 @@ namespace StsLibWin.Data.Connections.Oracle
             // 
             this.txtSrv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSrv.CanSaveControlState = false;
+            this.txtSrv.SaveControlState = false;
             this.txtSrv.Location = new System.Drawing.Point(62, 15);
             this.txtSrv.Name = "txtSrv";
             this.txtSrv.Size = new System.Drawing.Size(386, 20);
@@ -60,7 +61,7 @@ namespace StsLibWin.Data.Connections.Oracle
             // txtPort
             // 
             this.txtPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPort.CanSaveControlState = false;
+            this.txtPort.SaveControlState = false;
             this.txtPort.Location = new System.Drawing.Point(364, 41);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(84, 20);
@@ -81,7 +82,7 @@ namespace StsLibWin.Data.Connections.Oracle
             // 
             this.txtPwd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPwd.CanSaveControlState = false;
+            this.txtPwd.SaveControlState = false;
             this.txtPwd.Location = new System.Drawing.Point(62, 93);
             this.txtPwd.Name = "txtPwd";
             this.txtPwd.PasswordChar = '*';
@@ -101,7 +102,7 @@ namespace StsLibWin.Data.Connections.Oracle
             // 
             this.txtUid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtUid.CanSaveControlState = false;
+            this.txtUid.SaveControlState = false;
             this.txtUid.Location = new System.Drawing.Point(62, 67);
             this.txtUid.Name = "txtUid";
             this.txtUid.Size = new System.Drawing.Size(386, 20);
@@ -130,7 +131,7 @@ namespace StsLibWin.Data.Connections.Oracle
             // 
             this.txtSid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSid.CanSaveControlState = false;
+            this.txtSid.SaveControlState = false;
             this.txtSid.Location = new System.Drawing.Point(62, 41);
             this.txtSid.Name = "txtSid";
             this.txtSid.Size = new System.Drawing.Size(264, 20);
@@ -159,7 +160,7 @@ namespace StsLibWin.Data.Connections.Oracle
         {
             get
             {
-                return "Sts Provider=" + typeof(DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
+                return DatabaseConnectionUtils.DBProvider + "=" + typeof(DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
             }
         }
         public override string ConnectionStringNoProvider

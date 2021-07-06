@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Sts.Lib.Data;
 
 namespace Sts.Lib.Win.Data.Connections.Postgres
 {
@@ -160,7 +161,7 @@ namespace Sts.Lib.Win.Data.Connections.Postgres
         {
             get
             {
-                return "Sts Provider=" + typeof(Sts.Lib.Data.Connections.Postgres.DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
+                return DatabaseConnectionUtils.DBProvider + "=" + typeof(Sts.Lib.Data.Connections.Postgres.DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
             }
         }
         public override string ConnectionStringNoProvider

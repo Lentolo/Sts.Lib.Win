@@ -2,15 +2,16 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Sts.Lib.Data;
+using Sts.Lib.Win.Windows.Forms;
+using Sts.Lib.Win.Windows.Forms.Data;
 using StsLib.Data.Connections.OleDB;
-using StsLibWin.Windows.Forms;
-using StsLibWin.Windows.Forms.Data;
-using Button = StsLibWin.Windows.Forms.Button;
-using ComboBox = StsLibWin.Windows.Forms.ComboBox;
-using Label = StsLibWin.Windows.Forms.Label;
-using TextBox = StsLibWin.Windows.Forms.TextBox;
+using Button = Sts.Lib.Win.Windows.Forms.Button;
+using ComboBox = Sts.Lib.Win.Windows.Forms.ComboBox;
+using Label = Sts.Lib.Win.Windows.Forms.Label;
+using TextBox = Sts.Lib.Win.Windows.Forms.TextBox;
 
-namespace StsLibWin.Data.Connections.SqlServer
+namespace Sts.Lib.Win.Data.Connections.SqlServer
 {
     public class DatabaseConnectionBuilder : DatabaseConnectionBuilderBase
     {
@@ -27,11 +28,11 @@ namespace StsLibWin.Data.Connections.SqlServer
 
         private void InitializeComponent()
         {
-            this.label1 = new StsLibWin.Windows.Forms.Label();
-            this.txtSrv = new StsLibWin.Windows.Forms.TextBox();
-            this.txtPwd = new StsLibWin.Windows.Forms.TextBox();
-            this.label3 = new StsLibWin.Windows.Forms.Label();
-            this.btnBrowse = new StsLibWin.Windows.Forms.Button();
+            this.label1 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.txtSrv = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.txtPwd = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.label3 = new Sts.Lib.Win.Windows.Forms.Label();
+            this.btnBrowse = new Sts.Lib.Win.Windows.Forms.Button();
             this.ofdBrowseDB = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
@@ -48,7 +49,7 @@ namespace StsLibWin.Data.Connections.SqlServer
             // 
             this.txtSrv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSrv.CanSaveControlState = false;
+            this.txtSrv.SaveControlState = false;
             this.txtSrv.Location = new System.Drawing.Point(104, 15);
             this.txtSrv.Name = "txtSrv";
             this.txtSrv.Size = new System.Drawing.Size(308, 22);
@@ -58,7 +59,7 @@ namespace StsLibWin.Data.Connections.SqlServer
             // 
             this.txtPwd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPwd.CanSaveControlState = false;
+            this.txtPwd.SaveControlState = false;
             this.txtPwd.Location = new System.Drawing.Point(104, 43);
             this.txtPwd.Name = "txtPwd";
             this.txtPwd.PasswordChar = '*';
@@ -106,7 +107,7 @@ namespace StsLibWin.Data.Connections.SqlServer
         {
             get
             {
-                return "Sts Provider=" + typeof(DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
+                return DatabaseConnectionUtils.DBProvider  +"=" + typeof(DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
             }
         }
         public override string ConnectionStringNoProvider
