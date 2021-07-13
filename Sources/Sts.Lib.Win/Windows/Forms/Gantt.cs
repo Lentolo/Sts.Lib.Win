@@ -82,8 +82,11 @@ namespace Sts.Lib.Win.Windows.Forms
     private void PnlDrawBottomLeft_Paint(object sender, PaintEventArgs e)
     {
       if (!Sts.Lib.Linq.Extensions.Extensions.ToEnumerableOrEmpty(Data).Any())
-        return;
-      var data = Sts.Lib.Linq.Extensions.Extensions.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
+            {
+                return;
+            }
+
+            var data = Sts.Lib.Linq.Extensions.Extensions.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
       foreach (var activities in data.GroupBy(ii => ii.Activity).ToItemsList())
       {
         e.Graphics.DrawString(activities.Data.Key, Font, Brushes.Black, 0, activities.Index * BlockSize.Height);
@@ -107,8 +110,11 @@ namespace Sts.Lib.Win.Windows.Forms
     private void PnlDrawBottomRight_Paint(object sender, PaintEventArgs e)
     {
       if (!Sts.Lib.Linq.Extensions.Extensions.ToEnumerableOrEmpty(Data).Any())
-        return;
-      var data = Sts.Lib.Linq.Extensions.Extensions.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
+            {
+                return;
+            }
+
+            var data = Sts.Lib.Linq.Extensions.Extensions.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
       var minDate = data.Select(i => i.DateFrom).DefaultIfEmpty(DateTime.MinValue).Min();
       foreach (var activities in data.GroupBy(ii => ii.Activity).ToItemsList())
       {

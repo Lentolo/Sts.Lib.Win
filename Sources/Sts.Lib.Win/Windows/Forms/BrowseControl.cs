@@ -59,7 +59,7 @@ namespace Sts.Lib.Win.Windows.Forms
             base.OnDragDrop(drgevent);
             var fileDropEventArgs = FileDropEventArgs.Create((drgevent.Data.GetData(ClipboardFormat) as string[] ?? Array.Empty<string>()).ToList());
             OnFileDrop(fileDropEventArgs);
-            _txt.Text = fileDropEventArgs.Files.Aggregate("", (s, f) => $"{s}{f};").Trim(';');
+            txt.Text = fileDropEventArgs.Files.Aggregate("", (s, f) => $"{s}{f};").Trim(';');
         }
 
         protected virtual void OnFileDrop(FileDropEventArgs filePaths)

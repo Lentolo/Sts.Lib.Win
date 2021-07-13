@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Data.Sqlite;
 using Sts.Lib.Data;
 using Sts.Lib.Win.Windows.Forms.Data;
-using StsLib.Data.Connections.SqLite;
 
-namespace Sts.Lib.Win.Data.Connections.SqlServer
+namespace StsLibWin.Data.Connections.SqLite
 {
     public class DatabaseConnectionBuilder : DatabaseConnectionBuilderBase
     {

@@ -11,8 +11,8 @@ namespace Sts.Lib.Win.Windows.Forms
         protected override void InitializeComponent()
         {
             base.InitializeComponent();
-            _txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            _txt.AutoCompleteSource = AutoCompleteSource.FileSystem;
+            txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            txt.AutoCompleteSource = AutoCompleteSource.FileSystem;
         }
         public SaveFileDialog Dialog
         {

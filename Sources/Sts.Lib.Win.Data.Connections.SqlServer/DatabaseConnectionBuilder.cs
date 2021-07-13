@@ -15,7 +15,7 @@ using TextBox = Sts.Lib.Win.Windows.Forms.TextBox;
 
 namespace Sts.Lib.Win.Data.Connections.SqlServer
 {
-    public class DatabaseConnectionBuilder : DatabaseConnectionBuilderBase1
+    public class DatabaseConnectionBuilder : CommonDatabaseConnectionBuilderBase
     {
         public DatabaseConnectionBuilder() : base()
         {
@@ -65,42 +65,18 @@ namespace Sts.Lib.Win.Data.Connections.SqlServer
             get { return typeof(SqlConnection); }
         }
 
-        public override bool Test()
-        {
-            try
-            {
-                using var db = OpenConnection();
-                return true;
-            }
-            catch
-            {
-            }
-
-            return false;
-        }
-
-        private IDbConnection OpenConnection()
+        protected override IDbConnection OpenConnection()
         {
             var db = new SqlConnection(ConnectionStringNoProvider);
             db.Open();
             return db;
         }
 
-        protected override void FillCombo()
+        protected override string[] GetDatabases(IDbConnection db)
         {
-            if (CmbDB.Items.Count == 0 && !string.IsNullOrEmpty(TxtSrv.Text) && !string.IsNullOrEmpty(TxtUid.Text))
-            {
-                try
-                {
-                    using var db = OpenConnection();
-                    CmbDB.Items.AddRange(db
-                        .ExecuteReaderAndMap("SELECT NAME FROM SYS.DATABASES;", r => r["NAME"] as string)
-                        .ToArray());
-                }
-                catch
-                {
-                }
-            }
+            return db
+                .ExecuteReaderAndMap("SELECT NAME FROM SYS.DATABASES;", r => r["NAME"] as string)
+                .ToArray();
         }
     }
 }

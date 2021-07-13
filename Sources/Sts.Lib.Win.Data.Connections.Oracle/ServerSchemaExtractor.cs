@@ -11,7 +11,7 @@ using Sts.Lib.Data.Schema;
 using Sts.Lib.Linq.Extensions;
 using Utils = Sts.Lib.Text.RegularExpressions.Utils;
 
-namespace Sts.Lib.Win.Data.Connections.Oracle
+namespace StsLibWin.Data.Connections.Oracle
 {
     public class ServerSchemaExtractor : IServerSchemaExtractor
     {

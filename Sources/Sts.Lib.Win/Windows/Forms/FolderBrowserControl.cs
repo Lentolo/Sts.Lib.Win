@@ -12,8 +12,8 @@ namespace Sts.Lib.Win.Windows.Forms
         protected override void InitializeComponent()
         {
             base.InitializeComponent();
-            _txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            _txt.AutoCompleteSource = AutoCompleteSource.FileSystemDirectories;
+            txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            txt.AutoCompleteSource = AutoCompleteSource.FileSystemDirectories;
         }
         public bool CreateFolderIfNotExits
         {

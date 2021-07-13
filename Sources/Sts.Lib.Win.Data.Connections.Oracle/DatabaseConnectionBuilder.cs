@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 using Oracle.ManagedDataAccess.Client;
 using Sts.Lib.Data;
@@ -7,7 +6,7 @@ using Sts.Lib.Win.Windows.Forms.Data;
 using Label = Sts.Lib.Win.Windows.Forms.Label;
 using TextBox = Sts.Lib.Win.Windows.Forms.TextBox;
 
-namespace Sts.Lib.Win.Data.Connections.Oracle
+namespace StsLibWin.Data.Connections.Oracle
 {
     public class DatabaseConnectionBuilder : DatabaseConnectionBuilderBase
     {

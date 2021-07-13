@@ -7,8 +7,8 @@ namespace Sts.Lib.Win.Windows.Forms
 {
     public class TxtButtonControl : UserControl, ControlStatePersister.ISaveStateControl
     {
-        protected Button _btn;
-        protected TextBox _txt;
+        protected Button btn;
+        protected TextBox txt;
 
         public TxtButtonControl()
         {
@@ -17,21 +17,11 @@ namespace Sts.Lib.Win.Windows.Forms
 
         public override string Text
         {
-            get
-            {
-                return _txt.Text;
-            }
-            set
-            {
-                _txt.Text = value;
-            }
+            get { return txt.Text; }
+            set { txt.Text = value; }
         }
 
-        public virtual bool SaveControlState
-        {
-            get;
-            set;
-        }
+        public virtual bool SaveControlState { get; set; }
 
         public virtual void SetControlStateData(Dictionary<string, object> data)
         {
@@ -46,80 +36,92 @@ namespace Sts.Lib.Win.Windows.Forms
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-            _btn.Left = Width - _btn.Width - _btn.Margin.Left - _btn.Margin.Right;
-            _btn.Top = 0;
-            _txt.Left = 0;
-            _txt.Width = Width - _btn.Width - _txt.Margin.Left - _txt.Margin.Right;
-            _txt.Top = (_btn.Height - _txt.Height) / 2;
+            txt.Top = 0;
+            txt.Left = 0;
+            txt.Height = Height;
+            txt.Width = Width - btn.Width;
+
+            btn.Top = -1;
+            btn.Left = Width - btn.Width;
+            btn.Height = Height;
         }
 
         protected virtual void InitializeComponent()
         {
-            _btn = new Button();
-            _txt = new TextBox();
-            SuspendLayout();
+            this.btn = new Sts.Lib.Win.Windows.Forms.Button();
+            this.txt = new Sts.Lib.Win.Windows.Forms.TextBox();
+            this.SuspendLayout();
             // 
             // _btn
             // 
-            _btn.Location = new Point(563, 3);
-            _btn.Margin = new Padding(0);
-            _btn.Name = "_btn";
-            _btn.Size = new Size(34, 20);
-            _btn.TabIndex = 1;
-            _btn.Text = "...";
-            _btn.UseVisualStyleBackColor = true;
-            _btn.Click += Btn_Click;
+            this.btn.Location = new System.Drawing.Point(563, 0);
+            this.btn.Margin = new System.Windows.Forms.Padding(0);
+            this.btn.Name = "btn";
+            this.btn.Size = new System.Drawing.Size(34, 21);
+            this.btn.TabIndex = 1;
+            this.btn.Text = "...";
+            this.btn.UseVisualStyleBackColor = true;
+            this.btn.Click += new System.EventHandler(this.Btn_Click);
             // 
             // _txt
             // 
-            _txt.Location = new Point(0, 3);
-            _txt.Margin = new Padding(0);
-            _txt.Name = "_txt";
-            _txt.Size = new Size(563, 20);
-            _txt.TabIndex = 0;
-            _txt.DoubleClick += Txt_DoubleClick;
-            _txt.TextChanged += _txt_TextChanged;
-            _txt.Validated += _txt_Validated;
-            _txt.Leave += _txt_Leave;
+            this.txt.Location = new System.Drawing.Point(0, 0);
+            this.txt.Margin = new System.Windows.Forms.Padding(0);
+            this.txt.Name = "txt";
+            this.txt.SaveControlState = false;
+            this.txt.Size = new System.Drawing.Size(563, 23);
+            this.txt.TabIndex = 0;
+            this.txt.TextChanged += new System.EventHandler(this.Txt_TextChanged);
+            this.txt.DoubleClick += new System.EventHandler(this.Txt_DoubleClick);
+            this.txt.Leave += new System.EventHandler(this.Txt_Leave);
+            this.txt.Validated += new System.EventHandler(this.Txt_Validated);
             // 
             // TxtButtonControl
             // 
-            Controls.Add(_txt);
-            Controls.Add(_btn);
-            Name = "TxtButtonControl";
-            Size = new Size(597, 27);
-            ResumeLayout(false);
-            PerformLayout();
+            this.Controls.Add(this.txt);
+            this.Controls.Add(this.btn);
+            this.Margin = new System.Windows.Forms.Padding(0);
+            this.Name = "TxtButtonControl";
+            this.Size = new System.Drawing.Size(597, 27);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
-        private void _txt_Leave(object sender, EventArgs e)
+        private void Txt_Leave(object sender, EventArgs e)
         {
             OnTextLeave();
         }
 
-        private void _txt_Validated(object sender, EventArgs e)
+        private void Txt_Validated(object sender, EventArgs e)
         {
             OnTextValidated();
         }
 
-        private void _txt_TextChanged(object sender, EventArgs e)
+        private void Txt_TextChanged(object sender, EventArgs e)
         {
             OnTextChanged();
         }
 
         protected virtual void OnTextLeave()
-        { }
+        {
+        }
+
         protected virtual void OnTextChanged()
-        { }
+        {
+        }
 
         protected virtual void OnTextValidated()
-        { }
+        {
+        }
 
         protected virtual void OnBtnClick()
-        { }
+        {
+        }
 
         protected virtual void OnTxtDblClick()
-        { }
+        {
+        }
 
         private void Btn_Click(object sender, EventArgs e)
         {

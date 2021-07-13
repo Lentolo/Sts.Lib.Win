@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Sts.Lib\Sources\Sts.Lib\Sts.Lib.csproj" />
+    <ProjectReference Include="..\Sts.Lib.Win.Data.Connections.OleDB\StsLibWin.Data.Connections.OleDB.csproj" />
+    <ProjectReference Include="..\Sts.Lib.Win.Data.Connections.Oracle\StsLibWin.Data.Connections.Oracle.csproj" />
+    <ProjectReference Include="..\Sts.Lib.Win.Data.Connections.Postgres\Sts.Lib.Win.Data.Connections.Postgres.csproj" />
+    <ProjectReference Include="..\Sts.Lib.Win.Data.Connections.SqLite\StsLibWin.Data.Connections.SqLite.csproj" />
+    <ProjectReference Include="..\Sts.Lib.Win.Data.Connections.SqlServer\Sts.Lib.Win.Data.Connections.SqlServer.csproj" />
+    <ProjectReference Include="..\Sts.Lib.Win\Sts.Lib.Win.csproj" />
+  </ItemGroup>
+
+</Project>

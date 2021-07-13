@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Drawing;
-using System.Linq;
+using System.Data.OleDb;
 using System.Windows.Forms;
 using Sts.Lib.Data;
-using Sts.Lib.Win.Windows.Forms;
 using Sts.Lib.Win.Windows.Forms.Data;
-using StsLib.Data.Connections.OleDB;
 using Button = Sts.Lib.Win.Windows.Forms.Button;
-using ComboBox = Sts.Lib.Win.Windows.Forms.ComboBox;
 using Label = Sts.Lib.Win.Windows.Forms.Label;
 using TextBox = Sts.Lib.Win.Windows.Forms.TextBox;
 
-namespace Sts.Lib.Win.Data.Connections.SqlServer
+namespace StsLibWin.Data.Connections.OleDB
 {
     public class DatabaseConnectionBuilder : DatabaseConnectionBuilderBase
     {
@@ -107,7 +103,7 @@ namespace Sts.Lib.Win.Data.Connections.SqlServer
         {
             get
             {
-                return DatabaseConnectionUtils.DBProvider  +"=" + typeof(DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
+                return DatabaseConnectionUtils.DBProvider  +"=" + typeof(OleDbConnection).FullName + ";" + ConnectionStringNoProvider;
             }
         }
         public override string ConnectionStringNoProvider
@@ -134,21 +130,19 @@ namespace Sts.Lib.Win.Data.Connections.SqlServer
         {
             get
             {
-                return typeof(DatabaseConnection);
+                return typeof(OleDbConnection);
             }
         }
         public override bool Test()
         {
             try
             {
-                using (var db = new DatabaseConnection
+                using var db = new OleDbConnection
                 {
                     ConnectionString = ConnectionStringNoProvider
-                })
-                {
-                    db.Open();
-                    return true;
-                }
+                };
+                db.Open();
+                return true;
             }
             catch
             { }

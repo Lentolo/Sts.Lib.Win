@@ -11,13 +11,9 @@ namespace Sts.Lib.Win.Windows.Forms.Data
 {
     public class TxtConnectionStringBuilder : TxtButtonControl
     {
-        public string ConnectionStringNoProvider
-        {
-            get;
-            private set;
-        }
+        private bool _setText;
 
-        public Type ConnectionType
+        public string ConnectionStringNoProvider
         {
             get;
             private set;
@@ -50,6 +46,17 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             { }
         }
 
+        protected override void OnTextChanged()
+        {
+            base.OnTextChanged();
+            if (!_setText)
+            {
+                var provider = DatabaseConnectionUtils.SplitConnectionStringWithProvider(Text);
+                ConnectionStringNoProvider = provider.ConnectionString;
+                ConnectionString = Text;
+            }
+        }
+
         protected override void OnBtnClick()
         {
             var dlg = new DlgConnectionstringBuilder
@@ -59,19 +66,21 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             dlg.ConnectionStringBuilders.AddRange(ConnectionStringBuilders);
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
-                Text = NoProviderInConnectionString ? dlg.ConnectionStringNoProvider : dlg.ConnectionString;
-                ConnectionStringNoProvider = dlg.ConnectionStringNoProvider;
-                ConnectionString = dlg.ConnectionString;
-                ConnectionType = dlg.ConnectionType;
+                using (Sts.Lib.Common.DelegateDisposable.CreateDelegateDisposable(() => _setText = true, () => _setText = false))
+                {
+                    Text = NoProviderInConnectionString ? dlg.ConnectionStringNoProvider : dlg.ConnectionString;
+                    ConnectionStringNoProvider = dlg.ConnectionStringNoProvider;
+                    ConnectionString = dlg.ConnectionString;
+                }
                 RaiseOnConnectionStringAvailable();
             }
         }
 
-        public IDbConnection CreateConnection()
+        public IDbConnection CreateAndOpenConnection()
         {
             try
             {
-                return DatabaseConnectionUtils.CreateAndOpen(this.Invoke(c => c.ConnectionString), null);
+                return DatabaseConnectionUtils.CreateAndOpen(ConnectionString, null);
             }
             catch
             { }
@@ -92,7 +101,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             {
                 return Delegates.Utils.TryExecuteExecuteFunc(() =>
                 {
-                    using var cn = CreateConnection();
+                    using var cn = CreateAndOpenConnection();
                     return cn != null;
                 }, false);
             });
@@ -105,6 +114,26 @@ namespace Sts.Lib.Win.Windows.Forms.Data
         protected override void OnTextValidated()
         {
             RaiseOnConnectionStringAvailable();
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // _btn
+            // 
+            this.btn.Location = new System.Drawing.Point(563, 3);
+            // 
+            // _txt
+            // 
+            this.txt.Location = new System.Drawing.Point(0, 2);
+            // 
+            // TxtConnectionStringBuilder
+            // 
+            this.Name = "TxtConnectionStringBuilder";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
     }
 }
