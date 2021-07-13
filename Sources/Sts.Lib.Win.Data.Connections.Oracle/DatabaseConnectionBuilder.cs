@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Oracle.ManagedDataAccess.Client;
 using Sts.Lib.Data;
 using Sts.Lib.Win.Windows.Forms.Data;
 using Label = Sts.Lib.Win.Windows.Forms.Label;
@@ -160,7 +161,7 @@ namespace Sts.Lib.Win.Data.Connections.Oracle
         {
             get
             {
-                return DatabaseConnectionUtils.DBProvider + "=" + typeof(DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
+                return DatabaseConnectionUtils.DBProvider + "=" + typeof(OracleConnection).FullName + ";" + ConnectionStringNoProvider;
             }
         }
         public override string ConnectionStringNoProvider
@@ -181,21 +182,19 @@ namespace Sts.Lib.Win.Data.Connections.Oracle
         {
             get
             {
-                return typeof(DatabaseConnection);
+                return typeof(OracleConnection);
             }
         }
         public override bool Test()
         {
             try
             {
-                using (var db = new DatabaseConnection
+                using var db = new OracleConnection
                 {
                     ConnectionString = ConnectionStringNoProvider
-                })
-                {
-                    db.Open();
-                    return true;
-                }
+                };
+                db.Open();
+                return true;
             }
             catch
             { }

@@ -25,13 +25,14 @@ namespace Sts.Lib.Win.Configuration
         }
         public T Value
         {
-            get => _value.Value;
+            get { return _value.Value; }
             set
             {
                 SetValue(value);
                 _value.SetExpired();
             }
         }
+
         private void m_Value_ExpiredValue(object sender, DataArgs<T> eventArg)
         {
             eventArg.Data = GetValue();

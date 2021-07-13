@@ -21,30 +21,24 @@ namespace Sts.Lib.Win.Diagnostics
                 return;
             }
 
-            using (var searcher = new ManagementObjectSearcher("Select ProcessID From Win32_Process Where ParentProcessID = " + pid))
+            using var searcher = new ManagementObjectSearcher("Select ProcessID From Win32_Process Where ParentProcessID = " + pid);
+            using var moc = searcher.Get();
+            foreach (var o in moc)
             {
-                using (var moc = searcher.Get())
+                using var mo = (ManagementObject)o;
+                KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
+            }
+            try
+            {
+                var proc = Process.GetProcessById(pid);
+                do
                 {
-                    foreach (var o in moc)
-                    {
-                        using (var mo = (ManagementObject)o)
-                        {
-                            KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
-                        }
-                    }
-                    try
-                    {
-                        var proc = Process.GetProcessById(pid);
-                        do
-                        {
-                            proc.Kill();
-                            Thread.Sleep(100);
-                        } while (!proc.WaitForExit(500));
-                    }
-                    catch (ArgumentException)
-                    {
-                    }
-                }
+                    proc.Kill();
+                    Thread.Sleep(100);
+                } while (!proc.WaitForExit(500));
+            }
+            catch (ArgumentException)
+            {
             }
         }
 

@@ -1258,8 +1258,8 @@ namespace Sts.Lib.Win.Windows.Forms
     } = StringComparer.CurrentCulture;
     public bool CaseSensitiveLanguage
     {
-      get => StringComparer == StringComparer.CurrentCulture;
-      set
+        get { return StringComparer == StringComparer.CurrentCulture; }
+        set
       {
         if (value)
         {
@@ -1274,66 +1274,68 @@ namespace Sts.Lib.Win.Windows.Forms
         _keyWords.Sort(StringComparer);
       }
     }
+
     public string[] KeyWords
     {
-      get => _keyWords.ToArray();
-      set
+        get { return _keyWords.ToArray(); }
+        set
       {
         _keyWords = new List<string>(value);
         _keyWords.Sort(StringComparer);
       }
     }
+
     public string[] Functions
     {
-      get => _functions.ToArray();
-      set
+        get { return _functions.ToArray(); }
+        set
       {
         _functions = new List<string>(value);
         _functions.Sort(StringComparer);
       }
     }
+
     public char[] LineSeparators
     {
-      get => _lineSeparators.ToArray();
-      set
+        get { return _lineSeparators.ToArray(); }
+        set
       {
         _lineSeparators = new List<char>(value);
         _lineSeparators.Sort();
       }
     }
+
     public char[] TokenSeparators
     {
-      get => _tokenSeparators.ToArray();
-      set
+        get { return _tokenSeparators.ToArray(); }
+        set
       {
         _tokenSeparators = new List<char>(value);
         _tokenSeparators.Sort();
       }
     }
+
     public bool HighlightSyntax
     {
-      get => false;
-      set => _hilightSintax = value;
+        get { return false; }
+        set { _hilightSintax = value; }
     }
+
     private Point ScrollPos
     {
       get
       {
         var pt = new Point(0, 0);
-        using (var uo = new UnmanagedObject<Point>(pt))
-        {
-          Win32.SendMessage(Handle, Win32.EmGetscrollpos, 0, uo.Pointer());
-          pt = uo.Structure;
-        }
+        using var uo = new UnmanagedObject<Point>(pt);
+        Win32.SendMessage(Handle, Win32.EmGetscrollpos, 0, uo.Pointer());
+        pt = uo.Structure;
 
         return pt;
       }
       set
       {
-        using (var uo = new UnmanagedObject<Point>(value))
-        {
+          using var uo = new UnmanagedObject<Point>(value);
           Win32.SendMessage(Handle, Win32.EmSetscrollpos, 0, uo.Pointer());
-        }
       }
     }
     public void SetLanguageElements(ILanguageElements languageElements)

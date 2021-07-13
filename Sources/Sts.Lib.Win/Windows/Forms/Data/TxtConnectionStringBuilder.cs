@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sts.Lib.Data;
@@ -66,7 +67,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             }
         }
 
-        public IDatabaseConnection CreateConnection()
+        public IDbConnection CreateConnection()
         {
             try
             {
@@ -91,10 +92,8 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             {
                 return Delegates.Utils.TryExecuteExecuteFunc(() =>
                 {
-                    using (var cn = CreateConnection())
-                    {
-                        return cn != null;
-                    }
+                    using var cn = CreateConnection();
+                    return cn != null;
                 }, false);
             });
             if (raise)

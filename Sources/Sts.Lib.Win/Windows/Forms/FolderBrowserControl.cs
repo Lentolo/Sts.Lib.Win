@@ -31,8 +31,9 @@ namespace Sts.Lib.Win.Windows.Forms
 
                 return base.Text;
             }
-            set => base.Text = value;
+            set { base.Text = value; }
         }
+
         public FolderBrowserDialog Dialog
         {
             get;

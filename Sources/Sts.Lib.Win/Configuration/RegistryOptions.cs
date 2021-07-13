@@ -10,7 +10,7 @@ namespace Sts.Lib.Win.Configuration
     private string _companyName = "";
     public virtual string ApplicationName
     {
-      get
+        get
       {
         if (string.IsNullOrEmpty(_applicationName))
         {
@@ -19,11 +19,12 @@ namespace Sts.Lib.Win.Configuration
 
         return _applicationName;
       }
-      set => _applicationName = value;
+        set { _applicationName = value; }
     }
+
     public virtual string CompanyName
     {
-      get
+        get
       {
         if (string.IsNullOrEmpty(_companyName))
         {
@@ -32,8 +33,9 @@ namespace Sts.Lib.Win.Configuration
 
         return _companyName;
       }
-      set => _companyName = value;
+        set { _companyName = value; }
     }
+
     protected RegistryValue<T> NewRegistryValue<T>(string name, T Default, bool createValueIfNotExists)
     {
       return new RegistryValue<T>(Registry.LocalMachine, "software\\" + CompanyName + "\\" + ApplicationName, name, Default, createValueIfNotExists, 0);

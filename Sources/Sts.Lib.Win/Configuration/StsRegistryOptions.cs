@@ -7,8 +7,8 @@ namespace Sts.Lib.Win.Configuration
   {
     public override string CompanyName
     {
-      get => "Sts";
-      set
+        get { return "Sts"; }
+        set
       {
       }
     }

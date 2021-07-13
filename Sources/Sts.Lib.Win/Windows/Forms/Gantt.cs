@@ -42,10 +42,8 @@ namespace Sts.Lib.Win.Windows.Forms
       {
         if (_blockSize == SizeF.Empty)
         {
-          using (var g = CreateGraphics())
-          {
+            using var g = CreateGraphics();
             _blockSize = g.MeasureString("00:00", Font);
-          }
         }
         return _blockSize;
       }

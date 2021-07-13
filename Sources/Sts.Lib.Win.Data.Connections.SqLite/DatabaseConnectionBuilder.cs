@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Microsoft.Data.Sqlite;
 using Sts.Lib.Data;
 using Sts.Lib.Win.Windows.Forms.Data;
 using StsLib.Data.Connections.SqLite;
@@ -102,7 +103,7 @@ namespace Sts.Lib.Win.Data.Connections.SqlServer
         {
             get
             {
-                return  DatabaseConnectionUtils.DBProvider+ "=" + typeof(DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
+                return  DatabaseConnectionUtils.DBProvider+ "=" + typeof(SqliteConnection).FullName + ";" + ConnectionStringNoProvider;
             }
         }
         public override string ConnectionStringNoProvider
@@ -129,21 +130,19 @@ namespace Sts.Lib.Win.Data.Connections.SqlServer
         {
             get
             {
-                return typeof(DatabaseConnection);
+                return typeof(SqliteConnection);
             }
         }
         public override bool Test()
         {
             try
             {
-                using (var db = new DatabaseConnection
+                using var db = new SqliteConnection()
                 {
                     ConnectionString = ConnectionStringNoProvider
-                })
-                {
-                    db.Open();
-                    return true;
-                }
+                };
+                db.Open();
+                return true;
             }
             catch
             { }
