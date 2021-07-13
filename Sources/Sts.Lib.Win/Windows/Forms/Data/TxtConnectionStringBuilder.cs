@@ -4,6 +4,7 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sts.Lib.Data;
+using Sts.Lib.Data.Generic;
 using Sts.Lib.Data.Interfaces;
 using Sts.Lib.Win.Windows.Forms.Extensions;
 
@@ -13,23 +14,12 @@ namespace Sts.Lib.Win.Windows.Forms.Data
     {
         private bool _setText;
 
-        public string ConnectionStringNoProvider
+
+        public GenericConnectionString ConnectionString
         {
             get;
             private set;
         }
-
-        public string ConnectionString
-        {
-            get;
-            private set;
-        }
-
-        public bool NoProviderInConnectionString
-        {
-            get;
-            set;
-        } = false;
 
         public List<DatabaseConnectionBuilderBase> ConnectionStringBuilders
         {
@@ -51,9 +41,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             base.OnTextChanged();
             if (!_setText)
             {
-                var provider = DatabaseConnectionUtils.SplitConnectionStringWithProvider(Text);
-                ConnectionStringNoProvider = provider.ConnectionString;
-                ConnectionString = Text;
+                ConnectionString = new GenericConnectionString(Text);
             }
         }
 
@@ -68,24 +56,17 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             {
                 using (Sts.Lib.Common.DelegateDisposable.CreateDelegateDisposable(() => _setText = true, () => _setText = false))
                 {
-                    Text = NoProviderInConnectionString ? dlg.ConnectionStringNoProvider : dlg.ConnectionString;
-                    ConnectionStringNoProvider = dlg.ConnectionStringNoProvider;
+                    Text = NoProviderInConnectionString ? dlg.ConnectionString.ConnectionString : dlg.ConnectionString.FullConnectionString;
                     ConnectionString = dlg.ConnectionString;
                 }
                 RaiseOnConnectionStringAvailable();
             }
         }
 
-        public IDbConnection CreateAndOpenConnection()
+        public bool NoProviderInConnectionString
         {
-            try
-            {
-                return DatabaseConnectionUtils.CreateAndOpen(ConnectionString, null);
-            }
-            catch
-            { }
-
-            return null;
+            get;
+            set;
         }
 
         public event EventHandler ConnectionStringAvailable;
@@ -101,7 +82,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             {
                 return Delegates.Utils.TryExecuteExecuteFunc(() =>
                 {
-                    using var cn = CreateAndOpenConnection();
+                    using var cn = ConnectionString. CreateAndOpenConnection();
                     return cn != null;
                 }, false);
             });

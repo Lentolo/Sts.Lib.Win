@@ -1,17 +1,15 @@
 using System;
 using System.Data;
 using System.Linq;
+using Sts.Lib.Data;
 using Sts.Lib.Data.Extensions;
+using Sts.Lib.Data.Generic;
 
 namespace Sts.Lib.Win.Windows.Forms.Data
 {
     public class DatabaseConnectionBuilderBase : UserControl
     {
-        public virtual string ConnectionString
-        {
-            get;
-        }
-        public virtual string ConnectionStringNoProvider
+        public virtual GenericConnectionString ConnectionString
         {
             get;
         }
@@ -20,15 +18,11 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             get;
         }
 
-        public virtual Type DatabaseConnectionType
-        {
-            get;
-        }
         public virtual bool Test()
         {
             try
             {
-                using var db = OpenConnection();
+                using var db = ConnectionString.CreateAndOpenConnection();
                 return true;
             }
             catch
@@ -36,11 +30,6 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             }
 
             return false;
-        }
-
-        protected virtual IDbConnection OpenConnection()
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -2,12 +2,14 @@
 using System.Data.OleDb;
 using System.Windows.Forms;
 using Sts.Lib.Data;
+using Sts.Lib.Data.Connections.OleDb;
+using Sts.Lib.Data.Generic;
 using Sts.Lib.Win.Windows.Forms.Data;
 using Button = Sts.Lib.Win.Windows.Forms.Button;
 using Label = Sts.Lib.Win.Windows.Forms.Label;
 using TextBox = Sts.Lib.Win.Windows.Forms.TextBox;
 
-namespace StsLibWin.Data.Connections.OleDB
+namespace Sts.Lib.Win.Data.Connections.OleDB
 {
     public class DatabaseConnectionBuilder : DatabaseConnectionBuilderBase
     {
@@ -43,7 +45,7 @@ namespace StsLibWin.Data.Connections.OleDB
             // 
             // txtSrv
             // 
-            this.txtSrv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtSrv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSrv.SaveControlState = false;
             this.txtSrv.Location = new System.Drawing.Point(104, 15);
@@ -53,7 +55,7 @@ namespace StsLibWin.Data.Connections.OleDB
             // 
             // txtPwd
             // 
-            this.txtPwd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtPwd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPwd.SaveControlState = false;
             this.txtPwd.Location = new System.Drawing.Point(104, 43);
@@ -99,24 +101,22 @@ namespace StsLibWin.Data.Connections.OleDB
             this.PerformLayout();
 
         }
-        public override string ConnectionString
+        public override GenericConnectionString ConnectionString
         {
             get
             {
-                return DatabaseConnectionUtils.DBProvider  +"=" + typeof(OleDbConnection).FullName + ";" + ConnectionStringNoProvider;
-            }
-        }
-        public override string ConnectionStringNoProvider
-        {
-            get
-            {
-                var connectionStringNoProvider = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={txtSrv.Text};";
+                var builder = new OleDbConnectionStringBuilder
+                {
+                    DataSource = txtSrv.Text
+                };
+
                 if (!string.IsNullOrEmpty(txtPwd.Text))
                 {
-                    connectionStringNoProvider += $"Database Password={txtPwd.Text};";
+                    builder.Add("Database Password", txtPwd.Text);
                 }
 
-                return connectionStringNoProvider;
+                return new GenericConnectionString(typeof(Sts.Lib.Data.Connections.OleDb.OleDbEnhancedConnection),
+                                                   builder.ConnectionString);
             }
         }
         public override string DatabaseTypeName
@@ -126,22 +126,11 @@ namespace StsLibWin.Data.Connections.OleDB
                 return "OleDB";
             }
         }
-        public override Type DatabaseConnectionType
-        {
-            get
-            {
-                return typeof(OleDbConnection);
-            }
-        }
         public override bool Test()
         {
             try
             {
-                using var db = new OleDbConnection
-                {
-                    ConnectionString = ConnectionStringNoProvider
-                };
-                db.Open();
+                using var db = ConnectionString.CreateAndOpenConnection();
                 return true;
             }
             catch

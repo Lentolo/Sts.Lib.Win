@@ -9,7 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Sts.Lib\Sources\Sts.Lib.Data.Connections.SqLite\StsLib.Data.Connections.SqLite.csproj" />
+    <ProjectReference Include="..\..\..\Sts.Lib\Sources\Sts.Lib.Data.Connections.OleDB\Sts.Lib.Data.Connections.OleDb.csproj" />
+    <ProjectReference Include="..\..\..\Sts.Lib\Sources\Sts.Lib\Sts.Lib.csproj" />
     <ProjectReference Include="..\Sts.Lib.Win\Sts.Lib.Win.csproj" />
   </ItemGroup>
 

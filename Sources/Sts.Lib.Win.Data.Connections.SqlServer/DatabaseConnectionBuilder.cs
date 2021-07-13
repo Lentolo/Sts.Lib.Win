@@ -1,82 +1,56 @@
-﻿using System;
-using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
+﻿using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using Sts.Lib.Data;
 using Sts.Lib.Data.Connections.SqlServer;
 using Sts.Lib.Data.Extensions;
+using Sts.Lib.Data.Generic;
+using Sts.Lib.Data.Interfaces;
 using Sts.Lib.Win.Windows.Forms.Data;
-using Sts.Lib.Win.Windows.Forms.Extensions;
-using ComboBox = Sts.Lib.Win.Windows.Forms.ComboBox;
-using Label = Sts.Lib.Win.Windows.Forms.Label;
-using TextBox = Sts.Lib.Win.Windows.Forms.TextBox;
 
 namespace Sts.Lib.Win.Data.Connections.SqlServer
 {
     public class DatabaseConnectionBuilder : CommonDatabaseConnectionBuilderBase
     {
-        public DatabaseConnectionBuilder() : base()
-        {
-        }
-
-        public override string ConnectionString
+        public override GenericConnectionString ConnectionString
         {
             get
             {
-                return Sts.Lib.Data.DatabaseConnectionUtils.DBProvider + "=" + typeof(SqlConnection).FullName + ";" +
-                       ConnectionStringNoProvider;
-            }
-        }
-
-        public override string ConnectionStringNoProvider
-        {
-            get
-            {
-                var connectionStringNoProvider =
-                    $"MultipleActiveResultSets=True;User ID={TxtUid.Text};Server={TxtSrv.Text};";
-                if (!string.IsNullOrEmpty(TxtPort.Text) && TxtPort.Text != "1433")
+                var builder = new SqlConnectionStringBuilder
                 {
-                    connectionStringNoProvider = $"User ID={TxtUid.Text};Server={TxtSrv.Text},{TxtPort.Text};";
+                    DataSource = TxtSrv.Text,
+                    MultipleActiveResultSets = true
+                };
+
+                if (!string.IsNullOrEmpty(TxtPort.Text) && Common.Convert.Utils.TryParseTo(TxtPort.Text, 1433) != 1433)
+                {
+                    builder.DataSource = $"{TxtSrv.Text},{TxtPort.Text}";
                 }
 
                 if (!string.IsNullOrEmpty(TxtPwd.Text))
                 {
-                    connectionStringNoProvider += $"Password={TxtPwd.Text};";
+                    builder.Password = TxtPwd.Text;
                 }
 
                 if (!string.IsNullOrEmpty(CmbDB.SelectedItem as string))
                 {
-                    connectionStringNoProvider += $"Database={CmbDB.SelectedItem as string};";
+                    builder.InitialCatalog = CmbDB.SelectedItem as string;
                 }
 
-                return connectionStringNoProvider;
+                return new GenericConnectionString(typeof(SqlServerEnhancedConnection), builder.ConnectionString);
             }
         }
 
         public override string DatabaseTypeName
         {
-            get { return "Sql Server"; }
+            get
+            {
+                return "Sql Server";
+            }
         }
 
-        public override Type DatabaseConnectionType
+        protected override string[] GetDatabases(IEnhancedDbConnection db)
         {
-            get { return typeof(SqlConnection); }
-        }
-
-        protected override IDbConnection OpenConnection()
-        {
-            var db = new SqlConnection(ConnectionStringNoProvider);
-            db.Open();
-            return db;
-        }
-
-        protected override string[] GetDatabases(IDbConnection db)
-        {
-            return db
-                .ExecuteReaderAndMap("SELECT NAME FROM SYS.DATABASES;", r => r["NAME"] as string)
-                .ToArray();
+            return db.ExecuteReaderAndMap("SELECT NAME FROM SYS.DATABASES;", r => r["NAME"] as string).ToArray();
         }
     }
 }

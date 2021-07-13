@@ -1,17 +1,11 @@
-﻿using System;
-using System.Data;
-using System.Drawing;
+﻿using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Sts.Lib.Data;
 using Sts.Lib.Data.Connections.Postgres;
 using Sts.Lib.Data.Extensions;
+using Sts.Lib.Data.Generic;
+using Sts.Lib.Data.Interfaces;
 using Sts.Lib.Win.Windows.Forms.Data;
-using Sts.Lib.Win.Windows.Forms.Extensions;
-using ComboBox = Sts.Lib.Win.Windows.Forms.ComboBox;
-using Label = Sts.Lib.Win.Windows.Forms.Label;
-using TextBox = Sts.Lib.Win.Windows.Forms.TextBox;
 
 namespace Sts.Lib.Win.Data.Connections.Postgres
 {
@@ -22,47 +16,32 @@ namespace Sts.Lib.Win.Data.Connections.Postgres
             this.TxtPort.Text = "5432";
         }
 
-        protected override IDbConnection OpenConnection()
-        {
-            var db = new Npgsql.NpgsqlConnection
-            {
-                ConnectionString = ConnectionStringNoProvider
-            };
-            db.Open();
-            return db;
-        }
-
-        public override string ConnectionString
+        public override GenericConnectionString ConnectionString
         {
             get
             {
-                return DatabaseConnectionUtils.DBProvider + "=" +
-                       typeof(Npgsql.NpgsqlConnection).FullName + ";" +
-                       ConnectionStringNoProvider;
-            }
-        }
+                var builder = new Npgsql.NpgsqlConnectionStringBuilder
+                {
+                    Username = TxtUid.Text,
+                    Host = TxtSrv.Text
+                };
 
-        public override string ConnectionStringNoProvider
-        {
-            get
-            {
-                var connectionStringNoProvider = $"User ID={TxtUid.Text};Host={TxtSrv.Text};";
                 if (!string.IsNullOrEmpty(TxtPwd.Text))
                 {
-                    connectionStringNoProvider += $"Password={TxtPwd.Text};";
+                    builder.Password= TxtPwd.Text;
                 }
 
-                if (!string.IsNullOrEmpty(TxtPort.Text) && TxtPort.Text != "5432")
+                if (!string.IsNullOrEmpty(TxtPort.Text) && Sts.Lib.Common.Convert.Utils.TryParseTo( TxtPort.Text ,5432) != 5432)
                 {
-                    connectionStringNoProvider += $"Port={TxtPort.Text};";
+                    builder.Port+=  Sts.Lib.Common.Convert.Utils.TryParseTo( TxtPort.Text ,5432) ;
                 }
 
                 if (!string.IsNullOrEmpty(CmbDB.SelectedItem as string))
                 {
-                    connectionStringNoProvider += $"Database={CmbDB.SelectedItem as string};";
+                    builder.Database+= CmbDB.SelectedItem as string;
                 }
 
-                return connectionStringNoProvider;
+                return new GenericConnectionString(typeof(PostgresEnhancedConnection), builder.ConnectionString);
             }
         }
 
@@ -71,12 +50,7 @@ namespace Sts.Lib.Win.Data.Connections.Postgres
             get { return "Postgres"; }
         }
 
-        public override Type DatabaseConnectionType
-        {
-            get { return typeof(Npgsql.NpgsqlConnection); }
-        }
-
-        protected override string[] GetDatabases(IDbConnection db)
+        protected override string[] GetDatabases(IEnhancedDbConnection db)
         {
             return db
                 .ExecuteReaderAndMap("SELECT datname FROM pg_database;", r => r["datname"] as string)

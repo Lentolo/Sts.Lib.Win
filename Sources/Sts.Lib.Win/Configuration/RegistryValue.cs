@@ -51,36 +51,36 @@ namespace Sts.Lib.Win.Configuration
             try
             {
                 var value = RootKey.OpenSubKey(SubKey).GetValue(ValueName);
-                if (value is T)
+                if (value is T value1)
                 {
-                    rValue = (T)value;
+                    rValue = value1;
                 }
-                else if (value is string)
+                else if (value is string s)
                 {
                     if (typeof(T) == typeof(bool))
                     {
-                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo((string)value, _default);
+                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo(s, _default);
                     }
                     else if (typeof(T) == typeof(float))
                     {
-                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo((string)value, _default, CultureInfo.InvariantCulture, NumberStyles.Number);
+                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo(s, _default, CultureInfo.InvariantCulture, NumberStyles.Number);
                     }
                     else if (typeof(T) == typeof(double))
                     {
-                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo((string)value, _default, CultureInfo.InvariantCulture, NumberStyles.Number);
+                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo(s, _default, CultureInfo.InvariantCulture, NumberStyles.Number);
                     }
                     else if (typeof(T) == typeof(DateTime))
                     {
-                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo((string)value, _default, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo(s, _default, CultureInfo.InvariantCulture, DateTimeStyles.None);
                     }
                     else if (typeof(T).IsEnum)
                     {
-                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo((string)value, _default, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        rValue = Sts.Lib.Common.Convert.Utils.TryParseTo(s, _default, CultureInfo.InvariantCulture, DateTimeStyles.None);
                     }
                     else
                     {
                         var rVal = _default;
-                        var strValue = (string)value;
+                        var strValue = s;
                         OnSerialize(false, ref rVal, ref strValue);
                         rValue = rVal;
                     }

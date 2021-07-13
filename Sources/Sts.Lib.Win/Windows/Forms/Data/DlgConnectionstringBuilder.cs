@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Sts.Lib.Common.Extensions;
+using Sts.Lib.Data;
+using Sts.Lib.Data.Generic;
 using Sts.Lib.Win.Windows.Forms.Data;
 using Form = Sts.Lib.Win.Windows.Forms.Form;
 
@@ -13,21 +15,11 @@ namespace Sts.Lib.Win.Windows.Forms.Data
 {
   public partial class DlgConnectionstringBuilder : Form
   {
-    public Type ConnectionType
-    {
-      get;
-      private set;
-    }
     public DlgConnectionstringBuilder()
     {
       InitializeComponent();
     }
-    public string ConnectionString
-    {
-      get;
-      private set;
-    }
-    public string ConnectionStringNoProvider
+    public GenericConnectionString ConnectionString
     {
       get;
       private set;
@@ -84,8 +76,6 @@ namespace Sts.Lib.Win.Windows.Forms.Data
         else
         {
           ConnectionString = CurrentControl?.ConnectionString;
-          ConnectionStringNoProvider = CurrentControl?.ConnectionStringNoProvider;
-          ConnectionType = CurrentControl?.DatabaseConnectionType;
         }
       }
     }

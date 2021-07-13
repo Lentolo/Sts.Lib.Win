@@ -11,9 +11,9 @@ using Sts.Lib.Data.Schema;
 using Sts.Lib.Linq.Extensions;
 using Utils = Sts.Lib.Text.RegularExpressions.Utils;
 
-namespace StsLibWin.Data.Connections.Oracle
+namespace Sts.Lib.Win.Data.Connections.Oracle
 {
-    public class ServerSchemaExtractor : IServerSchemaExtractor
+    internal class ServerSchemaExtractor : IServerSchemaExtractor
     {
         private readonly IDbConnection _dbConnection;
         private readonly ISqlConverter _sqlConverter;

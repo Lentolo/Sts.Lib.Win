@@ -2,11 +2,12 @@
 using System.Windows.Forms;
 using Oracle.ManagedDataAccess.Client;
 using Sts.Lib.Data;
+using Sts.Lib.Data.Generic;
 using Sts.Lib.Win.Windows.Forms.Data;
 using Label = Sts.Lib.Win.Windows.Forms.Label;
 using TextBox = Sts.Lib.Win.Windows.Forms.TextBox;
 
-namespace StsLibWin.Data.Connections.Oracle
+namespace Sts.Lib.Win.Data.Connections.Oracle
 {
     public class DatabaseConnectionBuilder : DatabaseConnectionBuilderBase
     {
@@ -156,18 +157,11 @@ namespace StsLibWin.Data.Connections.Oracle
             this.PerformLayout();
 
         }
-        public override string ConnectionString
+        public override GenericConnectionString ConnectionString
         {
             get
             {
-                return DatabaseConnectionUtils.DBProvider + "=" + typeof(OracleConnection).FullName + ";" + ConnectionStringNoProvider;
-            }
-        }
-        public override string ConnectionStringNoProvider
-        {
-            get
-            {
-                return $"Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={txtSrv.Text})(PORT={txtPort.Text}))(CONNECT_DATA=(SERVICE_NAME={txtSid.Text})));User Id={txtUid.Text};Password={txtPwd.Text};";
+                return new GenericConnectionString(typeof(OracleEnhancedConnection), $"Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={txtSrv.Text})(PORT={txtPort.Text}))(CONNECT_DATA=(SERVICE_NAME={txtSid.Text})));User Id={txtUid.Text};Password={txtPwd.Text};");
             }
         }
         public override string DatabaseTypeName
@@ -177,22 +171,11 @@ namespace StsLibWin.Data.Connections.Oracle
                 return "Oracle";
             }
         }
-        public override Type DatabaseConnectionType
-        {
-            get
-            {
-                return typeof(OracleConnection);
-            }
-        }
         public override bool Test()
         {
             try
             {
-                using var db = new OracleConnection
-                {
-                    ConnectionString = ConnectionStringNoProvider
-                };
-                db.Open();
+                using var db = ConnectionString.CreateAndOpenConnection();
                 return true;
             }
             catch

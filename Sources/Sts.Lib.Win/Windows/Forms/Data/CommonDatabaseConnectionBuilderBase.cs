@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sts.Lib.Data.Extensions;
+using Sts.Lib.Data.Interfaces;
 using Sts.Lib.Win.Windows.Forms.Extensions;
 
 namespace Sts.Lib.Win.Windows.Forms.Data
@@ -195,7 +196,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             {
                 try
                 {
-                    using var db = OpenConnection();
+                    using var db = ConnectionString.CreateAndOpenConnection();
                     CmbDB.Items.AddRange(GetDatabases(db));
                 }
                 catch
@@ -214,7 +215,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             CmbDB.Items.Clear();
         }
 
-        protected virtual string[] GetDatabases(IDbConnection db)
+        protected virtual string[] GetDatabases(IEnhancedDbConnection db)
         {
             throw  new NotImplementedException();
         }
