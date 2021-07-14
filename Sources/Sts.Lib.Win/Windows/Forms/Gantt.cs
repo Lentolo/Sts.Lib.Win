@@ -89,7 +89,7 @@ namespace Sts.Lib.Win.Windows.Forms
             var data = Sts.Lib.Linq.Extensions.Extensions.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
       foreach (var activities in data.GroupBy(ii => ii.Activity).ToItemsList())
       {
-        e.Graphics.DrawString(activities.Data.Key, Font, Brushes.Black, 0, activities.Index * BlockSize.Height);
+        e.Graphics.DrawString(activities.Value.Key, Font, Brushes.Black, 0, activities.Index * BlockSize.Height);
       }
     }
     protected override void OnLoad(EventArgs e)
@@ -118,7 +118,7 @@ namespace Sts.Lib.Win.Windows.Forms
       var minDate = data.Select(i => i.DateFrom).DefaultIfEmpty(DateTime.MinValue).Min();
       foreach (var activities in data.GroupBy(ii => ii.Activity).ToItemsList())
       {
-        foreach (var item in activities.Data)
+        foreach (var item in activities.Value)
         {
           e.Graphics.DrawRectangle(Pens.Black, (float)(item.DateFrom - minDate).TotalHours * BlockSize.Width, activities.Index * BlockSize.Height, (float)(item.DateTo - item.DateFrom).TotalHours * BlockSize.Width, BlockSize.Height);
         }

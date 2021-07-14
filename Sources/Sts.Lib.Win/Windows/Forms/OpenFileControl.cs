@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Linq;
+using System.Windows.Forms;
 using Sts.Lib.Collections.Generic;
 
 namespace Sts.Lib.Win.Windows.Forms
@@ -22,7 +23,7 @@ namespace Sts.Lib.Win.Windows.Forms
         {
             if (Dialog.ShowDialog() == DialogResult.OK)
             {
-                return (true, Dialog.FileName);
+                return (true, Dialog.FileNames.Any() ? Dialog.FileNames.Aggregate("", (s, i) => s + i + System.IO.Path.PathSeparator) : Dialog.FileName);
             }
 
             return (false, "");
