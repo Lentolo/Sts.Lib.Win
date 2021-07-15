@@ -44,8 +44,8 @@ namespace Sts.Lib.Win.Diagnostics
 
         public static bool CreateProcessWithLogonW(string domain, string user, string password, string fileName, string arguments)
         {
-            var startupInfo = new Win32.StartupInfo();
-            return Win32.CreateProcessWithLogonW(user, domain, password, Win32.LogonWithProfile, fileName, arguments, Win32.CreateNewConsole, 0, null, ref startupInfo, out _);
+            var startupInfo = new Win32.Structs.StartupInfo();
+            return Win32.CreateProcessWithLogonW(user, domain, password, Win32.Constants.LogonWithProfile, fileName, arguments, Win32.Constants.CreateNewConsole, 0, null, ref startupInfo, out _);
         }
 
         public static IEnumerable<ProcessWindow> GetWindows()

@@ -1327,7 +1327,7 @@ namespace Sts.Lib.Win.Windows.Forms
       {
         var pt = new Point(0, 0);
         using var uo = new UnmanagedObject<Point>(pt);
-        Win32.SendMessage(Handle, Win32.EmGetscrollpos, 0, uo.Pointer());
+        Win32.SendMessage(Handle, Win32.Constants.EmGetscrollpos, 0, uo.Pointer());
         pt = uo.Structure;
 
         return pt;
@@ -1335,7 +1335,7 @@ namespace Sts.Lib.Win.Windows.Forms
       set
       {
           using var uo = new UnmanagedObject<Point>(value);
-          Win32.SendMessage(Handle, Win32.EmSetscrollpos, 0, uo.Pointer());
+          Win32.SendMessage(Handle, Win32.Constants.EmSetscrollpos, 0, uo.Pointer());
       }
     }
     public void SetLanguageElements(ILanguageElements languageElements)
@@ -1413,13 +1413,13 @@ namespace Sts.Lib.Win.Windows.Forms
     }
     private int StopUpdateUi()
     {
-      Win32.SendMessage(Handle, (int) Win32.WmConstants.WmSetredraw, 0, IntPtr.Zero);
-      return Win32.SendMessage(Handle, Win32.EmGeteventmask, 0, IntPtr.Zero);
+      Win32.SendMessage(Handle, (int) Win32.Enums.WmConstants.WmSetredraw, 0, IntPtr.Zero);
+      return Win32.SendMessage(Handle, Win32.Constants.EmGeteventmask, 0, IntPtr.Zero);
     }
     private void StartUpdateUi(int eventMask)
     {
-      Win32.SendMessage(Handle, Win32.EmSeteventmask, 0, (IntPtr) eventMask);
-      Win32.SendMessage(Handle, (int) Win32.WmConstants.WmSetredraw, 1, IntPtr.Zero);
+      Win32.SendMessage(Handle, Win32.Constants.EmSeteventmask, 0, (IntPtr) eventMask);
+      Win32.SendMessage(Handle, (int) Win32.Enums.WmConstants.WmSetredraw, 1, IntPtr.Zero);
     }
     private void HighLight(int selStart, int selEnd)
     {

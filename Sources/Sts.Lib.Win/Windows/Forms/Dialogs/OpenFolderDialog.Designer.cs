@@ -94,6 +94,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.twFolders.SelectedImageIndex = 0;
             this.twFolders.Size = new System.Drawing.Size(266, 247);
             this.twFolders.TabIndex = 0;
+            this.twFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.twFolders_BeforeExpand);
             // 
             // ilFolders
             // 

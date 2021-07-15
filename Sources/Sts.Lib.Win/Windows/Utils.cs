@@ -46,7 +46,7 @@ namespace Sts.Lib.Win.Windows
                     break;
             }
 
-            Win32.SystemParametersInfo(Win32.SpiSetdeskwallpaper, 0, path, Win32.SpifSendwininichange | Win32.SpifUpdateinifile);
+            Win32.SystemParametersInfo(Win32.Constants.SpiSetdeskwallpaper, 0, path, Win32.Constants.SpifSendwininichange | Win32.Constants.SpifUpdateinifile);
         }
 
         public static void SetWaveVolume(int leftChannel, int rightChannel)
@@ -73,7 +73,7 @@ namespace Sts.Lib.Win.Windows
 
         public static uint GetLastInputInfo()
         {
-            var lastInputInfo = new Win32.Lastinputinfo();
+            var lastInputInfo = new Win32.Structs.Lastinputinfo();
             lastInputInfo.cbSize = (uint) Marshal.SizeOf(lastInputInfo);
 
             if (Win32.GetLastInputInfo(ref lastInputInfo))
