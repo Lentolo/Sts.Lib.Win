@@ -1,101 +1,125 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Sts.Lib.Common.Extensions;
+using Sts.Lib.IO.Extensions;
+using Sts.Lib.IO.PathSystems;
 using Sts.Lib.Win.Windows.Forms.Extensions;
 
 namespace Sts.Lib.Win.Windows.Forms.Dialogs
 {
     public partial class OpenFolderDialog : Form
     {
-        public class FolderNode : TreeNode
-        {
-            public string Path
-            { get; set; }
-        }
-        public class DrivesNode : TreeNode
-        { }
+        private const string MyComputerName = "MyComputer";
+        private const string MyComputerText = "MyComputer";
+        private const string ImageKey_Folder = "folder";
+        private const string ImageKey_OpenFolder = "open-folder";
+        private const string ImageKey_MyComputer = "monitor";
+        private const string ImageKey_Desktop = "desktop";
+        private const string ImageKey_Documents = "documents";
+        private const string ImageKey_Drive = "hdd";
 
-        public class DriveNode : FolderNode
-        { }
         public OpenFolderDialog()
         {
             InitializeComponent();
+            tsddbView.DropDownItems.Clear();
+            tsddbView.DropDownItems.AddRange(Enum.GetValues(typeof(View)).OfType<View>().Select(v =>
+            {
+                var toolStripMenuItem = new ToolStripMenuItem
+                {
+                    Name = v.ToString(),
+                    Text = v.ToString(),
+                    Tag = v
+                };
+                toolStripMenuItem.Click += (s, e) =>
+                {
+                    var view = (View) ((ToolStripMenuItem) s).Tag;
+                    lvFolders.View = view;
+                    if(view ==View.Details)
+                    {
+                        lvFolders.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                    }
+                };
+                return toolStripMenuItem;
+            }).ToArray());
         }
+
+        public bool ShowHiddenFolders
+        {
+            get;
+            set;
+        }
+
+        public bool ShowSystemFolders
+        {
+            get;
+            set;
+        }
+
         protected override void OnLoad(EventArgs e)
         {
+            RootNode AddSpecialFolderDrive(Environment.SpecialFolder folder, string name, string text, string ImageKey)
+            {
+                var rootNode = (RootNode) twFolders.Nodes.AddNodeIfNotExist(new RootNode
+                {
+                    Name = name,
+                    Text = text,
+                    Path = Environment.GetFolderPath(folder),
+                    ImageKey = ImageKey,
+                    SelectedImageKey = ImageKey
+                });
+
+                return rootNode;
+            }
+
             base.OnLoad(e);
 
-            var rootNode = AddSpecialFolderDrive<DriveNode>(Environment.SpecialFolder.MyComputer, "MyComputer", "MyComputer");
+            var rootNode = AddSpecialFolderDrive(Environment.SpecialFolder.MyComputer, MyComputerName, MyComputerText, ImageKey_MyComputer);
+
             foreach (var drive in DriveInfo.GetDrives().Where(d => d.IsReady))
             {
-                using var ico = IconsUtils.GetFileIcon(drive.Name, IconsUtils.IconSize.Large, false);
-                var key = AddToImageListAndGetKey(ico);
-                rootNode.Nodes.AddNodeIfNotExist(new DriveNode()
+                rootNode.Nodes.AddNodeIfNotExist(new RootNode
                 {
                     Name = drive.Name,
                     Text = $"{drive.VolumeLabel} ({drive.Name})",
                     Path = drive.Name,
-                    ImageKey = key,
-                    SelectedImageKey = key,
+                    ImageKey = ImageKey_Drive,
+                    SelectedImageKey = ImageKey_Drive
                 });
             }
-            rootNode = AddSpecialFolderDrive<DriveNode>(Environment.SpecialFolder.Desktop, "Desktop", "Desktop");
+
+            rootNode = AddSpecialFolderDrive(Environment.SpecialFolder.Desktop, "Desktop", "Desktop", ImageKey_Desktop);
             AddChilds(rootNode);
-            rootNode = AddSpecialFolderDrive<DriveNode>(Environment.SpecialFolder.MyDocuments, "MyDocuments", "MyDocuments");
+            rootNode = AddSpecialFolderDrive(Environment.SpecialFolder.MyDocuments, "MyDocuments", "MyDocuments", ImageKey_Documents);
             AddChilds(rootNode);
         }
 
         private void AddChilds(FolderNode rootNode)
         {
-            foreach (var path in Sts.Lib.Delegates.Utils.TryExecuteExecuteFunc(() => System.IO.Directory.GetDirectories(rootNode.Path), Array.Empty<string>()))
+            foreach (var path in GetFolders(rootNode.Path).OrderBy(p => Path.GetFileName(p).ToLowerInvariant()))
             {
-                using var ico = IconsUtils.GetFileIcon(path, IconsUtils.IconSize.Large, false);
-                var key = AddToImageListAndGetKey(ico);
-                rootNode.Nodes.AddNodeIfNotExist(new DriveNode()
+                rootNode.Nodes.AddNodeIfNotExist(new FolderNode
                 {
-                    Name = path,
-                    Text = System.IO.Path.GetFileName(path),
+                    Name = Path.GetFileName(path),
+                    Text = Path.GetFileName(path),
                     Path = path,
-                    ImageKey = key,
-                    SelectedImageKey = key,
+                    ImageKey = ImageKey_Folder,
+                    SelectedImageKey = ImageKey_Folder
                 });
             }
         }
 
-        private T AddSpecialFolderDrive<T>(Environment.SpecialFolder folder, string name, string text)
-        where T : FolderNode, new()
+        private string[] GetFolders(string path)
         {
-            using var ico = IconsUtils.GetSpecialFolderIcon(folder, IconsUtils.IconSize.Large, false);
-            var key = AddToImageListAndGetKey(ico);
-            var rootNode = (T)twFolders.Nodes.AddNodeIfNotExist(new T()
+            var attributesToSkip = (ShowHiddenFolders ? FileAttributes.Hidden : 0) | (ShowSystemFolders ? FileAttributes.System : 0) | FileAttributes.Offline;
+            return Directory.GetDirectories(path, "*", new EnumerationOptions
             {
-                Name = name,
-                Text = text,
-                Path = Environment.GetFolderPath(folder),
-                ImageKey = key,
-                SelectedImageKey = key,
+                AttributesToSkip = attributesToSkip,
+                IgnoreInaccessible = true,
+                RecurseSubdirectories = false,
+                ReturnSpecialDirectories = false
             });
-
-            return rootNode;
-        }
-
-        private string AddToImageListAndGetKey(IconsUtils.IconInfo ico)
-        {
-            var key = $"{ico.Location}{ico.Index}";
-
-            if (ilFolders.Images[key] == null)
-            {
-                ilFolders.Images.Add(key, (Icon)ico.Icon.Clone());
-            }
-
-            return key;
         }
 
         private void twFolders_BeforeExpand(object sender, TreeViewCancelEventArgs e)
@@ -105,10 +129,169 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
                 return;
             }
 
-            foreach (var nn in node.Nodes.OfType<FolderNode>().Where(n => n.Nodes.Count == 0))
+            foreach (var childNode in node.Nodes.OfType<FolderNode>().Where(n => n.Nodes.Count == 0))
             {
-                AddChilds(nn);
+                AddChilds(childNode);
             }
         }
+
+        private void SetCurrentPath(string path, NavigationSource navigationSource)
+        {
+            if (!Directory.Exists(path))
+            {
+                return;
+            }
+
+            tstbCurrentPath.Text = path;
+
+            lvFolders.Items.Clear();
+
+            foreach (var subPath in GetFolders(tstbCurrentPath.Text))
+            {
+                var di = new DirectoryInfo(subPath);
+                var listViewItem = new FolderItem
+                {
+                    Name = Path.GetFileName(subPath),
+                    Text = Path.GetFileName(subPath),
+                    Path = subPath,
+                    ImageKey = ImageKey_Folder
+                };
+                listViewItem.SubItems.Add(di.CreationTime.ToShortDateTimeString());
+                listViewItem.SubItems.Add(di.LastWriteTime.ToShortDateTimeString());
+                lvFolders.Items.Add(listViewItem);
+            }
+
+            if (navigationSource != NavigationSource.NodeClick && navigationSource != NavigationSource.NodeKeyPress)
+            {
+                var windowsPathSystem = new WindowsPathSystem();
+                var sp = windowsPathSystem.SplitPath(path.EnsureTrailingString($"{windowsPathSystem.FolderSeparatorChar}"));
+                var current = ExpandIfCollapsed(Linq.Utils.GetAncestorUntil(twFolders.SelectedNode, n => n.Parent, n => n == null));
+                current = ExpandIfCollapsed(current?.Nodes[sp.VolumePath]);
+
+                foreach (var folder in sp.Folders)
+                {
+                    current = ExpandIfCollapsed(current?.Nodes[folder]);
+                }
+            }
+        }
+
+        private static TreeNode ExpandIfCollapsed(TreeNode treeNode)
+        {
+            if (!treeNode?.IsExpanded ?? false)
+            {
+                treeNode.Expand();
+            }
+
+            return treeNode;
+        }
+
+        private void twFolders_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter
+                && !e.Shift
+                && !e.Alt
+                && !e.Control
+                && twFolders.SelectedNode is FolderNode folder)
+            {
+                SetCurrentPath(folder.Path, NavigationSource.NodeKeyPress);
+            }
+        }
+
+        private void lvFolders_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (lvFolders.GetItemAt(e.X, e.Y) is FolderItem item)
+            {
+                SetCurrentPath(item.Path, NavigationSource.ItemClick);
+            }
+        }
+
+        private void twFolders_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node is FolderNode node && twFolders.HitTest(e.Location).Location != TreeViewHitTestLocations.PlusMinus)
+            {
+                SetCurrentPath(node.Path, NavigationSource.NodeClick);
+            }
+        }
+
+        private void twFolders_AfterCollapse(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node is FolderNode node and not RootNode)
+            {
+                node.ImageKey = ImageKey_Folder;
+                node.SelectedImageKey = ImageKey_Folder;
+            }
+        }
+
+        private void twFolders_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node is FolderNode node and not RootNode)
+            {
+                node.ImageKey = ImageKey_OpenFolder;
+                node.SelectedImageKey = ImageKey_OpenFolder;
+            }
+        }
+
+        private void lvFolders_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter
+                && !e.Shift
+                && !e.Alt
+                && !e.Control
+                && lvFolders.SelectedItems.OfType<FolderItem>().FirstOrDefault() is { } folder)
+            {
+                SetCurrentPath(folder.Path, NavigationSource.ItemKeyPress);
+            }
+
+            if (e.KeyCode == Keys.Up
+                && !e.Shift
+                && e.Alt
+                && !e.Control
+                && Directory.Exists(tstbCurrentPath.Text))
+            {
+                NavigateToParent();
+            }
+        }
+
+        private void tsbUp_Click(object sender, EventArgs e)
+        {
+            NavigateToParent();
+        }
+
+        private void NavigateToParent()
+        {
+            if (Directory.Exists(tstbCurrentPath.Text))
+            {
+                SetCurrentPath(Path.GetDirectoryName(tstbCurrentPath.Text), NavigationSource.NodeKeyPress);
+            }
+        }
+
+        private enum NavigationSource
+        {
+            NodeClick,
+            NodeKeyPress,
+            ItemClick,
+            ItemKeyPress
+        }
+
+        private class FolderItem : ListViewItem
+        {
+            public string Path
+            {
+                get;
+                init;
+            }
+        }
+
+        private class FolderNode : TreeNode
+        {
+            public string Path
+            {
+                get;
+                init;
+            }
+        }
+
+        private class RootNode : FolderNode
+        { }
     }
 }

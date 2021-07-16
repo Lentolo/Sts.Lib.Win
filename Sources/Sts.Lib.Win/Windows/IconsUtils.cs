@@ -22,10 +22,10 @@ namespace Sts.Lib.Win.Windows
 
         private static Icon MakeTransparent(Icon icon)
         {
-            using var bmp = new Bitmap(icon.Width, icon.Height);
+            using var bmp = new Bitmap(4*icon.Width, 4*icon.Height);
             using var gp = Graphics.FromImage(bmp);
             gp.Clear(Color.Transparent);
-            gp.DrawIcon(icon, new Rectangle(0, 0, icon.Width, icon.Height));
+            gp.DrawIcon(icon, new Rectangle(0, 0, 4*icon.Width, 4*icon.Height));
             return Icon.FromHandle(bmp.GetHicon());
         }
 
@@ -98,6 +98,20 @@ namespace Sts.Lib.Win.Windows
 
             uFlags += IconSize.Small == size ? Win32.Constants.SHGFI_SMALLICON : Win32.Constants.SHGFI_LARGEICON;
             Win32.SHGetFileInfo(pszPath, 0, ref psfi, (uint)Marshal.SizeOf(psfi), uFlags);
+
+            if (psfi.hIcon == IntPtr.Zero)
+            {
+                using var b = new Bitmap(256, 256);
+                using var gp = Graphics.FromImage(b);
+                gp.Clear(Color.Transparent);
+                return new IconInfo
+                {
+                    Icon = Icon.FromHandle(b.GetHicon()) ,
+                    Index = 0,
+                    Location = "##TransparentIcon##"
+                };
+            }
+
             using var clone = (Icon)Icon.FromHandle(psfi.hIcon).Clone();
             return new IconInfo
             {
