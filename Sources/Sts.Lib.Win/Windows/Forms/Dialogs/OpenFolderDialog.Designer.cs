@@ -51,6 +51,8 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.ilIcons64 = new System.Windows.Forms.ImageList(this.components);
             this.ilIcons16 = new System.Windows.Forms.ImageList(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panel2)).BeginInit();
             this.panel2.Panel1.SuspendLayout();
             this.panel2.Panel2.SuspendLayout();
@@ -75,6 +77,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 316);
             this.panel1.Name = "panel1";
@@ -236,6 +239,8 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.lvFolders.LargeImageList = this.ilIcons64;
             this.lvFolders.Location = new System.Drawing.Point(0, 0);
             this.lvFolders.Name = "lvFolders";
+            this.lvFolders.OwnerDraw = true;
+            this.lvFolders.ShowGroups = false;
             this.lvFolders.Size = new System.Drawing.Size(524, 288);
             this.lvFolders.SmallImageList = this.ilIcons32;
             this.lvFolders.StateImageList = this.ilIcons32;
@@ -282,6 +287,16 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.ilIcons16.Images.SetKeyName(5, "user-folder");
             this.ilIcons16.Images.SetKeyName(6, "open-folder");
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(242, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 15);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "label1";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // OpenFolderDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -294,6 +309,8 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.Name = "OpenFolderDialog";
             this.ShowInTaskbar = false;
             this.Text = "OpenFolderDialog";
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.panel2.Panel1.ResumeLayout(false);
             this.panel2.Panel1.PerformLayout();
             this.panel2.Panel2.ResumeLayout(false);
@@ -335,5 +352,6 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.Label label1;
     }
 }

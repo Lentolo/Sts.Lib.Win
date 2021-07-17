@@ -34,9 +34,9 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
                 };
                 toolStripMenuItem.Click += (s, e) =>
                 {
-                    var view = (View) ((ToolStripMenuItem) s).Tag;
+                    var view = (View)((ToolStripMenuItem)s).Tag;
                     lvFolders.View = view;
-                    if(view ==View.Details)
+                    if (view == View.Details)
                     {
                         lvFolders.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                     }
@@ -61,7 +61,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
         {
             RootNode AddSpecialFolderDrive(Environment.SpecialFolder folder, string name, string text, string ImageKey)
             {
-                var rootNode = (RootNode) twFolders.Nodes.AddNodeIfNotExist(new RootNode
+                var rootNode = (RootNode)twFolders.Nodes.AddNodeIfNotExist(new RootNode
                 {
                     Name = name,
                     Text = text,
@@ -112,7 +112,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
 
         private string[] GetFolders(string path)
         {
-            var attributesToSkip = (ShowHiddenFolders ? FileAttributes.Hidden : 0) | (ShowSystemFolders ? FileAttributes.System : 0) | FileAttributes.Offline;
+            var attributesToSkip = (ShowHiddenFolders ? 0 : FileAttributes.Hidden) | (ShowSystemFolders ? 0 : FileAttributes.System) | FileAttributes.Offline;
             return Directory.GetDirectories(path, "*", new EnumerationOptions
             {
                 AttributesToSkip = attributesToSkip,
