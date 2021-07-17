@@ -24,7 +24,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
         {
             InitializeComponent();
             tsddbView.DropDownItems.Clear();
-            tsddbView.DropDownItems.AddRange(Enum.GetValues(typeof(View)).OfType<View>().Select(v =>
+            tsddbView.DropDownItems.AddRange(Enum.GetValues(typeof(View)).OfType<View>().Where(v => v != View.Tile).Select(v =>
             {
                 var toolStripMenuItem = new ToolStripMenuItem
                 {
@@ -34,8 +34,9 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
                 };
                 toolStripMenuItem.Click += (s, e) =>
                 {
-                    var view = (View)((ToolStripMenuItem)s).Tag;
+                    var view = (View) ((ToolStripMenuItem) s).Tag;
                     lvFolders.View = view;
+
                     if (view == View.Details)
                     {
                         lvFolders.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -61,7 +62,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
         {
             RootNode AddSpecialFolderDrive(Environment.SpecialFolder folder, string name, string text, string ImageKey)
             {
-                var rootNode = (RootNode)twFolders.Nodes.AddNodeIfNotExist(new RootNode
+                var rootNode = (RootNode) twFolders.Nodes.AddNodeIfNotExist(new RootNode
                 {
                     Name = name,
                     Text = text,

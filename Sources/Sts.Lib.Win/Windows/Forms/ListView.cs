@@ -2,7 +2,8 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using Sts.Lib.Drawing.Extensions;
+using System.Windows.Forms.VisualStyles;
+using Sts.Lib.Drawing;
 
 namespace Sts.Lib.Win.Windows.Forms
 {
@@ -38,7 +39,7 @@ namespace Sts.Lib.Win.Windows.Forms
             switch (View)
             {
                 case View.LargeIcon:
-                    DrawItemLargeIcon(e.Item, e.Graphics, e.Bounds, e.State, LargeImageList, Font, ForeColor);
+                    DrawItemLargeIcon(LargeImageList.Images[e.Item.ImageKey], e.Graphics, e.Bounds, e.Item.Text, Font, ForeColor, CheckBoxes, (e.State & ListViewItemStates.Focused) == ListViewItemStates.Focused, e.Item.Selected, e.Item.Checked);
                     break;
                 case View.Details:
                     e.DrawDefault = true;
@@ -57,42 +58,53 @@ namespace Sts.Lib.Win.Windows.Forms
             }
         }
 
-        private static void DrawItemLargeIcon(ListViewItem item, Graphics graphics, Rectangle bounds, ListViewItemStates state, ImageList imageList, Font font, Color foreColor)
+        private static void DrawItemLargeIcon(Image image, Graphics graphics, Rectangle bounds, string itemText, Font font, Color foreColor, bool useCheckBoxes, bool itemFocused, bool itemSelected, bool itemChecked)
         {
-            if (imageList == null)
+            var drawingBounds = ((RectangleD)bounds).Expand(-1);
+            var centerX = 0;
+            var centerY = 0;
+            var glyphSize = Size.Empty;
+            if (useCheckBoxes)
             {
-                return;
+                glyphSize = CheckBoxRenderer.GetGlyphSize(graphics, itemChecked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal);
+                centerX = glyphSize.Width+4;
             }
-
-            Debug.WriteLine(state);
-            var imageBounds = new RectangleF(0, 0, bounds.Width, imageList.ImageSize.Height);
-            var textBounds = new RectangleF(0, 0, bounds.Width, bounds.Height - imageList.ImageSize.Height);
-            var focused = (state & ListViewItemStates.Focused) == ListViewItemStates.Focused;
-            var ico = imageList.Images[item.ImageKey];
-
-            if (ico != null)
+            if (image != null)
             {
-                graphics.DrawImage(ico, new RectangleF
+                centerY = image.Height;
+            }
+            var checkboxBounds = new RectangleD(0, 0, centerX, drawingBounds.Height);
+            var textBounds = new RectangleD(centerX, centerY, drawingBounds.Width - centerX, drawingBounds.Height - centerY);
+            var imageBounds = new RectangleD(centerX, 0, drawingBounds.Width - centerX, centerY);
+
+            if (image != null)
+            {
+                graphics.DrawImage(image, new RectangleD
                 {
                     X = 0,
                     Y = 0,
-                    Width = ico.Width,
-                    Height = ico.Height
-                }.Align(imageBounds, ContentAlignment.MiddleCenter).Translate(bounds.Location));
+                    Width = image.Width,
+                    Height = image.Height
+                }.Align(imageBounds, System.Drawing.ContentAlignment.MiddleCenter).Offset(drawingBounds.Location).ToRectangle());
             }
 
-            var textColor = focused ? SystemColors.HighlightText : foreColor;
-            var measureString = graphics.MeasureString(item.Text, font).ToRectangle();
-            if (focused)
+            if (useCheckBoxes)
             {
-                using var brush = new SolidBrush(SystemColors.Highlight);
-                graphics.FillRectangle(brush, textBounds.Translate(new PointF(0, imageList.ImageSize.Height)).Translate(bounds.Location));
+                CheckBoxRenderer.DrawCheckBox(graphics, RectangleD.FromSize(glyphSize).Align(checkboxBounds, System.Drawing.ContentAlignment.MiddleCenter).Offset(drawingBounds.Location).Location.ToPoint(), itemChecked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal);
             }
 
-            using (var brush = new SolidBrush(textColor))
+            var textColor = itemSelected ? SystemColors.HighlightText : foreColor;
+            var measureString = RectangleD.FromSize(graphics.MeasureString(itemText, font));
+            if (itemSelected)
             {
-                graphics.DrawString(item.Text, font, brush, measureString.Align(textBounds, ContentAlignment.MiddleCenter).Translate(new PointF(0, imageList.ImageSize.Height)).Translate(bounds.Location));
+                graphics.FillRectangle(SystemBrushes.Highlight, textBounds.Offset(drawingBounds.Location).ToRectangleF());
             }
+            if (itemFocused)
+            {
+                graphics.DrawRectangle(SystemPens.ActiveBorder, textBounds.Offset(drawingBounds.Location).ToRectangle());
+            }
+
+            graphics.DrawString(itemText, font, itemSelected ? SystemBrushes.HighlightText : SystemBrushes.ControlText, measureString.Align(textBounds, System.Drawing.ContentAlignment.MiddleCenter).Offset(drawingBounds.Location).ToRectangleF());
         }
     }
 }
