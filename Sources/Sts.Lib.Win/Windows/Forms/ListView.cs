@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -62,19 +63,19 @@ namespace Sts.Lib.Win.Windows.Forms
         {
             var drawingBounds = ((RectangleD)bounds).Expand(-1);
             var centerX = 0;
-            var centerY = 0;
+            var centerY = (int)(2*drawingBounds.Height/3);
             var glyphSize = Size.Empty;
-            if (useCheckBoxes)
-            {
-                glyphSize = CheckBoxRenderer.GetGlyphSize(graphics, itemChecked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal);
-                centerX = glyphSize.Width+4;
-            }
             if (image != null)
             {
                 centerY = image.Height;
             }
-            var checkboxBounds = new RectangleD(0, 0, centerX, drawingBounds.Height);
-            var textBounds = new RectangleD(centerX, centerY, drawingBounds.Width - centerX, drawingBounds.Height - centerY);
+            if (useCheckBoxes)
+            {
+                glyphSize = CheckBoxRenderer.GetGlyphSize(graphics, itemChecked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal);
+                centerX = (int)(2 * glyphSize.Width);
+            }
+            var checkboxBounds = new RectangleD(0, 0, centerX, centerY);
+            var textBounds = new RectangleD(0, centerY, drawingBounds.Width , drawingBounds.Height - centerY);
             var imageBounds = new RectangleD(centerX, 0, drawingBounds.Width - centerX, centerY);
 
             if (image != null)
@@ -90,7 +91,7 @@ namespace Sts.Lib.Win.Windows.Forms
 
             if (useCheckBoxes)
             {
-                CheckBoxRenderer.DrawCheckBox(graphics, RectangleD.FromSize(glyphSize).Align(checkboxBounds, System.Drawing.ContentAlignment.MiddleCenter).Offset(drawingBounds.Location).Location.ToPoint(), itemChecked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal);
+                CheckBoxRenderer.DrawCheckBox(graphics, RectangleD.FromSize(glyphSize).Align(checkboxBounds, System.Drawing.ContentAlignment.MiddleRight).Offset(drawingBounds.Location).Location.ToPoint(), itemChecked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal);
             }
 
             var textColor = itemSelected ? SystemColors.HighlightText : foreColor;

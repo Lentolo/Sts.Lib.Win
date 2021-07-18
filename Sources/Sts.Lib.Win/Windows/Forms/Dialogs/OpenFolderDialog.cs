@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Sts.Lib.Common.Extensions;
 using Sts.Lib.IO.Extensions;
 using Sts.Lib.IO.PathSystems;
+using Sts.Lib.Linq.Extensions;
 using Sts.Lib.Win.Windows.Forms.Extensions;
 
 namespace Sts.Lib.Win.Windows.Forms.Dialogs
@@ -19,10 +21,20 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
         private const string ImageKey_Desktop = "desktop";
         private const string ImageKey_Documents = "documents";
         private const string ImageKey_Drive = "hdd";
+        private bool _checkBoxes;
 
         public OpenFolderDialog()
         {
             InitializeComponent();
+            InitializeDialog();
+        }
+
+        private void InitializeDialog()
+        {
+            using var bitmap = new Bitmap(ilIcons16.Images[ImageKey_OpenFolder]);
+            Icon = Icon.FromHandle(bitmap.GetHicon());
+            CheckBoxes = true;
+            MultiSelect = true;
             tsddbView.DropDownItems.Clear();
             tsddbView.DropDownItems.AddRange(Enum.GetValues(typeof(View)).OfType<View>().Where(v => v != View.Tile).Select(v =>
             {
@@ -46,6 +58,32 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             }).ToArray());
         }
 
+        public bool CheckBoxes
+        {
+            get
+            {
+                return lvFolders.CheckBoxes;
+            }
+            set
+            {
+                _checkBoxes = value;
+                lvFolders.CheckBoxes = _checkBoxes && lvFolders.MultiSelect;
+            }
+        }
+
+        public bool MultiSelect
+        {
+            get
+            {
+                return lvFolders.MultiSelect;
+            }
+            set
+            {
+                lvFolders.MultiSelect = value;
+                lvFolders.CheckBoxes = _checkBoxes && lvFolders.MultiSelect;
+            }
+        }
+
         public bool ShowHiddenFolders
         {
             get;
@@ -62,7 +100,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
         {
             RootNode AddSpecialFolderDrive(Environment.SpecialFolder folder, string name, string text, string ImageKey)
             {
-                var rootNode = (RootNode) twFolders.Nodes.AddNodeIfNotExist(new RootNode
+                var rootNode = (RootNode)twFolders.Nodes.AddNodeIfNotExist(new RootNode
                 {
                     Name = name,
                     Text = text,
@@ -145,6 +183,11 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
 
             tstbCurrentPath.Text = path;
 
+            if (!lvFolders.CheckBoxes)
+            {
+                pnlSelectedFolders.Controls.Clear();
+            }
+
             lvFolders.Items.Clear();
 
             foreach (var subPath in GetFolders(tstbCurrentPath.Text))
@@ -155,7 +198,8 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
                     Name = Path.GetFileName(subPath),
                     Text = Path.GetFileName(subPath),
                     Path = subPath,
-                    ImageKey = ImageKey_Folder
+                    ImageKey = ImageKey_Folder,
+                    Checked = lvFolders.CheckBoxes && FindSelectedPathIndex(subPath) >= 0
                 };
                 listViewItem.SubItems.Add(di.CreationTime.ToShortDateTimeString());
                 listViewItem.SubItems.Add(di.LastWriteTime.ToShortDateTimeString());
@@ -263,6 +307,67 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             if (Directory.Exists(tstbCurrentPath.Text))
             {
                 SetCurrentPath(Path.GetDirectoryName(tstbCurrentPath.Text), NavigationSource.NodeKeyPress);
+            }
+        }
+
+        private void lvFolders_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            if (CheckBoxes && e.Item is FolderItem item)
+            {
+                UpdateList(item.Path, item.Checked, false);
+            }
+        }
+
+        private void UpdateList(string itemPath, bool itemSelected, bool updateList)
+        {
+            var idx = FindSelectedPathIndex(itemPath);
+
+            if (itemSelected && idx < 0)
+            {
+                var selectedPathControl = new SelectedPathControl
+                {
+                    Path = itemPath,
+                    Dock = DockStyle.Top
+                };
+                selectedPathControl.ClickDelete += SelectedPathControl_ClickDelete;
+                pnlSelectedFolders.Controls.Add(selectedPathControl);
+            }
+
+            if (!itemSelected && idx >= 0)
+            {
+                pnlSelectedFolders.Controls.RemoveAt(idx);
+            }
+
+            FolderItem folderItem;
+            if (updateList && (folderItem = lvFolders.Items.OfType<FolderItem>().FirstOrDefault(i => string.Compare(i.Path, itemPath, StringComparison.OrdinalIgnoreCase) == 0)) != null)
+            {
+                if (CheckBoxes)
+                {
+                    folderItem.Checked = itemSelected;
+                }
+                else
+                {
+                    folderItem.Selected = itemSelected;
+                }
+            }
+        }
+
+        private int FindSelectedPathIndex(string itemPath)
+        {
+            return pnlSelectedFolders.Controls.OfType<SelectedPathControl>().FindFirstIndex(s => string.Compare(itemPath, s.Path, StringComparison.OrdinalIgnoreCase) == 0);
+        }
+
+        private void SelectedPathControl_ClickDelete(object sender, EventArgs e)
+        {
+            var selectedPathControl = (SelectedPathControl)sender;
+            UpdateList(selectedPathControl.Path, false, true);
+        }
+
+        private void lvFolders_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (!CheckBoxes && e.Item is FolderItem item)
+            {
+                UpdateList(item.Path, item.Selected, false);
             }
         }
 

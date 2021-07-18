@@ -31,103 +31,94 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OpenFolderDialog));
-            this.statusStrip1 = new Sts.Lib.Win.Windows.Forms.StatusStrip();
-            this.panel1 = new Sts.Lib.Win.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.panel2 = new Sts.Lib.Win.Windows.Forms.SplitContainer();
-            this.toolStrip1 = new Sts.Lib.Win.Windows.Forms.ToolStrip();
+            this.ssStatus = new Sts.Lib.Win.Windows.Forms.StatusStrip();
+            this.spltToolbar = new Sts.Lib.Win.Windows.Forms.SplitContainer();
+            this.tsLeft = new Sts.Lib.Win.Windows.Forms.ToolStrip();
             this.tsbUp = new Sts.Lib.Win.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new Sts.Lib.Win.Windows.Forms.ToolStripSeparator();
             this.tstbCurrentPath = new Sts.Lib.Win.Windows.Forms.ToolStripTextBox();
             this.toolStripButton2 = new Sts.Lib.Win.Windows.Forms.ToolStripButton();
-            this.toolStrip2 = new Sts.Lib.Win.Windows.Forms.ToolStrip();
+            this.tsRight = new Sts.Lib.Win.Windows.Forms.ToolStrip();
             this.toolStripTextBox2 = new Sts.Lib.Win.Windows.Forms.ToolStripTextBox();
             this.tsddbView = new Sts.Lib.Win.Windows.Forms.ToolStripDropDownButton();
-            this.splitContainer1 = new Sts.Lib.Win.Windows.Forms.SplitContainer();
-            this.twFolders = new Sts.Lib.Win.Windows.Forms.TreeView();
             this.ilIcons32 = new System.Windows.Forms.ImageList(this.components);
+            this.ilIcons64 = new System.Windows.Forms.ImageList(this.components);
+            this.ilIcons16 = new System.Windows.Forms.ImageList(this.components);
+            this.spltHorizontal = new Sts.Lib.Win.Windows.Forms.SplitContainer();
+            this.spltVertical = new Sts.Lib.Win.Windows.Forms.SplitContainer();
+            this.twFolders = new Sts.Lib.Win.Windows.Forms.TreeView();
             this.lvFolders = new Sts.Lib.Win.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            this.ilIcons64 = new System.Windows.Forms.ImageList(this.components);
-            this.ilIcons16 = new System.Windows.Forms.ImageList(this.components);
+            this.pnlBottom = new Sts.Lib.Win.Windows.Forms.Panel();
+            this.groupBox1 = new Sts.Lib.Win.Windows.Forms.GroupBox();
+            this.pnlSelectedFolders = new Sts.Lib.Win.Windows.Forms.Panel();
+            this.panel1 = new Sts.Lib.Win.Windows.Forms.Panel();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnOk = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.spltToolbar)).BeginInit();
+            this.spltToolbar.Panel1.SuspendLayout();
+            this.spltToolbar.Panel2.SuspendLayout();
+            this.spltToolbar.SuspendLayout();
+            this.tsLeft.SuspendLayout();
+            this.tsRight.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spltHorizontal)).BeginInit();
+            this.spltHorizontal.Panel1.SuspendLayout();
+            this.spltHorizontal.Panel2.SuspendLayout();
+            this.spltHorizontal.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spltVertical)).BeginInit();
+            this.spltVertical.Panel1.SuspendLayout();
+            this.spltVertical.Panel2.SuspendLayout();
+            this.spltVertical.SuspendLayout();
+            this.pnlBottom.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panel2)).BeginInit();
-            this.panel2.Panel1.SuspendLayout();
-            this.panel2.Panel2.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
-            this.toolStrip2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // statusStrip1
+            // ssStatus
             // 
-            this.statusStrip1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
-            this.statusStrip1.TabIndex = 0;
-            this.statusStrip1.Text = "statusStrip1";
+            this.ssStatus.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ssStatus.Location = new System.Drawing.Point(0, 644);
+            this.ssStatus.Name = "ssStatus";
+            this.ssStatus.Size = new System.Drawing.Size(977, 22);
+            this.ssStatus.TabIndex = 0;
+            this.ssStatus.Text = "ssStatus";
             // 
-            // panel1
+            // spltToolbar
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 316);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 112);
-            this.panel1.TabIndex = 1;
+            this.spltToolbar.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.spltToolbar.Cursor = System.Windows.Forms.Cursors.VSplit;
+            this.spltToolbar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.spltToolbar.Location = new System.Drawing.Point(0, 0);
+            this.spltToolbar.Name = "spltToolbar";
             // 
-            // label1
+            // spltToolbar.Panel1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(242, 23);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 15);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.spltToolbar.Panel1.Controls.Add(this.tsLeft);
             // 
-            // panel2
+            // spltToolbar.Panel2
             // 
-            this.panel2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.panel2.Cursor = System.Windows.Forms.Cursors.VSplit;
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
+            this.spltToolbar.Panel2.Controls.Add(this.tsRight);
+            this.spltToolbar.Size = new System.Drawing.Size(977, 28);
+            this.spltToolbar.SplitterDistance = 743;
+            this.spltToolbar.SplitterWidth = 10;
+            this.spltToolbar.TabIndex = 2;
+            this.spltToolbar.TabStop = false;
             // 
-            // panel2.Panel1
+            // tsLeft
             // 
-            this.panel2.Panel1.Controls.Add(this.toolStrip1);
-            // 
-            // panel2.Panel2
-            // 
-            this.panel2.Panel2.Controls.Add(this.toolStrip2);
-            this.panel2.Size = new System.Drawing.Size(800, 28);
-            this.panel2.SplitterDistance = 609;
-            this.panel2.SplitterWidth = 10;
-            this.panel2.TabIndex = 2;
-            this.panel2.TabStop = false;
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsLeft.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.tsLeft.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbUp,
             this.toolStripSeparator1,
             this.tstbCurrentPath,
             this.toolStripButton2});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(609, 25);
-            this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "toolStrip1";
+            this.tsLeft.Location = new System.Drawing.Point(0, 0);
+            this.tsLeft.Name = "tsLeft";
+            this.tsLeft.Size = new System.Drawing.Size(743, 25);
+            this.tsLeft.TabIndex = 0;
+            this.tsLeft.Text = "tsLeft";
             // 
             // tsbUp
             // 
@@ -148,7 +139,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             // 
             this.tstbCurrentPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tstbCurrentPath.Name = "tstbCurrentPath";
-            this.tstbCurrentPath.Size = new System.Drawing.Size(523, 25);
+            this.tstbCurrentPath.Size = new System.Drawing.Size(657, 25);
             this.tstbCurrentPath.Spring = true;
             // 
             // toolStripButton2
@@ -160,23 +151,23 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton2.Text = "toolStripButton2";
             // 
-            // toolStrip2
+            // tsRight
             // 
-            this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsRight.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.tsRight.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTextBox2,
             this.tsddbView});
-            this.toolStrip2.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(181, 25);
-            this.toolStrip2.TabIndex = 1;
-            this.toolStrip2.Text = "toolStrip2";
+            this.tsRight.Location = new System.Drawing.Point(0, 0);
+            this.tsRight.Name = "tsRight";
+            this.tsRight.Size = new System.Drawing.Size(224, 25);
+            this.tsRight.TabIndex = 1;
+            this.tsRight.Text = "tsRight";
             // 
             // toolStripTextBox2
             // 
             this.toolStripTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.toolStripTextBox2.Name = "toolStripTextBox2";
-            this.toolStripTextBox2.Size = new System.Drawing.Size(118, 25);
+            this.toolStripTextBox2.Size = new System.Drawing.Size(161, 25);
             this.toolStripTextBox2.Spring = true;
             // 
             // tsddbView
@@ -187,43 +178,6 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.tsddbView.Name = "tsddbView";
             this.tsddbView.Size = new System.Drawing.Size(29, 22);
             this.tsddbView.Text = "tsddbView";
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.splitContainer1.Cursor = System.Windows.Forms.Cursors.VSplit;
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 28);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.twFolders);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.lvFolders);
-            this.splitContainer1.Size = new System.Drawing.Size(800, 288);
-            this.splitContainer1.SplitterDistance = 266;
-            this.splitContainer1.SplitterWidth = 10;
-            this.splitContainer1.TabIndex = 3;
-            this.splitContainer1.TabStop = false;
-            // 
-            // twFolders
-            // 
-            this.twFolders.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.twFolders.ImageIndex = 0;
-            this.twFolders.ImageList = this.ilIcons32;
-            this.twFolders.Location = new System.Drawing.Point(0, 0);
-            this.twFolders.Name = "twFolders";
-            this.twFolders.SelectedImageIndex = 0;
-            this.twFolders.Size = new System.Drawing.Size(266, 288);
-            this.twFolders.TabIndex = 0;
-            this.twFolders.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.twFolders_AfterCollapse);
-            this.twFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.twFolders_BeforeExpand);
-            this.twFolders.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.twFolders_AfterExpand);
-            this.twFolders.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.twFolders_NodeMouseClick);
-            this.twFolders.KeyDown += new System.Windows.Forms.KeyEventHandler(this.twFolders_KeyDown);
             // 
             // ilIcons32
             // 
@@ -237,39 +191,6 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.ilIcons32.Images.SetKeyName(4, "monitor");
             this.ilIcons32.Images.SetKeyName(5, "user-folder");
             this.ilIcons32.Images.SetKeyName(6, "open-folder");
-            // 
-            // lvFolders
-            // 
-            this.lvFolders.CheckBoxes = true;
-            this.lvFolders.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
-            this.lvFolders.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvFolders.HideSelection = false;
-            this.lvFolders.LargeImageList = this.ilIcons64;
-            this.lvFolders.Location = new System.Drawing.Point(0, 0);
-            this.lvFolders.Name = "lvFolders";
-            this.lvFolders.OwnerDraw = true;
-            this.lvFolders.ShowGroups = false;
-            this.lvFolders.Size = new System.Drawing.Size(524, 288);
-            this.lvFolders.SmallImageList = this.ilIcons32;
-            this.lvFolders.TabIndex = 0;
-            this.lvFolders.UseCompatibleStateImageBehavior = false;
-            this.lvFolders.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvFolders_KeyDown);
-            this.lvFolders.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvFolders_MouseDoubleClick);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Date Created";
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Date Modified";
             // 
             // ilIcons64
             // 
@@ -297,34 +218,191 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.ilIcons16.Images.SetKeyName(5, "user-folder");
             this.ilIcons16.Images.SetKeyName(6, "open-folder");
             // 
+            // spltHorizontal
+            // 
+            this.spltHorizontal.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.spltHorizontal.Cursor = System.Windows.Forms.Cursors.HSplit;
+            this.spltHorizontal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spltHorizontal.Location = new System.Drawing.Point(0, 28);
+            this.spltHorizontal.Name = "spltHorizontal";
+            this.spltHorizontal.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // spltHorizontal.Panel1
+            // 
+            this.spltHorizontal.Panel1.Controls.Add(this.spltVertical);
+            // 
+            // spltHorizontal.Panel2
+            // 
+            this.spltHorizontal.Panel2.Controls.Add(this.pnlBottom);
+            this.spltHorizontal.Size = new System.Drawing.Size(977, 616);
+            this.spltHorizontal.SplitterDistance = 300;
+            this.spltHorizontal.SplitterWidth = 10;
+            this.spltHorizontal.TabIndex = 3;
+            // 
+            // spltVertical
+            // 
+            this.spltVertical.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.spltVertical.Cursor = System.Windows.Forms.Cursors.VSplit;
+            this.spltVertical.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spltVertical.Location = new System.Drawing.Point(0, 0);
+            this.spltVertical.Name = "spltVertical";
+            // 
+            // spltVertical.Panel1
+            // 
+            this.spltVertical.Panel1.Controls.Add(this.twFolders);
+            // 
+            // spltVertical.Panel2
+            // 
+            this.spltVertical.Panel2.Controls.Add(this.lvFolders);
+            this.spltVertical.Size = new System.Drawing.Size(977, 300);
+            this.spltVertical.SplitterDistance = 318;
+            this.spltVertical.SplitterWidth = 10;
+            this.spltVertical.TabIndex = 3;
+            this.spltVertical.TabStop = false;
+            // 
+            // twFolders
+            // 
+            this.twFolders.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.twFolders.ImageIndex = 0;
+            this.twFolders.ImageList = this.ilIcons32;
+            this.twFolders.Location = new System.Drawing.Point(0, 0);
+            this.twFolders.Name = "twFolders";
+            this.twFolders.SelectedImageIndex = 0;
+            this.twFolders.Size = new System.Drawing.Size(318, 300);
+            this.twFolders.TabIndex = 0;
+            this.twFolders.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.twFolders_AfterCollapse);
+            this.twFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.twFolders_BeforeExpand);
+            this.twFolders.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.twFolders_AfterExpand);
+            this.twFolders.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.twFolders_NodeMouseClick);
+            this.twFolders.KeyDown += new System.Windows.Forms.KeyEventHandler(this.twFolders_KeyDown);
+            // 
+            // lvFolders
+            // 
+            this.lvFolders.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.lvFolders.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvFolders.HideSelection = false;
+            this.lvFolders.LargeImageList = this.ilIcons64;
+            this.lvFolders.Location = new System.Drawing.Point(0, 0);
+            this.lvFolders.Name = "lvFolders";
+            this.lvFolders.OwnerDraw = true;
+            this.lvFolders.ShowGroups = false;
+            this.lvFolders.Size = new System.Drawing.Size(649, 300);
+            this.lvFolders.SmallImageList = this.ilIcons32;
+            this.lvFolders.TabIndex = 0;
+            this.lvFolders.UseCompatibleStateImageBehavior = false;
+            this.lvFolders.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.lvFolders_ItemChecked);
+            this.lvFolders.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvFolders_ItemSelectionChanged);
+            this.lvFolders.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvFolders_KeyDown);
+            this.lvFolders.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvFolders_MouseDoubleClick);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Date Created";
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Date Modified";
+            // 
+            // pnlBottom
+            // 
+            this.pnlBottom.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pnlBottom.Controls.Add(this.groupBox1);
+            this.pnlBottom.Controls.Add(this.panel1);
+            this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlBottom.Location = new System.Drawing.Point(0, 0);
+            this.pnlBottom.Name = "pnlBottom";
+            this.pnlBottom.Size = new System.Drawing.Size(977, 306);
+            this.pnlBottom.TabIndex = 2;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.pnlSelectedFolders);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(977, 271);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Selected folders";
+            // 
+            // pnlSelectedFolders
+            // 
+            this.pnlSelectedFolders.AutoScroll = true;
+            this.pnlSelectedFolders.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlSelectedFolders.Location = new System.Drawing.Point(3, 19);
+            this.pnlSelectedFolders.Name = "pnlSelectedFolders";
+            this.pnlSelectedFolders.Size = new System.Drawing.Size(971, 249);
+            this.pnlSelectedFolders.TabIndex = 0;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btnCancel);
+            this.panel1.Controls.Add(this.btnOk);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 271);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(977, 35);
+            this.panel1.TabIndex = 0;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.Location = new System.Drawing.Point(890, 6);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 1;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // btnOk
+            // 
+            this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOk.Location = new System.Drawing.Point(809, 6);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(75, 23);
+            this.btnOk.TabIndex = 0;
+            this.btnOk.Text = "Ok";
+            this.btnOk.UseVisualStyleBackColor = true;
+            // 
             // OpenFolderDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.statusStrip1);
+            this.ClientSize = new System.Drawing.Size(977, 666);
+            this.Controls.Add(this.spltHorizontal);
+            this.Controls.Add(this.spltToolbar);
+            this.Controls.Add(this.ssStatus);
             this.Name = "OpenFolderDialog";
             this.ShowInTaskbar = false;
             this.Text = "OpenFolderDialog";
+            this.spltToolbar.Panel1.ResumeLayout(false);
+            this.spltToolbar.Panel1.PerformLayout();
+            this.spltToolbar.Panel2.ResumeLayout(false);
+            this.spltToolbar.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spltToolbar)).EndInit();
+            this.spltToolbar.ResumeLayout(false);
+            this.tsLeft.ResumeLayout(false);
+            this.tsLeft.PerformLayout();
+            this.tsRight.ResumeLayout(false);
+            this.tsRight.PerformLayout();
+            this.spltHorizontal.Panel1.ResumeLayout(false);
+            this.spltHorizontal.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spltHorizontal)).EndInit();
+            this.spltHorizontal.ResumeLayout(false);
+            this.spltVertical.Panel1.ResumeLayout(false);
+            this.spltVertical.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spltVertical)).EndInit();
+            this.spltVertical.ResumeLayout(false);
+            this.pnlBottom.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.Panel1.ResumeLayout(false);
-            this.panel2.Panel1.PerformLayout();
-            this.panel2.Panel2.ResumeLayout(false);
-            this.panel2.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panel2)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            this.toolStrip2.ResumeLayout(false);
-            this.toolStrip2.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -332,26 +410,31 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
 
         #endregion
 
-        private StatusStrip statusStrip1;
-        private Panel panel1;
-        private SplitContainer panel2;
-        private SplitContainer splitContainer1;
-        private TreeView twFolders;
-        private ListView lvFolders;
+        private StatusStrip ssStatus;
+        private SplitContainer spltToolbar;
         private System.Windows.Forms.ImageList ilIcons32;
-        private ToolStrip toolStrip1;
+        private ToolStrip tsLeft;
         private ToolStripButton tsbUp;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripButton toolStripButton2;
         private ToolStripTextBox tstbCurrentPath;
-        private ToolStrip toolStrip2;
+        private ToolStrip tsRight;
         private ToolStripTextBox toolStripTextBox2;
         private ToolStripDropDownButton tsddbView;
         private System.Windows.Forms.ImageList ilIcons64;
         private System.Windows.Forms.ImageList ilIcons16;
+        private SplitContainer spltHorizontal;
+        private SplitContainer spltVertical;
+        private TreeView twFolders;
+        private ListView lvFolders;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.Label label1;
+        private Panel pnlBottom;
+        private GroupBox groupBox1;
+        private Panel pnlSelectedFolders;
+        private Panel panel1;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnOk;
     }
 }
