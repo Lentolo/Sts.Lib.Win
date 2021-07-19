@@ -32,14 +32,15 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OpenFolderDialog));
             this.ssStatus = new Sts.Lib.Win.Windows.Forms.StatusStrip();
+            this.tsslNumFolders = new System.Windows.Forms.ToolStripStatusLabel();
             this.spltToolbar = new Sts.Lib.Win.Windows.Forms.SplitContainer();
             this.tsLeft = new Sts.Lib.Win.Windows.Forms.ToolStrip();
             this.tsbUp = new Sts.Lib.Win.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new Sts.Lib.Win.Windows.Forms.ToolStripSeparator();
             this.tstbCurrentPath = new Sts.Lib.Win.Windows.Forms.ToolStripTextBox();
-            this.toolStripButton2 = new Sts.Lib.Win.Windows.Forms.ToolStripButton();
+            this.tsbRefresh = new Sts.Lib.Win.Windows.Forms.ToolStripButton();
             this.tsRight = new Sts.Lib.Win.Windows.Forms.ToolStrip();
-            this.toolStripTextBox2 = new Sts.Lib.Win.Windows.Forms.ToolStripTextBox();
+            this.tstbSearch = new Sts.Lib.Win.Windows.Forms.ToolStripTextBox();
             this.tsddbView = new Sts.Lib.Win.Windows.Forms.ToolStripDropDownButton();
             this.ilIcons32 = new System.Windows.Forms.ImageList(this.components);
             this.ilIcons64 = new System.Windows.Forms.ImageList(this.components);
@@ -55,8 +56,9 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.groupBox1 = new Sts.Lib.Win.Windows.Forms.GroupBox();
             this.pnlSelectedFolders = new Sts.Lib.Win.Windows.Forms.Panel();
             this.panel1 = new Sts.Lib.Win.Windows.Forms.Panel();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnOk = new System.Windows.Forms.Button();
+            this.btnCancel = new Sts.Lib.Win.Windows.Forms.Button();
+            this.btnOk = new Sts.Lib.Win.Windows.Forms.Button();
+            this.ssStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spltToolbar)).BeginInit();
             this.spltToolbar.Panel1.SuspendLayout();
             this.spltToolbar.Panel2.SuspendLayout();
@@ -79,11 +81,18 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             // ssStatus
             // 
             this.ssStatus.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ssStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslNumFolders});
             this.ssStatus.Location = new System.Drawing.Point(0, 644);
             this.ssStatus.Name = "ssStatus";
             this.ssStatus.Size = new System.Drawing.Size(977, 22);
             this.ssStatus.TabIndex = 0;
             this.ssStatus.Text = "ssStatus";
+            // 
+            // tsslNumFolders
+            // 
+            this.tsslNumFolders.Name = "tsslNumFolders";
+            this.tsslNumFolders.Size = new System.Drawing.Size(0, 17);
             // 
             // spltToolbar
             // 
@@ -113,7 +122,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.tsbUp,
             this.toolStripSeparator1,
             this.tstbCurrentPath,
-            this.toolStripButton2});
+            this.tsbRefresh});
             this.tsLeft.Location = new System.Drawing.Point(0, 0);
             this.tsLeft.Name = "tsLeft";
             this.tsLeft.Size = new System.Drawing.Size(743, 25);
@@ -137,25 +146,31 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             // 
             // tstbCurrentPath
             // 
+            this.tstbCurrentPath.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.tstbCurrentPath.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystemDirectories;
             this.tstbCurrentPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tstbCurrentPath.Name = "tstbCurrentPath";
             this.tstbCurrentPath.Size = new System.Drawing.Size(657, 25);
             this.tstbCurrentPath.Spring = true;
+            this.tstbCurrentPath.Leave += new System.EventHandler(this.tstbCurrentPath_Leave);
+            this.tstbCurrentPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tstbCurrentPath_KeyDown);
+            this.tstbCurrentPath.TextChanged += new System.EventHandler(this.tstbCurrentPath_TextChanged);
             // 
-            // toolStripButton2
+            // tsbRefresh
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "toolStripButton2";
+            this.tsbRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbRefresh.Image = ((System.Drawing.Image)(resources.GetObject("tsbRefresh.Image")));
+            this.tsbRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRefresh.Name = "tsbRefresh";
+            this.tsbRefresh.Size = new System.Drawing.Size(23, 22);
+            this.tsbRefresh.Text = "tsbRefresh";
+            this.tsbRefresh.Click += new System.EventHandler(this.tsbRefresh_Click);
             // 
             // tsRight
             // 
             this.tsRight.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.tsRight.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBox2,
+            this.tstbSearch,
             this.tsddbView});
             this.tsRight.Location = new System.Drawing.Point(0, 0);
             this.tsRight.Name = "tsRight";
@@ -163,12 +178,12 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.tsRight.TabIndex = 1;
             this.tsRight.Text = "tsRight";
             // 
-            // toolStripTextBox2
+            // tstbSearch
             // 
-            this.toolStripTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.toolStripTextBox2.Name = "toolStripTextBox2";
-            this.toolStripTextBox2.Size = new System.Drawing.Size(161, 25);
-            this.toolStripTextBox2.Spring = true;
+            this.tstbSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tstbSearch.Name = "tstbSearch";
+            this.tstbSearch.Size = new System.Drawing.Size(161, 25);
+            this.tstbSearch.Spring = true;
             // 
             // tsddbView
             // 
@@ -184,39 +199,42 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.ilIcons32.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
             this.ilIcons32.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilIcons32.ImageStream")));
             this.ilIcons32.TransparentColor = System.Drawing.Color.Black;
-            this.ilIcons32.Images.SetKeyName(0, "desktop");
-            this.ilIcons32.Images.SetKeyName(1, "documents");
+            this.ilIcons32.Images.SetKeyName(0, "Desktop");
+            this.ilIcons32.Images.SetKeyName(1, "MyDocuments");
             this.ilIcons32.Images.SetKeyName(2, "folder");
             this.ilIcons32.Images.SetKeyName(3, "hdd");
-            this.ilIcons32.Images.SetKeyName(4, "monitor");
+            this.ilIcons32.Images.SetKeyName(4, "MyComputer");
             this.ilIcons32.Images.SetKeyName(5, "user-folder");
             this.ilIcons32.Images.SetKeyName(6, "open-folder");
+            this.ilIcons32.Images.SetKeyName(7, "UserProfile");
             // 
             // ilIcons64
             // 
             this.ilIcons64.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
             this.ilIcons64.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilIcons64.ImageStream")));
             this.ilIcons64.TransparentColor = System.Drawing.Color.Black;
-            this.ilIcons64.Images.SetKeyName(0, "desktop");
-            this.ilIcons64.Images.SetKeyName(1, "documents");
+            this.ilIcons64.Images.SetKeyName(0, "Desktop");
+            this.ilIcons64.Images.SetKeyName(1, "MyDocuments");
             this.ilIcons64.Images.SetKeyName(2, "folder");
             this.ilIcons64.Images.SetKeyName(3, "hdd");
-            this.ilIcons64.Images.SetKeyName(4, "monitor");
+            this.ilIcons64.Images.SetKeyName(4, "MyComputer");
             this.ilIcons64.Images.SetKeyName(5, "user-folder");
             this.ilIcons64.Images.SetKeyName(6, "open-folder");
+            this.ilIcons64.Images.SetKeyName(7, "UserProfile");
             // 
             // ilIcons16
             // 
             this.ilIcons16.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
             this.ilIcons16.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilIcons16.ImageStream")));
             this.ilIcons16.TransparentColor = System.Drawing.Color.Black;
-            this.ilIcons16.Images.SetKeyName(0, "desktop");
-            this.ilIcons16.Images.SetKeyName(1, "documents");
+            this.ilIcons16.Images.SetKeyName(0, "Desktop");
+            this.ilIcons16.Images.SetKeyName(1, "MyDocuments");
             this.ilIcons16.Images.SetKeyName(2, "folder");
             this.ilIcons16.Images.SetKeyName(3, "hdd");
-            this.ilIcons16.Images.SetKeyName(4, "monitor");
+            this.ilIcons16.Images.SetKeyName(4, "MyComputer");
             this.ilIcons16.Images.SetKeyName(5, "user-folder");
             this.ilIcons16.Images.SetKeyName(6, "open-folder");
+            this.ilIcons16.Images.SetKeyName(7, "UserProfile");
             // 
             // spltHorizontal
             // 
@@ -360,6 +378,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnOk
             // 
@@ -370,18 +389,23 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.btnOk.TabIndex = 0;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // OpenFolderDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(977, 666);
             this.Controls.Add(this.spltHorizontal);
             this.Controls.Add(this.spltToolbar);
             this.Controls.Add(this.ssStatus);
             this.Name = "OpenFolderDialog";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "OpenFolderDialog";
+            this.ssStatus.ResumeLayout(false);
+            this.ssStatus.PerformLayout();
             this.spltToolbar.Panel1.ResumeLayout(false);
             this.spltToolbar.Panel1.PerformLayout();
             this.spltToolbar.Panel2.ResumeLayout(false);
@@ -416,10 +440,10 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
         private ToolStrip tsLeft;
         private ToolStripButton tsbUp;
         private ToolStripSeparator toolStripSeparator1;
-        private ToolStripButton toolStripButton2;
+        private ToolStripButton tsbRefresh;
         private ToolStripTextBox tstbCurrentPath;
         private ToolStrip tsRight;
-        private ToolStripTextBox toolStripTextBox2;
+        private ToolStripTextBox tstbSearch;
         private ToolStripDropDownButton tsddbView;
         private System.Windows.Forms.ImageList ilIcons64;
         private System.Windows.Forms.ImageList ilIcons16;
@@ -434,7 +458,8 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
         private GroupBox groupBox1;
         private Panel pnlSelectedFolders;
         private Panel panel1;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnOk;
+        private Button btnCancel;
+        private Button btnOk;
+        private System.Windows.Forms.ToolStripStatusLabel tsslNumFolders;
     }
 }

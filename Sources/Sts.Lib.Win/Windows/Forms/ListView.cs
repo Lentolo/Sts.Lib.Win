@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using Sts.Lib.Common.Extensions;
 using Sts.Lib.Drawing;
 
 namespace Sts.Lib.Win.Windows.Forms
@@ -94,8 +95,6 @@ namespace Sts.Lib.Win.Windows.Forms
                 CheckBoxRenderer.DrawCheckBox(graphics, RectangleD.FromSize(glyphSize).Align(checkboxBounds, System.Drawing.ContentAlignment.MiddleRight).Offset(drawingBounds.Location).Location.ToPoint(), itemChecked ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal);
             }
 
-            var textColor = itemSelected ? SystemColors.HighlightText : foreColor;
-            var measureString = RectangleD.FromSize(graphics.MeasureString(itemText, font));
             if (itemSelected)
             {
                 graphics.FillRectangle(SystemBrushes.Highlight, textBounds.Offset(drawingBounds.Location).ToRectangleF());
@@ -103,6 +102,15 @@ namespace Sts.Lib.Win.Windows.Forms
             if (itemFocused)
             {
                 graphics.DrawRectangle(SystemPens.ActiveBorder, textBounds.Offset(drawingBounds.Location).ToRectangle());
+            }
+
+            var measureString= RectangleD.FromSize(graphics.MeasureString(itemText, font));;
+
+            while (true)
+            {
+                textBounds.CanContain(measureString);
+                //itemText.RegexSplitString("\\s+", true, true);
+                measureString = RectangleD.FromSize(graphics.MeasureString(itemText, font));
             }
 
             graphics.DrawString(itemText, font, itemSelected ? SystemBrushes.HighlightText : SystemBrushes.ControlText, measureString.Align(textBounds, System.Drawing.ContentAlignment.MiddleCenter).Offset(drawingBounds.Location).ToRectangleF());

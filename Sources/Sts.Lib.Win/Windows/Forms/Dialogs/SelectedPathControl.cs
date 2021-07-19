@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Sts.Lib.Win.Windows.Forms.Dialogs
 {
-    public partial class SelectedPathControl : Sts.Lib.Win.Windows.Forms.UserControl
+    internal partial class SelectedPathControl : Sts.Lib.Win.Windows.Forms.UserControl
     {
         public SelectedPathControl()
         {

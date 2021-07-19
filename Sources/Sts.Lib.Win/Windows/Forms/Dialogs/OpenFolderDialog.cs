@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -11,51 +12,18 @@ using Sts.Lib.Win.Windows.Forms.Extensions;
 
 namespace Sts.Lib.Win.Windows.Forms.Dialogs
 {
-    public partial class OpenFolderDialog : Form
+    internal partial class OpenFolderDialog : Form
     {
-        private const string MyComputerName = "MyComputer";
-        private const string MyComputerText = "MyComputer";
-        private const string ImageKey_Folder = "folder";
-        private const string ImageKey_OpenFolder = "open-folder";
-        private const string ImageKey_MyComputer = "monitor";
-        private const string ImageKey_Desktop = "desktop";
-        private const string ImageKey_Documents = "documents";
-        private const string ImageKey_Drive = "hdd";
+        private const string ImageKeyFolder = "folder";
+        private const string ImageKeyOpenFolder = "open-folder";
+        private const string ImageKeyDrive = "hdd";
         private bool _checkBoxes;
+        private bool _currentPathChanged;
 
         public OpenFolderDialog()
         {
             InitializeComponent();
             InitializeDialog();
-        }
-
-        private void InitializeDialog()
-        {
-            using var bitmap = new Bitmap(ilIcons16.Images[ImageKey_OpenFolder]);
-            Icon = Icon.FromHandle(bitmap.GetHicon());
-            CheckBoxes = true;
-            MultiSelect = true;
-            tsddbView.DropDownItems.Clear();
-            tsddbView.DropDownItems.AddRange(Enum.GetValues(typeof(View)).OfType<View>().Where(v => v != View.Tile).Select(v =>
-            {
-                var toolStripMenuItem = new ToolStripMenuItem
-                {
-                    Name = v.ToString(),
-                    Text = v.ToString(),
-                    Tag = v
-                };
-                toolStripMenuItem.Click += (s, e) =>
-                {
-                    var view = (View) ((ToolStripMenuItem) s).Tag;
-                    lvFolders.View = view;
-
-                    if (view == View.Details)
-                    {
-                        lvFolders.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                    }
-                };
-                return toolStripMenuItem;
-            }).ToArray());
         }
 
         public bool CheckBoxes
@@ -90,31 +58,82 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             set;
         }
 
+        public bool HideDotFolders
+        {
+            get;
+            set;
+        }
+
         public bool ShowSystemFolders
         {
             get;
             set;
         }
 
+        private IEnumerable<SelectedPathControl> SelectedPathControls
+        {
+            get
+            {
+                return pnlSelectedFolders.Controls.OfType<SelectedPathControl>();
+            }
+        }
+
+        public IReadOnlyCollection<string> SelectedPaths
+        {
+            get;
+            private set;
+        }
+
+        public bool ShowUserProfile
+        {
+            get;
+            set;
+        } = true;
+
+        public bool ShowMyDocuments
+        {
+            get;
+            set;
+        } = true;
+
+        public bool ShowDesktop
+        {
+            get;
+            set;
+        } = true;
+
+        private void InitializeDialog()
+        {
+            using var bitmap = new Bitmap(ilIcons16.Images[ImageKeyOpenFolder]);
+            Icon = Icon.FromHandle(bitmap.GetHicon());
+            tsddbView.DropDownItems.Clear();
+            tsddbView.DropDownItems.AddRange(Enum.GetValues(typeof(View)).OfType<View>().Where(v => v != View.Tile).Select(v =>
+            {
+                var toolStripMenuItem = new ToolStripMenuItem
+                {
+                    Name = v.ToString(),
+                    Text = v.ToString(),
+                    Tag = v
+                };
+                toolStripMenuItem.Click += (s, e) =>
+                {
+                    var view = (View) ((ToolStripMenuItem) s).Tag;
+                    lvFolders.View = view;
+
+                    if (view == View.Details)
+                    {
+                        lvFolders.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                    }
+                };
+                return toolStripMenuItem;
+            }).ToArray());
+        }
+
         protected override void OnLoad(EventArgs e)
         {
-            RootNode AddSpecialFolderDrive(Environment.SpecialFolder folder, string name, string text, string ImageKey)
-            {
-                var rootNode = (RootNode)twFolders.Nodes.AddNodeIfNotExist(new RootNode
-                {
-                    Name = name,
-                    Text = text,
-                    Path = Environment.GetFolderPath(folder),
-                    ImageKey = ImageKey,
-                    SelectedImageKey = ImageKey
-                });
-
-                return rootNode;
-            }
-
             base.OnLoad(e);
 
-            var rootNode = AddSpecialFolderDrive(Environment.SpecialFolder.MyComputer, MyComputerName, MyComputerText, ImageKey_MyComputer);
+            var rootNode = AddSpecialFolderDrive(Environment.SpecialFolder.MyComputer);
 
             foreach (var drive in DriveInfo.GetDrives().Where(d => d.IsReady))
             {
@@ -123,15 +142,42 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
                     Name = drive.Name,
                     Text = $"{drive.VolumeLabel} ({drive.Name})",
                     Path = drive.Name,
-                    ImageKey = ImageKey_Drive,
-                    SelectedImageKey = ImageKey_Drive
+                    ImageKey = ImageKeyDrive,
+                    SelectedImageKey = ImageKeyDrive
                 });
             }
 
-            rootNode = AddSpecialFolderDrive(Environment.SpecialFolder.Desktop, "Desktop", "Desktop", ImageKey_Desktop);
-            AddChilds(rootNode);
-            rootNode = AddSpecialFolderDrive(Environment.SpecialFolder.MyDocuments, "MyDocuments", "MyDocuments", ImageKey_Documents);
-            AddChilds(rootNode);
+            if (ShowDesktop)
+            {
+                rootNode = AddSpecialFolderDrive(Environment.SpecialFolder.Desktop);
+                AddChilds(rootNode);
+            }
+
+            if (ShowMyDocuments)
+            {
+                rootNode = AddSpecialFolderDrive(Environment.SpecialFolder.MyDocuments);
+                AddChilds(rootNode);
+            }
+
+            if (ShowUserProfile)
+            {
+                rootNode = AddSpecialFolderDrive(Environment.SpecialFolder.UserProfile);
+                AddChilds(rootNode);
+            }
+        }
+
+        private RootNode AddSpecialFolderDrive(Environment.SpecialFolder folder)
+        {
+            var localRootNode = (RootNode) twFolders.Nodes.AddNodeIfNotExist(new RootNode
+            {
+                Name = folder.ToString(),
+                Text = folder.ToString(),
+                Path = Environment.GetFolderPath(folder),
+                ImageKey = folder.ToString(),
+                SelectedImageKey = folder.ToString()
+            });
+
+            return localRootNode;
         }
 
         private void AddChilds(FolderNode rootNode)
@@ -143,8 +189,8 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
                     Name = Path.GetFileName(path),
                     Text = Path.GetFileName(path),
                     Path = path,
-                    ImageKey = ImageKey_Folder,
-                    SelectedImageKey = ImageKey_Folder
+                    ImageKey = ImageKeyFolder,
+                    SelectedImageKey = ImageKeyFolder
                 });
             }
         }
@@ -158,7 +204,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
                 IgnoreInaccessible = true,
                 RecurseSubdirectories = false,
                 ReturnSpecialDirectories = false
-            });
+            }).Where(f => !HideDotFolders || !Path.GetFileName(f).StartsWith(".")).ToArray();
         }
 
         private void twFolders_BeforeExpand(object sender, TreeViewCancelEventArgs e)
@@ -176,7 +222,9 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
 
         private void SetCurrentPath(string path, NavigationSource navigationSource)
         {
-            if (!Directory.Exists(path))
+            _currentPathChanged = false;
+
+            if (!Directory.Exists(path ?? ""))
             {
                 return;
             }
@@ -187,24 +235,31 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             {
                 pnlSelectedFolders.Controls.Clear();
             }
+            else if (navigationSource == NavigationSource.ItemDblClick)
+            {
+                UpdateList(tstbCurrentPath.Text, FindSelectedPathIndex(tstbCurrentPath.Text) < 0, false);
+            }
 
             lvFolders.Items.Clear();
-
+            var numFolders = 0;
             foreach (var subPath in GetFolders(tstbCurrentPath.Text))
             {
+                numFolders ++;
                 var di = new DirectoryInfo(subPath);
                 var listViewItem = new FolderItem
                 {
                     Name = Path.GetFileName(subPath),
                     Text = Path.GetFileName(subPath),
                     Path = subPath,
-                    ImageKey = ImageKey_Folder,
+                    ImageKey = ImageKeyFolder,
                     Checked = lvFolders.CheckBoxes && FindSelectedPathIndex(subPath) >= 0
                 };
                 listViewItem.SubItems.Add(di.CreationTime.ToShortDateTimeString());
                 listViewItem.SubItems.Add(di.LastWriteTime.ToShortDateTimeString());
                 lvFolders.Items.Add(listViewItem);
             }
+
+            tsslNumFolders.Text = $"{numFolders} folders";
 
             if (navigationSource != NavigationSource.NodeClick && navigationSource != NavigationSource.NodeKeyPress)
             {
@@ -246,7 +301,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
         {
             if (lvFolders.GetItemAt(e.X, e.Y) is FolderItem item)
             {
-                SetCurrentPath(item.Path, NavigationSource.ItemClick);
+                SetCurrentPath(item.Path, NavigationSource.ItemDblClick);
             }
         }
 
@@ -262,36 +317,30 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
         {
             if (e.Node is FolderNode node and not RootNode)
             {
-                node.ImageKey = ImageKey_Folder;
-                node.SelectedImageKey = ImageKey_Folder;
+                node.ImageKey = ImageKeyFolder;
+                node.SelectedImageKey = ImageKeyFolder;
             }
         }
 
         private void twFolders_AfterExpand(object sender, TreeViewEventArgs e)
         {
-            if (e.Node is FolderNode node and not RootNode)
+            if (e.Node is not (FolderNode node and not RootNode))
             {
-                node.ImageKey = ImageKey_OpenFolder;
-                node.SelectedImageKey = ImageKey_OpenFolder;
+                return;
             }
+
+            node.ImageKey = ImageKeyOpenFolder;
+            node.SelectedImageKey = ImageKeyOpenFolder;
         }
 
         private void lvFolders_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter
-                && !e.Shift
-                && !e.Alt
-                && !e.Control
-                && lvFolders.SelectedItems.OfType<FolderItem>().FirstOrDefault() is { } folder)
+            if (e.KeyCode == Keys.Enter && !e.Shift && !e.Alt && !e.Control && lvFolders.SelectedItems.OfType<FolderItem>().FirstOrDefault() is { } folder)
             {
                 SetCurrentPath(folder.Path, NavigationSource.ItemKeyPress);
             }
 
-            if (e.KeyCode == Keys.Up
-                && !e.Shift
-                && e.Alt
-                && !e.Control
-                && Directory.Exists(tstbCurrentPath.Text))
+            if (e.KeyCode == Keys.Up && !e.Shift && e.Alt && !e.Control && Directory.Exists(tstbCurrentPath.Text))
             {
                 NavigateToParent();
             }
@@ -312,10 +361,12 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
 
         private void lvFolders_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            if (CheckBoxes && e.Item is FolderItem item)
+            if (!CheckBoxes || e.Item is not FolderItem item)
             {
-                UpdateList(item.Path, item.Checked, false);
+                return;
             }
+
+            UpdateList(item.Path, item.Checked, false);
         }
 
         private void UpdateList(string itemPath, bool itemSelected, bool updateList)
@@ -339,6 +390,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             }
 
             FolderItem folderItem;
+
             if (updateList && (folderItem = lvFolders.Items.OfType<FolderItem>().FirstOrDefault(i => string.Compare(i.Path, itemPath, StringComparison.OrdinalIgnoreCase) == 0)) != null)
             {
                 if (CheckBoxes)
@@ -354,12 +406,12 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
 
         private int FindSelectedPathIndex(string itemPath)
         {
-            return pnlSelectedFolders.Controls.OfType<SelectedPathControl>().FindFirstIndex(s => string.Compare(itemPath, s.Path, StringComparison.OrdinalIgnoreCase) == 0);
+            return SelectedPathControls.FindFirstIndex(s => string.Compare(itemPath, s.Path, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
         private void SelectedPathControl_ClickDelete(object sender, EventArgs e)
         {
-            var selectedPathControl = (SelectedPathControl)sender;
+            var selectedPathControl = (SelectedPathControl) sender;
             UpdateList(selectedPathControl.Path, false, true);
         }
 
@@ -371,12 +423,52 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             }
         }
 
+        private void tstbCurrentPath_Leave(object sender, EventArgs e)
+        {
+            if (_currentPathChanged)
+            {
+                SetCurrentPath(tstbCurrentPath.Text, NavigationSource.TextBox);
+            }
+        }
+
+        private void tstbCurrentPath_TextChanged(object sender, EventArgs e)
+        {
+            _currentPathChanged = true;
+        }
+
+        private void tstbCurrentPath_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (!e.Alt && !e.Control && !e.Shift && e.KeyCode == Keys.Enter && _currentPathChanged)
+            {
+                SetCurrentPath(tstbCurrentPath.Text, NavigationSource.TextBox);
+            }
+        }
+
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            SelectedPaths = SelectedPathControls.Select(c => c.Path).ToArray();
+            DialogResult = DialogResult.OK;
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            SelectedPaths = Array.Empty<string>();
+            DialogResult = DialogResult.Cancel;
+        }
+
+        private void tsbRefresh_Click(object sender, EventArgs e)
+        {
+            SetCurrentPath(tstbCurrentPath.Text, NavigationSource.Refresh);
+        }
+
         private enum NavigationSource
         {
             NodeClick,
             NodeKeyPress,
-            ItemClick,
-            ItemKeyPress
+            ItemDblClick,
+            ItemKeyPress,
+            TextBox,
+            Refresh
         }
 
         private class FolderItem : ListViewItem
