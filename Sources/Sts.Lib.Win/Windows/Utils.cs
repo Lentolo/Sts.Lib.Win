@@ -17,7 +17,11 @@ namespace Sts.Lib.Win.Windows
 
         public static string GetCurrentWallpaper()
         {
-            return (string) Registry.GetValue("HKEY_CURRENT_USER\\Control Panel\\Desktop", "WallPaper", "");
+            return (string)Registry.GetValue("HKEY_CURRENT_USER\\Control Panel\\Desktop", "WallPaper", "");
+        }
+        public static void ShowConsole()
+        {
+            Win32.AllocConsole();
         }
 
         public static void SetCurrentWallpaper(string path, WallpaperPosition position)

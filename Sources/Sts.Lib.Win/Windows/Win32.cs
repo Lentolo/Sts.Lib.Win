@@ -591,5 +591,9 @@ namespace Sts.Lib.Win.Windows
         }
 
         internal delegate bool EnumWindowsProc(IntPtr intPtr, int lParam);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool AllocConsole();
     }
 }
