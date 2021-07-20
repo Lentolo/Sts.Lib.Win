@@ -18,7 +18,8 @@ namespace Sts.Lib.Win.Data.Connections.SqlServer
                 var builder = new SqlConnectionStringBuilder
                 {
                     DataSource = TxtSrv.Text,
-                    MultipleActiveResultSets = true
+                    MultipleActiveResultSets = true,
+                    UserID=TxtUid.Text
                 };
 
                 if (!string.IsNullOrEmpty(TxtPort.Text) && Common.Convert.Utils.TryParseTo(TxtPort.Text, 1433) != 1433)

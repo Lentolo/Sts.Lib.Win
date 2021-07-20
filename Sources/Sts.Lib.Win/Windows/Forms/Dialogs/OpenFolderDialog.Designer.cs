@@ -305,7 +305,6 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             this.lvFolders.LargeImageList = this.ilIcons64;
             this.lvFolders.Location = new System.Drawing.Point(0, 0);
             this.lvFolders.Name = "lvFolders";
-            this.lvFolders.OwnerDraw = true;
             this.lvFolders.ShowGroups = false;
             this.lvFolders.Size = new System.Drawing.Size(649, 300);
             this.lvFolders.SmallImageList = this.ilIcons32;
