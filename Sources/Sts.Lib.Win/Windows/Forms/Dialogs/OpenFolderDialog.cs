@@ -117,7 +117,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
                 };
                 toolStripMenuItem.Click += (s, e) =>
                 {
-                    var view = (View) ((ToolStripMenuItem) s).Tag;
+                    var view = (View)((ToolStripMenuItem)s).Tag;
                     lvFolders.View = view;
 
                     if (view == View.Details)
@@ -168,7 +168,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
 
         private RootNode AddSpecialFolderDrive(Environment.SpecialFolder folder)
         {
-            var localRootNode = (RootNode) twFolders.Nodes.AddNodeIfNotExist(new RootNode
+            var localRootNode = (RootNode)twFolders.Nodes.AddNodeIfNotExist(new RootNode
             {
                 Name = folder.ToString(),
                 Text = folder.ToString(),
@@ -244,7 +244,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             var numFolders = 0;
             foreach (var subPath in GetFolders(tstbCurrentPath.Text))
             {
-                numFolders ++;
+                numFolders++;
                 var di = new DirectoryInfo(subPath);
                 var listViewItem = new FolderItem
                 {
@@ -264,18 +264,21 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
             if (navigationSource != NavigationSource.NodeClick && navigationSource != NavigationSource.NodeKeyPress)
             {
                 var windowsPathSystem = new WindowsPathSystem();
-                var sp = windowsPathSystem.SplitPath(path.EnsureTrailingString($"{windowsPathSystem.FolderSeparatorChar}"));
-                var current = ExpandIfCollapsed(Linq.Utils.GetAncestorUntil(twFolders.SelectedNode, n => n.Parent, n => n == null));
-                current = ExpandIfCollapsed(current?.Nodes[sp.VolumePath]);
+                var current = ExpandIfCollapsed(Linq.Utils.GetAncestorUntil(twFolders.SelectedNode, n => n.Parent, n => n == null) as FolderNode);
+                var sp = windowsPathSystem.SplitPath(path.EnsureTrailingString($"{windowsPathSystem.FolderSeparatorChar}").TrimStringStart(current.Path, StringComparison.OrdinalIgnoreCase));
+                if(string.IsNullOrEmpty(current.Path))
+                {
+                    current = ExpandIfCollapsed(current?.Nodes[sp.VolumePath] as FolderNode);
+                }
 
                 foreach (var folder in sp.Folders)
                 {
-                    current = ExpandIfCollapsed(current?.Nodes[folder]);
+                    current = ExpandIfCollapsed(current?.Nodes[folder] as FolderNode);
                 }
             }
         }
 
-        private static TreeNode ExpandIfCollapsed(TreeNode treeNode)
+        private static FolderNode ExpandIfCollapsed(FolderNode treeNode)
         {
             if (!treeNode?.IsExpanded ?? false)
             {
@@ -411,7 +414,7 @@ namespace Sts.Lib.Win.Windows.Forms.Dialogs
 
         private void SelectedPathControl_ClickDelete(object sender, EventArgs e)
         {
-            var selectedPathControl = (SelectedPathControl) sender;
+            var selectedPathControl = (SelectedPathControl)sender;
             UpdateList(selectedPathControl.Path, false, true);
         }
 
