@@ -58,7 +58,7 @@ namespace Sts.Lib.Win.Windows
             uint volume = 0;
             rightChannel = System.Math.Max(0, System.Math.Min(rightChannel, 100));
             leftChannel = System.Math.Max(0, System.Math.Min(leftChannel, 100));
-            volume = (0xFFFF * (uint) rightChannel / 100 << 16) + 0xFFFF * (uint) leftChannel / 100;
+            volume = (0xFFFF * (uint)rightChannel / 100 << 16) + 0xFFFF * (uint)leftChannel / 100;
             Win32.waveOutSetVolume(IntPtr.Zero, volume);
         }
 
@@ -66,19 +66,19 @@ namespace Sts.Lib.Win.Windows
         {
             uint volume = 0;
             Win32.waveOutGetVolume(IntPtr.Zero, out volume);
-            rightChannel = (int) (100.0 * ((volume & 0xFFFF0000) >> 16) / 65535.0);
-            leftChannel = (int) (100.0 * (volume & 0x0000FFFF) / 65535.0);
+            rightChannel = (int)(100.0 * ((volume & 0xFFFF0000) >> 16) / 65535.0);
+            leftChannel = (int)(100.0 * (volume & 0x0000FFFF) / 65535.0);
         }
 
         public static DateTime GetLastInputDateTime()
         {
-            return DateTime.Now.AddMilliseconds(-1 * System.Math.Max(0, (uint) Environment.TickCount - GetLastInputInfo()));
+            return DateTime.Now.AddMilliseconds(-1 * System.Math.Max(0, (uint)Environment.TickCount - GetLastInputInfo()));
         }
 
         public static uint GetLastInputInfo()
         {
             var lastInputInfo = new Win32.Structs.Lastinputinfo();
-            lastInputInfo.cbSize = (uint) Marshal.SizeOf(lastInputInfo);
+            lastInputInfo.cbSize = (uint)Marshal.SizeOf(lastInputInfo);
 
             if (Win32.GetLastInputInfo(ref lastInputInfo))
             {
@@ -86,6 +86,34 @@ namespace Sts.Lib.Win.Windows
             }
 
             return 0;
+        }
+
+        public static bool GetScreenSaverActive()
+        {
+            using var marshalHelper=new MarshalHelper<Int32>();
+            Win32.SystemParametersInfo(Win32.Enums.SPI.SPI_GETSCREENSAVEACTIVE, 0, marshalHelper.IntPtr, Win32.Enums.SPIF.None);
+            return Marshal.ReadInt32(marshalHelper.IntPtr)!=0;
+        }
+        public static void SetScreenSaverActive(bool active)
+        {
+            using var marshalHelper=new MarshalHelper<Int32>();
+            Marshal.WriteInt32(marshalHelper.IntPtr,active?1:0);
+            Win32.SystemParametersInfo(Win32.Enums.SPI.SPI_SETSCREENSAVEACTIVE, 0, marshalHelper.IntPtr, Win32.Enums.SPIF.None);
+        }
+    }
+    public sealed class MarshalHelper<T> : IDisposable
+    {
+        public MarshalHelper()
+        {
+            IntPtr = Marshal.AllocHGlobal(Marshal.SizeOf<T>());
+        }
+        public IntPtr IntPtr
+        {
+            get; set;
+        }
+        public void Dispose()
+        {
+            Marshal.FreeHGlobal(IntPtr);
         }
     }
 }
