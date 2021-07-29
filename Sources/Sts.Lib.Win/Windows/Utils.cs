@@ -24,6 +24,11 @@ namespace Sts.Lib.Win.Windows
             Win32.AllocConsole();
         }
 
+        public static int WmQueryEndSession()
+        {
+            return (int)Win32.Enums.WmConstants.WmQueryEndSession;
+        }
+
         public static void SetCurrentWallpaper(string path, WallpaperPosition position)
         {
             switch (position)
@@ -96,9 +101,7 @@ namespace Sts.Lib.Win.Windows
         }
         public static void SetScreenSaverActive(bool active)
         {
-            using var marshalHelper=new MarshalHelper<Int32>();
-            Marshal.WriteInt32(marshalHelper.IntPtr,active?1:0);
-            Win32.SystemParametersInfo(Win32.Enums.SPI.SPI_SETSCREENSAVEACTIVE, 0, marshalHelper.IntPtr, Win32.Enums.SPIF.None);
+            Win32.SystemParametersInfo(Win32.Enums.SPI.SPI_SETSCREENSAVEACTIVE, active?1u:0, IntPtr.Zero, Win32.Enums.SPIF.None);
         }
     }
     public sealed class MarshalHelper<T> : IDisposable
