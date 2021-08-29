@@ -57,7 +57,7 @@ namespace Sts.Lib.Win.Diagnostics
     {
       try
       {
-        EventLog.WriteEntry("Application", Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "\r\n\r\n" + Extensions.ExtractError(exc), EventLogEntryType.Error);
+        EventLog.WriteEntry("Application", Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "\r\n\r\n" + exc.ExtractError(), EventLogEntryType.Error);
       }
       catch
       {

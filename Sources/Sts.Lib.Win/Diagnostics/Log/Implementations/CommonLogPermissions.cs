@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Sts.Lib.Collections.Generic;
 using Sts.Lib.Configuration;
+using Sts.Lib.Diagnostics.Extensions;
 using Sts.Lib.Diagnostics.Log;
 using Sts.Lib.Linq.Extensions;
 using Sts.Lib.Security.Permissions;
@@ -83,7 +84,7 @@ namespace Sts.Lib.Win.Diagnostics.Log.Implementations
             {
                 try
                 {
-                    File.WriteAllText("c:\\temp\\log.txt", Extensions.ExtractError(exc));
+                    File.WriteAllText("c:\\temp\\log.txt", exc.ExtractError());
                 }
                 catch
                 { }
