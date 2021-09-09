@@ -14,7 +14,8 @@ namespace Sts.Lib.Win.Diagnostics
         {
             KillProcessAndChildren(process.Id);
         }
-        static void KillProcessAndChildren(int pid)
+
+        private static void KillProcessAndChildren(int pid)
         {
             if (pid == 0)
             {

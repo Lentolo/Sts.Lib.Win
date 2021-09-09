@@ -35,8 +35,9 @@ namespace Sts.Lib.Win.Windows.Forms
       get; set;
     }
 
-    SizeF _blockSize = SizeF.Empty;
-    SizeF BlockSize
+    private SizeF _blockSize = SizeF.Empty;
+
+    private SizeF BlockSize
     {
       get
       {
@@ -48,8 +49,10 @@ namespace Sts.Lib.Win.Windows.Forms
         return _blockSize;
       }
     }
-    SizeF _ganttDimensions = SizeF.Empty;
-    SizeF GanttDimensions
+
+    private SizeF _ganttDimensions = SizeF.Empty;
+
+    private SizeF GanttDimensions
     {
       get
       {

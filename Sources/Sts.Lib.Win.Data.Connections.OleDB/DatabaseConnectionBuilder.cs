@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.OleDb;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sts.Lib.Data;
 using Sts.Lib.Data.Connections.OleDb;
@@ -125,17 +126,6 @@ namespace Sts.Lib.Win.Data.Connections.OleDB
             {
                 return "OleDB";
             }
-        }
-        public override bool Test()
-        {
-            try
-            {
-                using var db = ConnectionString.CreateAndOpenConnection();
-                return true;
-            }
-            catch
-            { }
-            return false;
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)

@@ -78,14 +78,16 @@ namespace Sts.Lib.Win.Windows.Forms.Data
 
         private async void RaiseOnConnectionStringAvailable()
         {
-            var raise = await Task.Run(() =>
+            var raise = false;
+            try
             {
-                return Delegates.Utils.TryExecuteExecuteFunc(() =>
-                {
-                    using var cn = ConnectionString. CreateAndOpenConnection();
-                    return cn != null;
-                }, false);
-            });
+                using var cn = await ConnectionString.CreateAndOpenConnectionAsync();
+                raise = cn != null;
+            }
+            catch 
+            {
+                raise = false;
+            }
             if (raise)
             {
                 OnConnectionStringAvailable();

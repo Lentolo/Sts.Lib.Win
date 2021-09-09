@@ -16,7 +16,6 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             InitializeComponent();
         }
 
-        private static object Lock { get; } = new object();
         protected ComboBox CmbDB { get; set; }
         protected Label Label1 { get; set; }
         protected Label Label2 { get; set; }
@@ -53,19 +52,19 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             // 
             // txtSrv
             // 
-            this.TxtSrv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-                                                                       | System.Windows.Forms.AnchorStyles.Right)));
+            this.TxtSrv.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left
+                                                                                                           | System.Windows.Forms.AnchorStyles.Right);
             this.TxtSrv.Location = new System.Drawing.Point(78, 15);
             this.TxtSrv.Name = "TxtSrv";
             this.TxtSrv.SaveControlState = false;
             this.TxtSrv.Size = new System.Drawing.Size(370, 23);
             this.TxtSrv.TabIndex = 1;
             this.TxtSrv.TextChanged += new System.EventHandler(this.field_Changed);
-            this.TxtSrv.Leave+= new System.EventHandler(this.field_Leave);
+            this.TxtSrv.Leave += new System.EventHandler(this.field_Leave);
             // 
             // txtPort
             // 
-            this.TxtPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.TxtPort.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
             this.TxtPort.Location = new System.Drawing.Point(364, 99);
             this.TxtPort.Name = "TxtPort";
             this.TxtPort.SaveControlState = false;
@@ -88,8 +87,8 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             // 
             // txtPwd
             // 
-            this.TxtPwd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-                                                                       | System.Windows.Forms.AnchorStyles.Right)));
+            this.TxtPwd.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left
+                                                                                                           | System.Windows.Forms.AnchorStyles.Right);
             this.TxtPwd.Location = new System.Drawing.Point(78, 71);
             this.TxtPwd.Name = "TxtPwd";
             this.TxtPwd.PasswordChar = '*';
@@ -110,8 +109,8 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             // 
             // txtUid
             // 
-            this.TxtUid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-                                                                       | System.Windows.Forms.AnchorStyles.Right)));
+            this.TxtUid.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left
+                                                                                                           | System.Windows.Forms.AnchorStyles.Right);
             this.TxtUid.Location = new System.Drawing.Point(78, 43);
             this.TxtUid.Name = "TxtUid";
             this.TxtUid.SaveControlState = false;
@@ -131,8 +130,8 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             // 
             // cmbDB
             // 
-            this.CmbDB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-                                                                      | System.Windows.Forms.AnchorStyles.Right)));
+            this.CmbDB.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left
+                                                                                                          | System.Windows.Forms.AnchorStyles.Right);
             this.CmbDB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CmbDB.FormattingEnabled = true;
             this.CmbDB.Location = new System.Drawing.Point(78, 99);
@@ -142,7 +141,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             // 
             // label5
             // 
-            this.Label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label5.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
             this.Label5.AutoSize = true;
             this.Label5.Location = new System.Drawing.Point(324, 102);
             this.Label5.Name = "Label5";
@@ -177,26 +176,13 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             }
         }
 
-        void FillComboTask()
-        {
-            if (InvokeRequired)
-            {
-                this.Invoke(FillComboTask);
-                return;
-            }
-
-            lock (Lock)
-            {
-                FillCombo();
-            }
-        }
-        void FillCombo()
+        private async Task FillCombo()
         {
             if (CmbDB.Items.Count == 0 && !string.IsNullOrEmpty(TxtSrv.Text) && !string.IsNullOrEmpty(TxtUid.Text))
             {
                 try
                 {
-                    using var db = ConnectionString.CreateAndOpenConnection();
+                    using var db = await ConnectionString.CreateAndOpenConnectionAsync();
                     CmbDB.Items.AddRange(GetDatabases(db));
                 }
                 catch
@@ -207,7 +193,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
 
         private async void field_Leave(object sender, EventArgs e)
         {
-            await Task.Run((Action) FillComboTask);
+            await FillCombo();
         }
 
         private void field_Changed(object sender, EventArgs e)
@@ -217,7 +203,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
 
         protected virtual string[] GetDatabases(IEnhancedDbConnection db)
         {
-            throw  new NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

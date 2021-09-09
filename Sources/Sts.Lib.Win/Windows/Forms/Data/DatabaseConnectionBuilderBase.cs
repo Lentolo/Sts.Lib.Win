@@ -1,9 +1,11 @@
 using System;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using Sts.Lib.Data;
 using Sts.Lib.Data.Extensions;
 using Sts.Lib.Data.Generic;
+using Sts.Lib.Data.Interfaces;
 
 namespace Sts.Lib.Win.Windows.Forms.Data
 {
@@ -27,6 +29,7 @@ namespace Sts.Lib.Win.Windows.Forms.Data
             }
             catch
             {
+                // ignored
             }
 
             return false;
