@@ -104,19 +104,4 @@ namespace Sts.Lib.Win.Windows
             Win32.SystemParametersInfo(Win32.Enums.SPI.SPI_SETSCREENSAVEACTIVE, active?1u:0, IntPtr.Zero, Win32.Enums.SPIF.None);
         }
     }
-    public sealed class MarshalHelper<T> : IDisposable
-    {
-        public MarshalHelper()
-        {
-            IntPtr = Marshal.AllocHGlobal(Marshal.SizeOf<T>());
-        }
-        public IntPtr IntPtr
-        {
-            get; set;
-        }
-        public void Dispose()
-        {
-            Marshal.FreeHGlobal(IntPtr);
-        }
-    }
 }
