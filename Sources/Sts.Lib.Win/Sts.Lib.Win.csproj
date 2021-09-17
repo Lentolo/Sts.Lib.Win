@@ -45,4 +45,10 @@
     <ProjectReference Include="..\..\..\Sts.Lib\Sources\Sts.Lib\Sts.Lib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Windows\Forms\ToolStripToggleButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>
