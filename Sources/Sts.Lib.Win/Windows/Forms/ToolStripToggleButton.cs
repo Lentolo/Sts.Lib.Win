@@ -14,19 +14,19 @@ namespace Sts.Lib.Win.Windows.Forms
             CheckState = CheckState.Checked;
         }
 
-        public Image CheckedImage
+        public Image ImageChecked
         {
             get;
             set;
         }
 
-        public Image UnCheckedImage
+        public Image ImageUnChecked
         {
             get;
             set;
         }
 
-        public Image IndeterminateImage
+        public Image ImageIndeterminate
         {
             get;
             set;
@@ -71,13 +71,13 @@ namespace Sts.Lib.Win.Windows.Forms
                 switch (_checkState)
                 {
                     case CheckState.Checked:
-                        Image = CheckedImage;
+                        Image = ImageChecked;
                         break;
                     case CheckState.Unchecked:
-                        Image = UnCheckedImage;
+                        Image = ImageUnChecked;
                         break;
                     case CheckState.Indeterminate:
-                        Image = IndeterminateImage;
+                        Image = ImageIndeterminate;
                         break;
                 }
             }
