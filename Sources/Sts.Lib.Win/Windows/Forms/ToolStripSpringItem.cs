@@ -4,14 +4,24 @@ using System.Windows.Forms;
 
 namespace Sts.Lib.Win.Windows.Forms
 {
-    public class ToolStripSpringItem : Sts.Lib.Win.Windows.Forms.ToolStripLabel
+    public class ToolStripSpringItem : ToolStripLabel
     {
-        public ToolStripSpringItem()
+        public override string Text
         {
+            get
+            {
+                return base.Text;
+            }
+            set
+            {
+                base.Text = "";
+            }
         }
+
         protected override void OnParentChanged(System.Windows.Forms.ToolStrip oldParent, System.Windows.Forms.ToolStrip newParent)
         {
             base.OnParentChanged(oldParent, newParent);
+
             if (oldParent != null)
             {
                 oldParent.Resize -= Parent_Resize;
@@ -46,32 +56,10 @@ namespace Sts.Lib.Win.Windows.Forms
 
         private void SetupWidth()
         {
-            var toolbarWith = Parent.Width - (Parent.GripStyle == ToolStripGripStyle.Visible ? Parent.GripRectangle.Width + Parent.GripMargin.Left + Parent.GripMargin.Right : 0) - this.Margin.Left - this.Margin.Right;
+            var toolbarWith = Parent.Width - (Parent.GripStyle == ToolStripGripStyle.Visible ? Parent.GripRectangle.Width + Parent.GripMargin.Left + Parent.GripMargin.Right : 0) - Margin.Left - Margin.Right;
             var toolStripItems = Parent.Items.OfType<ToolStripItem>().Where(i => i != this).ToList();
-
-            System.Diagnostics.Debug.WriteLine($"SetupWidth ---------");
-            foreach (var i in toolStripItems)
-            {
-                System.Diagnostics.Debug.WriteLine($"SetupWidth: {i.Name} - {i.Width} - {i.Padding.Left} - {i.Padding.Right} - {i.Margin.Left} - {i.Margin.Right}");
-            }
-
             var itemsWith = toolStripItems.Sum(i => i.Width + i.Margin.Right + i.Margin.Left);
-
-            System.Diagnostics.Debug.WriteLine($"SetupWidth: {this.Width } - {toolbarWith - itemsWith - 5} - {toolbarWith } - {itemsWith }");
-
-            this.Width = System.Math.Max(0, toolbarWith - itemsWith - 5);
-        }
-
-        public override string Text
-        {
-            get
-            {
-                return base.Text;
-            }
-            set
-            {
-                base.Text = "";
-            }
+            Width = System.Math.Max(0, toolbarWith - itemsWith - 1);
         }
     }
 }
