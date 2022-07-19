@@ -46,6 +46,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Windows\Forms\DataGridViewComponents\DataGridViewNumericTextBoxEditingControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="Windows\Forms\ToolStripSpringItem.cs">
       <SubType>Component</SubType>
     </Compile>

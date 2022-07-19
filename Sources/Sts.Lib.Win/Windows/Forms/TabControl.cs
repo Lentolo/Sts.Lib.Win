@@ -1,6 +1,5 @@
-﻿namespace Sts.Lib.Win.Windows.Forms
+﻿namespace Sts.Lib.Win.Windows.Forms;
+
+public class TabControl : System.Windows.Forms.TabControl
 {
-    public class TabControl : System.Windows.Forms.TabControl
-    {
-    }
 }

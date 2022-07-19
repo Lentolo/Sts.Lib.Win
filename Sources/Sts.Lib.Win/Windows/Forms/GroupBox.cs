@@ -1,6 +1,5 @@
-﻿namespace Sts.Lib.Win.Windows.Forms
+﻿namespace Sts.Lib.Win.Windows.Forms;
+
+public class GroupBox : System.Windows.Forms.GroupBox
 {
-  public class GroupBox : System.Windows.Forms.GroupBox
-  {
-  }
 }

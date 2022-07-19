@@ -8,31 +8,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Sts.Lib.Win.Windows.Forms.Dialogs
+namespace Sts.Lib.Win.Windows.Forms.Dialogs;
+
+internal partial class SelectedPathControl : Sts.Lib.Win.Windows.Forms.UserControl
 {
-    internal partial class SelectedPathControl : Sts.Lib.Win.Windows.Forms.UserControl
+    public SelectedPathControl()
     {
-        public SelectedPathControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        public string Path
+    public string Path
+    {
+        get
         {
-            get
-            {
-                return txtPath.Text;
-            }
-            set
-            {
-                txtPath.Text = value;
-            }
+            return txtPath.Text;
         }
+        set
+        {
+            txtPath.Text = value;
+        }
+    }
 
-        public event EventHandler ClickDelete;
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            ClickDelete?.Invoke(this, e);
-        }
+    public event EventHandler ClickDelete;
+    private void btnDelete_Click(object sender, EventArgs e)
+    {
+        ClickDelete?.Invoke(this, e);
     }
 }

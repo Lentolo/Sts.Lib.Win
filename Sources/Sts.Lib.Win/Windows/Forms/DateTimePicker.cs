@@ -1,6 +1,5 @@
-﻿namespace Sts.Lib.Win.Windows.Forms
+﻿namespace Sts.Lib.Win.Windows.Forms;
+
+public class DateTimePicker : System.Windows.Forms.DateTimePicker
 {
-  public class DateTimePicker : System.Windows.Forms.DateTimePicker
-  {
-  }
 }

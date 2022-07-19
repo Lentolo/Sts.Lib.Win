@@ -1,16 +1,15 @@
 using System;
 
-namespace Sts.Lib.Win.Configuration
+namespace Sts.Lib.Win.Configuration;
+
+[Serializable]
+public class StsRegistryOptions : RegistryOptions
 {
-  [Serializable]
-  public class StsRegistryOptions : RegistryOptions
-  {
     public override string CompanyName
     {
         get { return "Sts"; }
         set
-      {
-      }
+        {
+        }
     }
-  }
 }

@@ -1,6 +1,5 @@
-﻿namespace Sts.Lib.Win.Windows.Forms
+﻿namespace Sts.Lib.Win.Windows.Forms;
+
+public class Button : System.Windows.Forms.Button
 {
-  public class Button : System.Windows.Forms.Button
-  {
-  }
 }

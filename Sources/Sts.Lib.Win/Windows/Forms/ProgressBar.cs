@@ -1,6 +1,5 @@
-﻿namespace Sts.Lib.Win.Windows.Forms
+﻿namespace Sts.Lib.Win.Windows.Forms;
+
+public class ProgressBar : System.Windows.Forms.ProgressBar
 {
-    public class ProgressBar : System.Windows.Forms.ProgressBar
-    {
-    }
 }

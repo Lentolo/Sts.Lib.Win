@@ -1,44 +1,44 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
 using Sts.Lib.Collections.Generic;
+using Sts.Lib.Collections.Generic.Dictionaries;
 
-namespace Sts.Lib.Win.Windows.Forms
+namespace Sts.Lib.Win.Windows.Forms;
+
+public class OpenFileControl : BrowseControl, ControlStatePersister.ISaveStateControl
 {
-    public class OpenFileControl : BrowseControl, ControlStatePersister.ISaveStateControl
+    public OpenFileControl()
     {
-        public OpenFileControl()
-        {
-            Dialog = new OpenFileDialog();
-        }
-        protected override void InitializeComponent()
-        {
-            base.InitializeComponent();
-            txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            txt.AutoCompleteSource = AutoCompleteSource.FileSystem;
-        }
+        Dialog = new OpenFileDialog();
+    }
+    protected override void InitializeComponent()
+    {
+        base.InitializeComponent();
+        txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+        txt.AutoCompleteSource = AutoCompleteSource.FileSystem;
+    }
 
-        public OpenFileDialog Dialog { get; }
+    public OpenFileDialog Dialog { get; }
 
-        protected override (bool, string) OnShowDialog()
+    protected override (bool, string) OnShowDialog()
+    {
+        if (Dialog.ShowDialog() == DialogResult.OK)
         {
-            if (Dialog.ShowDialog() == DialogResult.OK)
-            {
-                return (true, Dialog.FileNames.Any() ? Dialog.FileNames.Aggregate("", (s, i) => s + i + System.IO.Path.PathSeparator) : Dialog.FileName);
-            }
-
-            return (false, "");
+            return (true, Dialog.FileNames.Any() ? Dialog.FileNames.Aggregate("", (s, i) => s + i + System.IO.Path.PathSeparator) : Dialog.FileName);
         }
 
-        public bool SaveControlState { get; set; }
+        return (false, "");
+    }
 
-        public void SetControlStateData(Dictionary<string, object> data)
-        {
-            SelectedPath = data["SelectedPath"] as string ?? "";
-        }
+    public bool SaveControlState { get; set; }
 
-        public void RetrieveControlStateData(Dictionary<string, object> data)
-        {
-            data["SelectedPath"] = SelectedPath;
-        }
+    public void SetControlStateData(Dictionary<string, object> data)
+    {
+        SelectedPath = data["SelectedPath"] as string ?? "";
+    }
+
+    public void RetrieveControlStateData(Dictionary<string, object> data)
+    {
+        data["SelectedPath"] = SelectedPath;
     }
 }

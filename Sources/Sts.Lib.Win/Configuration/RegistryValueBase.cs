@@ -1,38 +1,37 @@
 ﻿using System;
 using Microsoft.Win32;
 
-namespace Sts.Lib.Win.Configuration
+namespace Sts.Lib.Win.Configuration;
+
+[Serializable]
+public class RegistryValueBase
 {
-  [Serializable]
-  public class RegistryValueBase
-  {
     public RegistryValueBase(RegistryKey rootKey, string subKey, string valueName)
     {
-      RootKey = rootKey;
-      SubKey = subKey;
-      ValueName = valueName;
+        RootKey = rootKey;
+        SubKey = subKey;
+        ValueName = valueName;
     }
     protected RegistryKey RootKey
     {
-      get;
+        get;
     }
     protected string SubKey
     {
-      get;
+        get;
     } = "";
     protected string ValueName
     {
-      get;
+        get;
     } = "";
     public void DeleteValue()
     {
-      try
-      {
-        RootKey.OpenSubKey(SubKey, true).DeleteValue(ValueName);
-      }
-      catch
-      {
-      }
+        try
+        {
+            RootKey.OpenSubKey(SubKey, true).DeleteValue(ValueName);
+        }
+        catch
+        {
+        }
     }
-  }
 }

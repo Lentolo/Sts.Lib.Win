@@ -1,6 +1,5 @@
-﻿namespace Sts.Lib.Win.Windows.Forms
+﻿namespace Sts.Lib.Win.Windows.Forms;
+
+public class DataGridView : System.Windows.Forms.DataGridView
 {
-  public class DataGridView : System.Windows.Forms.DataGridView
-  {
-  }
 }

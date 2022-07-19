@@ -1,5 +1,4 @@
-﻿namespace Sts.Lib.Win.Windows.Forms
-{
-    public class ToolStripDropDown : System.Windows.Forms.ToolStripDropDown
-    { }
-}
+﻿namespace Sts.Lib.Win.Windows.Forms;
+
+public class ToolStripDropDown : System.Windows.Forms.ToolStripDropDown
+{ }

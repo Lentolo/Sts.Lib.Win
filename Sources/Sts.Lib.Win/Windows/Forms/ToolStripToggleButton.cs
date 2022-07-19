@@ -2,103 +2,102 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Sts.Lib.Win.Windows.Forms
+namespace Sts.Lib.Win.Windows.Forms;
+
+public class ToolStripToggleButton : ToolStripButton
 {
-    public class ToolStripToggleButton : ToolStripButton
+    private CheckState _checkState = CheckState.Indeterminate;
+
+    public ToolStripToggleButton()
     {
-        private CheckState _checkState = CheckState.Indeterminate;
+        UseThreeState = true;
+        CheckState = CheckState.Checked;
+    }
 
-        public ToolStripToggleButton()
-        {
-            UseThreeState = true;
-            CheckState = CheckState.Checked;
-        }
+    public Image ImageChecked
+    {
+        get;
+        set;
+    }
 
-        public Image ImageChecked
-        {
-            get;
-            set;
-        }
+    public Image ImageUnChecked
+    {
+        get;
+        set;
+    }
 
-        public Image ImageUnChecked
-        {
-            get;
-            set;
-        }
+    public Image ImageIndeterminate
+    {
+        get;
+        set;
+    }
 
-        public Image ImageIndeterminate
-        {
-            get;
-            set;
-        }
-
-        public bool UseThreeState
-        {
-            get;
-            set;
-        }
+    public bool UseThreeState
+    {
+        get;
+        set;
+    }
      
-        public new bool Checked
+    public new bool Checked
+    {
+        get
         {
-            get
-            {
-                return CheckState == CheckState.Checked;
-            }
-            set
-            {
-                CheckState = value ? CheckState.Checked : CheckState.Unchecked;
-            }
+            return CheckState == CheckState.Checked;
         }
-
-        public new bool CheckOnClick
+        set
         {
-            get
-            {
-                return false;
-            }
+            CheckState = value ? CheckState.Checked : CheckState.Unchecked;
         }
+    }
 
-        public new CheckState CheckState
+    public new bool CheckOnClick
+    {
+        get
         {
-            get
-            {
-                return _checkState;
-            }
-            set
-            {
-                _checkState = value;
-
-                switch (_checkState)
-                {
-                    case CheckState.Checked:
-                        Image = ImageChecked;
-                        break;
-                    case CheckState.Unchecked:
-                        Image = ImageUnChecked;
-                        break;
-                    case CheckState.Indeterminate:
-                        Image = ImageIndeterminate;
-                        break;
-                }
-            }
+            return false;
         }
+    }
 
-        protected override void OnClick(EventArgs e)
+    public new CheckState CheckState
+    {
+        get
         {
-            switch (CheckState)
+            return _checkState;
+        }
+        set
+        {
+            _checkState = value;
+
+            switch (_checkState)
             {
                 case CheckState.Checked:
-                    CheckState = CheckState.Unchecked;
+                    Image = ImageChecked;
                     break;
-                case CheckState.Unchecked when UseThreeState:
-                    CheckState = CheckState.Indeterminate;
+                case CheckState.Unchecked:
+                    Image = ImageUnChecked;
                     break;
-                case CheckState.Unchecked when !UseThreeState:
                 case CheckState.Indeterminate:
-                    CheckState = CheckState.Checked;
+                    Image = ImageIndeterminate;
                     break;
             }
-            base.OnClick(e);
         }
+    }
+
+    protected override void OnClick(EventArgs e)
+    {
+        switch (CheckState)
+        {
+            case CheckState.Checked:
+                CheckState = CheckState.Unchecked;
+                break;
+            case CheckState.Unchecked when UseThreeState:
+                CheckState = CheckState.Indeterminate;
+                break;
+            case CheckState.Unchecked when !UseThreeState:
+            case CheckState.Indeterminate:
+                CheckState = CheckState.Checked;
+                break;
+        }
+        base.OnClick(e);
     }
 }

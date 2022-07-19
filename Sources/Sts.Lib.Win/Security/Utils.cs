@@ -5,34 +5,33 @@ using Microsoft.Win32.SafeHandles;
 using Sts.Lib.Common.Extensions;
 using Sts.Lib.Security;
 
-namespace Sts.Lib.Win.Security
+namespace Sts.Lib.Win.Security;
+
+public static class Utils
 {
-    public static class Utils
+    [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    private static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, out SafeAccessTokenHandle phToken);
+
+    public static bool  RunActionImpersonated(Action action, string username, string password, string domain)
     {
-        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        private static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, out SafeAccessTokenHandle phToken);
+        SafeAccessTokenHandle safeTokenHandle=null;
 
-        public static bool  RunActionImpersonated(Action action, string username, string password, string domain)
+        try
         {
-            SafeAccessTokenHandle safeTokenHandle=null;
-
-            try
+            if (!LogonUser(username, domain, password, 2, 0, out safeTokenHandle))
             {
-                if (!LogonUser(username, domain, password, 2, 0, out safeTokenHandle))
-                {
-                    return false;
-                }
+                return false;
+            }
 
-                WindowsIdentity.RunImpersonated(safeTokenHandle, () =>
-                {
-                    action?.Invoke();
-                });
-                return true;
-            }
-            finally
+            WindowsIdentity.RunImpersonated(safeTokenHandle, () =>
             {
-                safeTokenHandle?.Dispose();
-            }
+                action?.Invoke();
+            });
+            return true;
+        }
+        finally
+        {
+            safeTokenHandle?.Dispose();
         }
     }
 }
