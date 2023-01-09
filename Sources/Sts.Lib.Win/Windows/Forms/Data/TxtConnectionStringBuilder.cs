@@ -54,7 +54,7 @@ public class TxtConnectionStringBuilder : TxtButtonControl
         dlg.ConnectionStringBuilders.AddRange(ConnectionStringBuilders);
         if (dlg.ShowDialog(this) == DialogResult.OK)
         {
-            using (Sts.Lib.Common.DelegateDisposable.CreateDelegateDisposable(() => _setText = true, () => _setText = false))
+            using (Sts.Lib.Common.DisposableDelegate.Create(() => _setText = true, () => _setText = false))
             {
                 Text = NoProviderInConnectionString ? dlg.ConnectionString.ConnectionString : dlg.ConnectionString.FullConnectionString;
                 ConnectionString = dlg.ConnectionString;

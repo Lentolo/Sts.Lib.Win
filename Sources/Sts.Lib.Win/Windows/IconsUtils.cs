@@ -89,7 +89,7 @@ public static class IconsUtils
     public static IconInfo GetFileIcon(IntPtr pszPath, IconSize size, bool linkOverlay, uint flags)
     {
         var psfi = new Win32.Structs.SHFILEINFO();
-        using var disposable = DelegateDisposable.CreateDelegateDisposable(() => { }, () => Win32.DestroyIcon(psfi.hIcon));
+        using var disposable = DisposableDelegate.Create(() => { }, () => Win32.DestroyIcon(psfi.hIcon));
         var uFlags = flags;
         if (linkOverlay)
         {
@@ -145,8 +145,8 @@ public static class IconsUtils
         }
 
         var shfi = new Win32.Structs.SHFILEINFO();
-        using var ddd = DelegateDisposable.CreateDelegateDisposable(() =>
-                                                                    { }, () => Win32.DestroyIcon(shfi.hIcon));
+        using var ddd = DisposableDelegate.Create(() =>
+                                                  { }, () => Win32.DestroyIcon(shfi.hIcon));
         Win32.SHGetFileInfo(IntPtr.Zero, Win32.Constants.FILE_ATTRIBUTE_DIRECTORY, ref shfi, (uint)Marshal.SizeOf(shfi), flags);
         return new IconInfo
         {
