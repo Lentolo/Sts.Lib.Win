@@ -1,29 +1,31 @@
-using System;
+using Sts.Lib.Data;
 
-namespace Sts.Lib.Win.Windows.Forms.Data
+namespace Sts.Lib.Win.Windows.Forms.Data;
+
+public class DatabaseConnectionBuilderBase : UserControl
 {
-  public class DatabaseConnectionBuilderBase : UserControl
-  {
-    public virtual string ConnectionString
+    public virtual GenericConnectionString ConnectionString
     {
-      get;
+        get;
     }
-    public virtual string ConnectionStringNoProvider
-    {
-      get;
-    }
+
     public virtual string DatabaseTypeName
     {
-      get;
+        get;
     }
 
-    public virtual Type DatabaseConnectionType
-    {
-      get;
-    }
     public virtual bool Test()
     {
-      return false;
+        try
+        {
+            using var db = ConnectionString.CreateAndOpenConnection();
+            return true;
+        }
+        catch
+        {
+            // ignored
+        }
+
+        return false;
     }
-  }
 }
