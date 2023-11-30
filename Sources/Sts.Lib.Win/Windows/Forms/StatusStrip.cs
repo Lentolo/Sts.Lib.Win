@@ -1,5 +1,4 @@
-﻿namespace Sts.Lib.Win.Windows.Forms
-{
-  public class StatusStrip : System.Windows.Forms.StatusStrip
-  { }
-}
+﻿namespace Sts.Lib.Win.Windows.Forms;
+
+public class StatusStrip : System.Windows.Forms.StatusStrip
+{ }
