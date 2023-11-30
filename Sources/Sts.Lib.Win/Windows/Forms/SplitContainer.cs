@@ -5,7 +5,7 @@ namespace Sts.Lib.Win.Windows.Forms;
 
 public class SplitContainer : System.Windows.Forms.SplitContainer
 {
-    public SplitContainer() : base()
+    public SplitContainer()
     {
         Panel1.Cursor = Cursors.Default;
         Panel2.Cursor = Cursors.Default;

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Sts.Lib.Win.Windows.Forms.Extensions;
@@ -12,6 +10,7 @@ public static class Extensions
     {
         return (TOut)control.Invoke(func, control);
     }
+
     public static void Invoke(this Control control, Action func)
     {
         control.Invoke(func);
@@ -23,6 +22,7 @@ public static class Extensions
         {
             treeNodeCollection.Add(node);
         }
+
         return treeNodeCollection[node.Name];
     }
 }

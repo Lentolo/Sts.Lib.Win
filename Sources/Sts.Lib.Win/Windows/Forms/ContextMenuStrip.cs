@@ -6,6 +6,7 @@ public class ContextMenuStrip : System.Windows.Forms.ContextMenuStrip
 {
     public ContextMenuStrip()
     { }
-    public ContextMenuStrip(IContainer container):base(container)
+
+    public ContextMenuStrip(IContainer container) : base(container)
     { }
 }

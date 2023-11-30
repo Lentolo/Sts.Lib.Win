@@ -8,16 +8,19 @@ public class SaveFileControl : BrowseControl
     {
         Dialog = new SaveFileDialog();
     }
+
+    public SaveFileDialog Dialog
+    {
+        get;
+    }
+
     protected override void InitializeComponent()
     {
         base.InitializeComponent();
         txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
         txt.AutoCompleteSource = AutoCompleteSource.FileSystem;
     }
-    public SaveFileDialog Dialog
-    {
-        get;
-    }
+
     protected override (bool, string) OnShowDialog()
     {
         if (Dialog.ShowDialog() == DialogResult.OK)

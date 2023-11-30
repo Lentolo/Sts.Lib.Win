@@ -37,9 +37,9 @@ public class Form : System.Windows.Forms.Form
     {
         base.WndProc(ref m);
 
-        if (m.Msg == (int) Win32.Enums.WmConstants.WmQueryEndSession)
+        if (m.Msg == (int)Win32.Enums.WmConstants.WmQueryEndSession)
         {
-            var param = (Win32.Enums.EndSession) (long) m.LParam;
+            var param = (Win32.Enums.EndSession)m.LParam;
             var endSession = param switch
             {
                 Win32.Enums.EndSession.EndsessionCloseapp => EndSession.CloseApp,
@@ -57,7 +57,7 @@ public class Form : System.Windows.Forms.Form
         var s = Screen.FromControl(this).WorkingArea;
         var container = new Rectangle(s.X, s.Y, s.Width, s.Height);
         var content = new Rectangle(Left, Top, Width, Height);
-        var point =Sts.Lib. Drawing.Utils.EnsureVisible(container, content);
+        var point = Drawing.Utils.EnsureVisible(container, content);
         SetDesktopLocation(point.X, point.Y);
     }
 }

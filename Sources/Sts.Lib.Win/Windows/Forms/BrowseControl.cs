@@ -41,7 +41,8 @@ public class BrowseControl : TxtButtonControl
     protected override void OnDragEnter(DragEventArgs drgevent)
     {
         base.OnDragEnter(drgevent);
-        var dropEventArgs = BeforeFileDropEventArgs.Create(drgevent.Data.GetData(ClipboardFormat) as string[] ?? Array.Empty<string>());
+        var dropEventArgs =
+            BeforeFileDropEventArgs.Create(drgevent.Data.GetData(ClipboardFormat) as string[] ?? Array.Empty<string>());
         OnBeforeFileDrop(dropEventArgs);
         drgevent.Effect = dropEventArgs.Cancel ? DragDropEffects.None : DragDropEffects.Copy;
     }
@@ -57,7 +58,9 @@ public class BrowseControl : TxtButtonControl
     protected override void OnDragDrop(DragEventArgs drgevent)
     {
         base.OnDragDrop(drgevent);
-        var fileDropEventArgs = FileDropEventArgs.Create((drgevent.Data.GetData(ClipboardFormat) as string[] ?? Array.Empty<string>()).ToList());
+        var fileDropEventArgs =
+            FileDropEventArgs.Create((drgevent.Data.GetData(ClipboardFormat) as string[] ?? Array.Empty<string>())
+                                    .ToList());
         OnFileDrop(fileDropEventArgs);
         txt.Text = fileDropEventArgs.Files.Aggregate("", (s, f) => $"{s}{f};").Trim(';');
     }
@@ -90,6 +93,7 @@ public class BrowseControl : TxtButtonControl
     private void ShowDialog()
     {
         var r = OnShowDialog();
+
         if (!r.Item1)
         {
             return;
@@ -153,6 +157,7 @@ public class BrowseControl : TxtButtonControl
             return new BeforeFileDropEventArgs(files);
         }
     }
+
     public sealed class FileDropEventArgs : EventArgs
     {
         private FileDropEventArgs(List<string> files)
@@ -160,9 +165,9 @@ public class BrowseControl : TxtButtonControl
             Files = files;
         }
 
-        public List< string> Files
+        public List<string> Files
         {
-            get; 
+            get;
         }
 
         public static FileDropEventArgs Create(List<string> files)

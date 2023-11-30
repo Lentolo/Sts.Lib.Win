@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Forms;
+using Sts.Lib.Common;
 using Sts.Lib.Data;
-using Sts.Lib.Data.Generic;
-using Sts.Lib.Data.Interfaces;
-using Sts.Lib.Win.Windows.Forms.Extensions;
 
 namespace Sts.Lib.Win.Windows.Forms.Data;
 
 public class TxtConnectionStringBuilder : TxtButtonControl
 {
     private bool _setText;
-
 
     public GenericConnectionString ConnectionString
     {
@@ -24,7 +20,7 @@ public class TxtConnectionStringBuilder : TxtButtonControl
     public List<DatabaseConnectionBuilderBase> ConnectionStringBuilders
     {
         get;
-    } = new List<DatabaseConnectionBuilderBase>();
+    } = new();
 
     public override bool SaveControlState
     {
@@ -36,9 +32,16 @@ public class TxtConnectionStringBuilder : TxtButtonControl
         { }
     }
 
+    public bool NoProviderInConnectionString
+    {
+        get;
+        set;
+    }
+
     protected override void OnTextChanged()
     {
         base.OnTextChanged();
+
         if (!_setText)
         {
             ConnectionString = new GenericConnectionString(Text);
@@ -52,21 +55,19 @@ public class TxtConnectionStringBuilder : TxtButtonControl
             StartPosition = FormStartPosition.CenterParent
         };
         dlg.ConnectionStringBuilders.AddRange(ConnectionStringBuilders);
+
         if (dlg.ShowDialog(this) == DialogResult.OK)
         {
-            using (Sts.Lib.Common.DisposableDelegate.Create(() => _setText = true, () => _setText = false))
+            using (DisposableDelegate.Create(() => _setText = true, () => _setText = false))
             {
-                Text = NoProviderInConnectionString ? dlg.ConnectionString.ConnectionString : dlg.ConnectionString.FullConnectionString;
+                Text = NoProviderInConnectionString
+                           ? dlg.ConnectionString.ConnectionString
+                           : dlg.ConnectionString.FullConnectionString;
                 ConnectionString = dlg.ConnectionString;
             }
+
             RaiseOnConnectionStringAvailable();
         }
-    }
-
-    public bool NoProviderInConnectionString
-    {
-        get;
-        set;
     }
 
     public event EventHandler ConnectionStringAvailable;
@@ -79,15 +80,17 @@ public class TxtConnectionStringBuilder : TxtButtonControl
     private async void RaiseOnConnectionStringAvailable()
     {
         var raise = false;
+
         try
         {
             using var cn = await ConnectionString.CreateAndOpenConnectionAsync();
             raise = cn != null;
         }
-        catch 
+        catch
         {
             raise = false;
         }
+
         if (raise)
         {
             OnConnectionStringAvailable();
@@ -101,21 +104,20 @@ public class TxtConnectionStringBuilder : TxtButtonControl
 
     private void InitializeComponent()
     {
-        this.SuspendLayout();
+        SuspendLayout();
         // 
         // _btn
         // 
-        this.btn.Location = new System.Drawing.Point(563, 3);
+        btn.Location = new Point(563, 3);
         // 
         // _txt
         // 
-        this.txt.Location = new System.Drawing.Point(0, 2);
+        txt.Location = new Point(0, 2);
         // 
         // TxtConnectionStringBuilder
         // 
-        this.Name = "TxtConnectionStringBuilder";
-        this.ResumeLayout(false);
-        this.PerformLayout();
-
+        Name = "TxtConnectionStringBuilder";
+        ResumeLayout(false);
+        PerformLayout();
     }
 }

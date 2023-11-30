@@ -40,12 +40,12 @@ public class DataGridViewNumericTextBoxEditingControl : DataGridViewTextBoxEditi
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
-        if (!e.Alt && !e.Control && !e.Shift && e.KeyCode== Keys.Decimal)
+        if (!e.Alt && !e.Control && !e.Shift && e.KeyCode == Keys.Decimal)
         {
             var a1aaa = (char)e.KeyCode;
             var aaaa = SelectionStart;
-            Text=Text.Insert(aaaa, ",");
-            e.SuppressKeyPress= true;
+            Text = Text.Insert(aaaa, ",");
+            e.SuppressKeyPress = true;
         }
 
         base.OnKeyDown(e);

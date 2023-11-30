@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using Sts.Lib.Collections.Generic;
 using Sts.Lib.Collections.Generic.Dictionaries;
 
 namespace Sts.Lib.Win.Windows.Forms;
@@ -11,8 +10,7 @@ public class ToolStripDateTimePicker : ToolStripControlHost, ControlStatePersist
     // Call the base constructor passing in a MonthCalendar instance.
     public ToolStripDateTimePicker()
         : base(new DateTimePicker())
-    {
-    }
+    { }
 
     public DateTimePicker DateTimePickerControl
     {
@@ -22,6 +20,25 @@ public class ToolStripDateTimePicker : ToolStripControlHost, ControlStatePersist
         }
     }
 
+    public bool SaveControlState
+    {
+        get;
+        set;
+    }
+
+    public void SetControlStateData(Dictionary<string, object> data)
+    {
+        if (data["SelectedDate"] is DateTime d)
+        {
+            DateTimePickerControl.Value = d;
+        }
+    }
+
+    public void RetrieveControlStateData(Dictionary<string, object> data)
+    {
+        data["SelectedDate"] = DateTimePickerControl.Value;
+    }
+
     // Subscribe and unsubscribe the control events you wish to expose.
     protected override void OnSubscribeControlEvents(Control c)
     {
@@ -29,7 +46,7 @@ public class ToolStripDateTimePicker : ToolStripControlHost, ControlStatePersist
         base.OnSubscribeControlEvents(c);
 
         // Cast the control to a MonthCalendar control.
-        var dateTimePicker = (DateTimePicker) c;
+        var dateTimePicker = (DateTimePicker)c;
 
         // Add the event.
         dateTimePicker.TextChanged += dateTimePicker_TextChanged;
@@ -46,26 +63,10 @@ public class ToolStripDateTimePicker : ToolStripControlHost, ControlStatePersist
         base.OnUnsubscribeControlEvents(c);
 
         // Cast the control to a MonthCalendar control.
-        var dateTimePicker = (DateTimePicker) c;
+        var dateTimePicker = (DateTimePicker)c;
         dateTimePicker.TextChanged -= dateTimePicker_TextChanged;
     }
 
     // Declare the DateChanged event.
     public event EventHandler DateChanged;
-    public bool SaveControlState
-    {
-        get;
-        set;
-    }
-    public void SetControlStateData(Dictionary<string, object> data)
-    {
-        if (data["SelectedDate"] is DateTime d)
-        {
-            DateTimePickerControl.Value = d;
-        }
-    }
-    public void RetrieveControlStateData(Dictionary<string, object> data)
-    {
-        data["SelectedDate"] = DateTimePickerControl.Value;
-    }
 }

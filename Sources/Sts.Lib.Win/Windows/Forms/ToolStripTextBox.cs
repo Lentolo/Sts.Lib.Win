@@ -10,6 +10,7 @@ public class ToolStripTextBox : System.Windows.Forms.ToolStripTextBox
         get;
         set;
     }
+
     public override Size GetPreferredSize(Size constrainingSize)
     {
         if (!Spring)

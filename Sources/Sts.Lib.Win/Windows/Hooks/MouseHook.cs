@@ -6,12 +6,6 @@ namespace Sts.Lib.Win.Windows.Hooks;
 
 public class MouseHook : HookHelper
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Point
-    {
-        public int x;
-        public int y;
-    }
     public enum MouseMessageTypes
     {
         MouseMove = 0x200,
@@ -35,7 +29,16 @@ public class MouseHook : HookHelper
 
     protected override void OnHook(UIntPtr wParam, IntPtr lParam)
     {
-        MouseHookEvent?.Invoke(this, new ReadonlyDataArgs<(Point Position, MouseMessageTypes MessageType)>((Marshal.PtrToStructure<MouseLowLevelHookStruct>(lParam).pt, (MouseMessageTypes) wParam)));
+        MouseHookEvent?.Invoke(this,
+                               new ReadonlyDataArgs<(Point Position, MouseMessageTypes MessageType)>((
+                                                                                                         Marshal.PtrToStructure<MouseLowLevelHookStruct>(lParam).pt, (MouseMessageTypes)wParam)));
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Point
+    {
+        public int x;
+        public int y;
     }
 
     [StructLayout(LayoutKind.Sequential)]

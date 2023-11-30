@@ -4,7 +4,11 @@ namespace Sts.Lib.Win.Windows.Forms;
 
 public class CheckBox : System.Windows.Forms.CheckBox, ControlStatePersister.ISaveStateControl
 {
-    public bool SaveControlState { get; set; }
+    public bool SaveControlState
+    {
+        get;
+        set;
+    }
 
     public void SetControlStateData(Dictionary<string, object> data)
     {

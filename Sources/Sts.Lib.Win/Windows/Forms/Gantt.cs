@@ -1,41 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sts.Lib.Linq.Extensions;
-using UserControl = Sts.Lib.Win.Windows.Forms.UserControl;
 
 namespace Sts.Lib.Win.Windows.Forms;
 
 public partial class Gantt : UserControl
 {
+    public enum TimeCluesters
+    {
+        Days,
+        Hours,
+        HalfHours,
+        Minutes
+    }
+
+    private SizeF _blockSize = SizeF.Empty;
+
+    private SizeF _ganttDimensions = SizeF.Empty;
+
     public Gantt()
     {
         InitializeComponent();
     }
-
-    public enum TimeCluesters
-    {
-        Days, Hours, HalfHours, Minutes
-    }
-
 
     public TimeCluesters TimeCluester
     {
         get;
         set;
     }
+
     public virtual List<GanttItem> Data
     {
-        get; set;
+        get;
+        set;
     }
-
-    private SizeF _blockSize = SizeF.Empty;
 
     private SizeF BlockSize
     {
@@ -46,55 +47,42 @@ public partial class Gantt : UserControl
                 using var g = CreateGraphics();
                 _blockSize = g.MeasureString("00:00", Font);
             }
+
             return _blockSize;
         }
     }
-
-    private SizeF _ganttDimensions = SizeF.Empty;
 
     private SizeF GanttDimensions
     {
         get
         {
-            if (Sts.Lib.Linq.Extensions.Extensions.ToEnumerableOrEmpty(Data).Any() && _ganttDimensions == SizeF.Empty)
+            if (Data.ToEnumerableOrEmpty().Any() && _ganttDimensions == SizeF.Empty)
             {
                 var min = Data.Select(i => i.DateFrom).Min();
                 var max = Data.Select(i => i.DateFrom).Max();
-                _ganttDimensions = new SizeF(BlockSize.Width * (float)(max - min).TotalHours, BlockSize.Height * Data.Count);
+                _ganttDimensions = new SizeF(BlockSize.Width * (float)(max - min).TotalHours,
+                                             BlockSize.Height * Data.Count);
             }
-            return _ganttDimensions;
-        }
-    }
 
-    public class GanttItem
-    {
-        public virtual string Activity
-        {
-            get; set;
-        }
-        public virtual DateTime DateFrom
-        {
-            get; set;
-        }
-        public virtual DateTime DateTo
-        {
-            get; set;
+            return _ganttDimensions;
         }
     }
 
     private void PnlDrawBottomLeft_Paint(object sender, PaintEventArgs e)
     {
-        if (!Sts.Lib.Linq.Extensions.Extensions.ToEnumerableOrEmpty(Data).Any())
+        if (!Data.ToEnumerableOrEmpty().Any())
         {
             return;
         }
 
-        var data = Sts.Lib.Linq.Extensions.Extensions.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
+        var data = Data.ToEnumerableOrEmpty().Where(i => i.DateFrom < i.DateTo).ToList();
+
         foreach (var activities in data.GroupBy(ii => ii.Activity).ToItemsList())
         {
             e.Graphics.DrawString(activities.Value.Key, Font, Brushes.Black, 0, activities.Index * BlockSize.Height);
         }
     }
+
     protected override void OnLoad(EventArgs e)
     {
         pnlTopLeft.Height = (int)System.Math.Ceiling(BlockSize.Height);
@@ -110,21 +98,44 @@ public partial class Gantt : UserControl
         pnlDrawTopRight.Left = 0;
         pnlDrawTopRight.Height = (int)System.Math.Ceiling(BlockSize.Height);
     }
+
     private void PnlDrawBottomRight_Paint(object sender, PaintEventArgs e)
     {
-        if (!Sts.Lib.Linq.Extensions.Extensions.ToEnumerableOrEmpty(Data).Any())
+        if (!Data.ToEnumerableOrEmpty().Any())
         {
             return;
         }
 
-        var data = Sts.Lib.Linq.Extensions.Extensions.ToEnumerableOrEmpty(Data).Where(i => i.DateFrom < i.DateTo).ToList();
+        var data = Data.ToEnumerableOrEmpty().Where(i => i.DateFrom < i.DateTo).ToList();
         var minDate = data.Select(i => i.DateFrom).DefaultIfEmpty(DateTime.MinValue).Min();
+
         foreach (var activities in data.GroupBy(ii => ii.Activity).ToItemsList())
+        foreach (var item in activities.Value)
         {
-            foreach (var item in activities.Value)
-            {
-                e.Graphics.DrawRectangle(Pens.Black, (float)(item.DateFrom - minDate).TotalHours * BlockSize.Width, activities.Index * BlockSize.Height, (float)(item.DateTo - item.DateFrom).TotalHours * BlockSize.Width, BlockSize.Height);
-            }
+            e.Graphics.DrawRectangle(Pens.Black, (float)(item.DateFrom - minDate).TotalHours * BlockSize.Width,
+                                     activities.Index * BlockSize.Height, (float)(item.DateTo - item.DateFrom).TotalHours * BlockSize.Width,
+                                     BlockSize.Height);
+        }
+    }
+
+    public class GanttItem
+    {
+        public virtual string Activity
+        {
+            get;
+            set;
+        }
+
+        public virtual DateTime DateFrom
+        {
+            get;
+            set;
+        }
+
+        public virtual DateTime DateTo
+        {
+            get;
+            set;
         }
     }
 }

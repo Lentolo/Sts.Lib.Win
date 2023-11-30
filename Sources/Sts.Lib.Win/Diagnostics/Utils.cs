@@ -50,17 +50,17 @@ public static class Utils
             }
         }
         catch
-        {
-        }
+        { }
     }
+
     public static void LogErrorToEventLog(Exception exc)
     {
         try
         {
-            EventLog.WriteEntry("Application", Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "\r\n\r\n" + exc.ExtractError(), EventLogEntryType.Error);
+            EventLog.WriteEntry("Application",
+                                Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "\r\n\r\n" + exc.ExtractError(), EventLogEntryType.Error);
         }
         catch
-        {
-        }
+        { }
     }
 }

@@ -9,10 +9,13 @@ public sealed class MarshalHelper<T> : IDisposable
     {
         IntPtr = Marshal.AllocHGlobal(Marshal.SizeOf<T>());
     }
+
     public IntPtr IntPtr
     {
-        get; set;
+        get;
+        set;
     }
+
     public void Dispose()
     {
         Marshal.FreeHGlobal(IntPtr);

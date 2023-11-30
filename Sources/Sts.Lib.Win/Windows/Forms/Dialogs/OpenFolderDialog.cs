@@ -242,6 +242,7 @@ internal partial class OpenFolderDialog : Form
 
         lvFolders.Items.Clear();
         var numFolders = 0;
+
         foreach (var subPath in GetFolders(tstbCurrentPath.Text))
         {
             numFolders++;
@@ -264,9 +265,12 @@ internal partial class OpenFolderDialog : Form
         if (navigationSource != NavigationSource.NodeClick && navigationSource != NavigationSource.NodeKeyPress)
         {
             var windowsPathSystem = new WindowsPathSystem();
-            var current = ExpandIfCollapsed(Linq.Utils.GetAncestorUntil(twFolders.SelectedNode, n => n.Parent, n => n == null) as FolderNode);
-            var sp = windowsPathSystem.SplitPath(path.EnsureTrailingString($"{windowsPathSystem.FolderSeparatorChar}").TrimStringStart(current.Path, StringComparison.OrdinalIgnoreCase));
-            if(string.IsNullOrEmpty(current.Path))
+            var current =
+                ExpandIfCollapsed(Linq.Utils.GetAncestorUntil(twFolders.SelectedNode, n => n.Parent, n => n == null) as FolderNode);
+            var sp = windowsPathSystem.SplitPath(path.EnsureTrailingString($"{windowsPathSystem.FolderSeparatorChar}")
+                                                     .TrimStringStart(current.Path, StringComparison.OrdinalIgnoreCase));
+
+            if (string.IsNullOrEmpty(current.Path))
             {
                 current = ExpandIfCollapsed(current?.Nodes[sp.VolumePath] as FolderNode);
             }
@@ -394,7 +398,10 @@ internal partial class OpenFolderDialog : Form
 
         FolderItem folderItem;
 
-        if (updateList && (folderItem = lvFolders.Items.OfType<FolderItem>().FirstOrDefault(i => string.Compare(i.Path, itemPath, StringComparison.OrdinalIgnoreCase) == 0)) != null)
+        if (updateList
+            && (folderItem = lvFolders.Items.OfType<FolderItem>()
+                                      .FirstOrDefault(i => string.Compare(i.Path, itemPath, StringComparison.OrdinalIgnoreCase) == 0))
+            != null)
         {
             if (CheckBoxes)
             {
@@ -409,7 +416,8 @@ internal partial class OpenFolderDialog : Form
 
     private int FindSelectedPathIndex(string itemPath)
     {
-        return SelectedPathControls.FindFirstIndex(s => string.Compare(itemPath, s.Path, StringComparison.OrdinalIgnoreCase) == 0);
+        return SelectedPathControls.FindFirstIndex(s =>
+                                                       string.Compare(itemPath, s.Path, StringComparison.OrdinalIgnoreCase) == 0);
     }
 
     private void SelectedPathControl_ClickDelete(object sender, EventArgs e)

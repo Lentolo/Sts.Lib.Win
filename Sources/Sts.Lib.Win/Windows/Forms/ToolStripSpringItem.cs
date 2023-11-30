@@ -18,7 +18,8 @@ public class ToolStripSpringItem : ToolStripLabel
         }
     }
 
-    protected override void OnParentChanged(System.Windows.Forms.ToolStrip oldParent, System.Windows.Forms.ToolStrip newParent)
+    protected override void OnParentChanged(System.Windows.Forms.ToolStrip oldParent,
+                                            System.Windows.Forms.ToolStrip newParent)
     {
         base.OnParentChanged(oldParent, newParent);
 
@@ -56,7 +57,12 @@ public class ToolStripSpringItem : ToolStripLabel
 
     private void SetupWidth()
     {
-        var toolbarWith = Parent.Width - (Parent.GripStyle == ToolStripGripStyle.Visible ? Parent.GripRectangle.Width + Parent.GripMargin.Left + Parent.GripMargin.Right : 0) - Margin.Left - Margin.Right;
+        var toolbarWith = Parent.Width
+                          - (Parent.GripStyle == ToolStripGripStyle.Visible
+                                 ? Parent.GripRectangle.Width + Parent.GripMargin.Left + Parent.GripMargin.Right
+                                 : 0)
+                          - Margin.Left
+                          - Margin.Right;
         var toolStripItems = Parent.Items.OfType<ToolStripItem>().Where(i => i != this).ToList();
         var itemsWith = toolStripItems.Sum(i => i.Width + i.Margin.Right + i.Margin.Left);
         Width = System.Math.Max(0, toolbarWith - itemsWith - 1);

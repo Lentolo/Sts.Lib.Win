@@ -19,6 +19,7 @@ public static class Utils
     {
         return (string)Registry.GetValue("HKEY_CURRENT_USER\\Control Panel\\Desktop", "WallPaper", "");
     }
+
     public static void ShowConsole()
     {
         Win32.AllocConsole();
@@ -55,7 +56,8 @@ public static class Utils
                 break;
         }
 
-        Win32.SystemParametersInfo(Win32.Constants.SpiSetdeskwallpaper, 0, path, Win32.Constants.SpifSendwininichange | Win32.Constants.SpifUpdateinifile);
+        Win32.SystemParametersInfo(Win32.Constants.SpiSetdeskwallpaper, 0, path,
+                                   Win32.Constants.SpifSendwininichange | Win32.Constants.SpifUpdateinifile);
     }
 
     public static void SetWaveVolume(int leftChannel, int rightChannel)
@@ -95,12 +97,15 @@ public static class Utils
 
     public static bool GetScreenSaverActive()
     {
-        using var marshalHelper=new MarshalHelper<Int32>();
-        Win32.SystemParametersInfo(Win32.Enums.SPI.SPI_GETSCREENSAVEACTIVE, 0, marshalHelper.IntPtr, Win32.Enums.SPIF.None);
-        return Marshal.ReadInt32(marshalHelper.IntPtr)!=0;
+        using var marshalHelper = new MarshalHelper<int>();
+        Win32.SystemParametersInfo(Win32.Enums.SPI.SPI_GETSCREENSAVEACTIVE, 0, marshalHelper.IntPtr,
+                                   Win32.Enums.SPIF.None);
+        return Marshal.ReadInt32(marshalHelper.IntPtr) != 0;
     }
+
     public static void SetScreenSaverActive(bool active)
     {
-        Win32.SystemParametersInfo(Win32.Enums.SPI.SPI_SETSCREENSAVEACTIVE, active?1u:0, IntPtr.Zero, Win32.Enums.SPIF.None);
+        Win32.SystemParametersInfo(Win32.Enums.SPI.SPI_SETSCREENSAVEACTIVE, active ? 1u : 0, IntPtr.Zero,
+                                   Win32.Enums.SPIF.None);
     }
 }

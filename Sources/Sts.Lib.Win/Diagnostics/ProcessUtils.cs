@@ -22,31 +22,37 @@ public static class ProcessUtils
             return;
         }
 
-        using var searcher = new ManagementObjectSearcher("Select ProcessID From Win32_Process Where ParentProcessID = " + pid);
+        using var searcher =
+            new ManagementObjectSearcher("Select ProcessID From Win32_Process Where ParentProcessID = " + pid);
         using var moc = searcher.Get();
+
         foreach (var o in moc)
         {
             using var mo = (ManagementObject)o;
             KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
         }
+
         try
         {
             var proc = Process.GetProcessById(pid);
+
             do
             {
                 proc.Kill();
                 Thread.Sleep(100);
-            } while (!proc.WaitForExit(500));
+            }
+            while (!proc.WaitForExit(500));
         }
         catch (ArgumentException)
-        {
-        }
+        { }
     }
 
-    public static bool CreateProcessWithLogonW(string domain, string user, string password, string fileName, string arguments)
+    public static bool CreateProcessWithLogonW(string domain, string user, string password, string fileName,
+                                               string arguments)
     {
         var startupInfo = new Win32.Structs.StartupInfo();
-        return Win32.CreateProcessWithLogonW(user, domain, password, Win32.Constants.LogonWithProfile, fileName, arguments, Win32.Constants.CreateNewConsole, 0, null, ref startupInfo, out _);
+        return Win32.CreateProcessWithLogonW(user, domain, password, Win32.Constants.LogonWithProfile, fileName,
+                                             arguments, Win32.Constants.CreateNewConsole, 0, null, ref startupInfo, out _);
     }
 
     public static IEnumerable<ProcessWindow> GetWindows()
@@ -64,12 +70,13 @@ public static class ProcessUtils
                 Hwnd = hWnd,
                 Visible = Win32.IsWindowVisible(hWnd),
                 Title = sb.ToString().Trim(),
-                Process = Process.GetProcessById((int) processId).ProcessName
+                Process = Process.GetProcessById((int)processId).ProcessName
             });
             return true;
         }, 0);
         return rval.AsReadOnly();
     }
+
     public sealed class ProcessWindow
     {
         public IntPtr Hwnd
@@ -77,16 +84,19 @@ public static class ProcessUtils
             get;
             internal set;
         }
+
         public bool Visible
         {
             get;
             internal set;
         }
+
         public string Title
         {
             get;
             internal set;
         }
+
         public string Process
         {
             get;

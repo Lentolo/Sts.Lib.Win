@@ -1,6 +1,5 @@
 using System;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
 using Sts.Lib.Common;
 
@@ -22,14 +21,15 @@ public static class IconsUtils
 
     private static Icon MakeTransparent(Icon icon)
     {
-        using var bmp = new Bitmap(4*icon.Width, 4*icon.Height);
+        using var bmp = new Bitmap(4 * icon.Width, 4 * icon.Height);
         using var gp = Graphics.FromImage(bmp);
         gp.Clear(Color.Transparent);
-        gp.DrawIcon(icon, new Rectangle(0, 0, 4*icon.Width, 4*icon.Height));
+        gp.DrawIcon(icon, new Rectangle(0, 0, 4 * icon.Width, 4 * icon.Height));
         return Icon.FromHandle(bmp.GetHicon());
     }
 
-    public static IconInfo GetSpecialFolderIcon(Environment.SpecialFolder specialFolder, IconSize size, bool linkOverlay)
+    public static IconInfo GetSpecialFolderIcon(Environment.SpecialFolder specialFolder, IconSize size,
+                                                bool linkOverlay)
     {
         var csidl = specialFolder switch
         {
@@ -84,13 +84,17 @@ public static class IconsUtils
 
         IntPtr pidl;
         Win32.SHGetFolderLocation(IntPtr.Zero, (int)csidl, IntPtr.Zero, 0, out pidl);
-        return GetFileIcon(pidl, size, linkOverlay, Win32.Constants.SHGFI_PIDL| Win32.Constants.SHGFI_ICON | Win32.Constants.SHGFI_ICONLOCATION | Win32.Constants.SHGFI_TYPENAME | Win32.Constants.SHGFI_EXETYPE);
+        return GetFileIcon(pidl, size, linkOverlay,
+                           Win32.Constants.SHGFI_PIDL | Win32.Constants.SHGFI_ICON | Win32.Constants.SHGFI_ICONLOCATION | Win32.Constants.SHGFI_TYPENAME | Win32.Constants.SHGFI_EXETYPE);
     }
+
     public static IconInfo GetFileIcon(IntPtr pszPath, IconSize size, bool linkOverlay, uint flags)
     {
         var psfi = new Win32.Structs.SHFILEINFO();
-        using var disposable = DisposableDelegate.Create(() => { }, () => Win32.DestroyIcon(psfi.hIcon));
+        using var disposable = DisposableDelegate.Create(() =>
+                                                         { }, () => Win32.DestroyIcon(psfi.hIcon));
         var uFlags = flags;
+
         if (linkOverlay)
         {
             uFlags += Win32.Constants.SHGFI_LINKOVERLAY;
@@ -106,7 +110,7 @@ public static class IconsUtils
             gp.Clear(Color.Transparent);
             return new IconInfo
             {
-                Icon = Icon.FromHandle(b.GetHicon()) ,
+                Icon = Icon.FromHandle(b.GetHicon()),
                 Index = 0,
                 Location = "##TransparentIcon##"
             };
@@ -123,7 +127,8 @@ public static class IconsUtils
 
     public static IconInfo GetFileIcon(string name, IconSize size, bool linkOverlay)
     {
-        return GetFileIcon(Marshal.StringToHGlobalAnsi(name), size, linkOverlay, Win32.Constants.SHGFI_ICON | Win32.Constants.SHGFI_ICONLOCATION | Win32.Constants.SHGFI_TYPENAME | Win32.Constants.SHGFI_EXETYPE);
+        return GetFileIcon(Marshal.StringToHGlobalAnsi(name), size, linkOverlay,
+                           Win32.Constants.SHGFI_ICON | Win32.Constants.SHGFI_ICONLOCATION | Win32.Constants.SHGFI_TYPENAME | Win32.Constants.SHGFI_EXETYPE);
     }
 
     public static IconInfo GetFolderIcon(IconSize size, FolderType folderType)
@@ -147,7 +152,8 @@ public static class IconsUtils
         var shfi = new Win32.Structs.SHFILEINFO();
         using var ddd = DisposableDelegate.Create(() =>
                                                   { }, () => Win32.DestroyIcon(shfi.hIcon));
-        Win32.SHGetFileInfo(IntPtr.Zero, Win32.Constants.FILE_ATTRIBUTE_DIRECTORY, ref shfi, (uint)Marshal.SizeOf(shfi), flags);
+        Win32.SHGetFileInfo(IntPtr.Zero, Win32.Constants.FILE_ATTRIBUTE_DIRECTORY, ref shfi, (uint)Marshal.SizeOf(shfi),
+                            flags);
         return new IconInfo
         {
             Icon = (Icon)Icon.FromHandle(shfi.hIcon).Clone(),
@@ -181,5 +187,4 @@ public static class IconsUtils
             Icon?.Dispose();
         }
     }
-
 }

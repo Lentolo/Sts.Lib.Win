@@ -37,7 +37,7 @@ public class ToolStripToggleButton : ToolStripButton
         get;
         set;
     }
-     
+
     public new bool Checked
     {
         get
@@ -98,6 +98,7 @@ public class ToolStripToggleButton : ToolStripButton
                 CheckState = CheckState.Checked;
                 break;
         }
+
         base.OnClick(e);
     }
 }

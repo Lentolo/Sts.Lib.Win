@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Windows.Forms;
-using Sts.Lib.Collections.Generic;
 using Sts.Lib.Collections.Generic.Dictionaries;
 
 namespace Sts.Lib.Win.Windows.Forms;
@@ -11,26 +11,17 @@ public class OpenFileControl : BrowseControl, ControlStatePersister.ISaveStateCo
     {
         Dialog = new OpenFileDialog();
     }
-    protected override void InitializeComponent()
+
+    public OpenFileDialog Dialog
     {
-        base.InitializeComponent();
-        txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-        txt.AutoCompleteSource = AutoCompleteSource.FileSystem;
+        get;
     }
 
-    public OpenFileDialog Dialog { get; }
-
-    protected override (bool, string) OnShowDialog()
+    public bool SaveControlState
     {
-        if (Dialog.ShowDialog() == DialogResult.OK)
-        {
-            return (true, Dialog.FileNames.Any() ? Dialog.FileNames.Aggregate("", (s, i) => s + i + System.IO.Path.PathSeparator) : Dialog.FileName);
-        }
-
-        return (false, "");
+        get;
+        set;
     }
-
-    public bool SaveControlState { get; set; }
 
     public void SetControlStateData(Dictionary<string, object> data)
     {
@@ -40,5 +31,25 @@ public class OpenFileControl : BrowseControl, ControlStatePersister.ISaveStateCo
     public void RetrieveControlStateData(Dictionary<string, object> data)
     {
         data["SelectedPath"] = SelectedPath;
+    }
+
+    protected override void InitializeComponent()
+    {
+        base.InitializeComponent();
+        txt.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+        txt.AutoCompleteSource = AutoCompleteSource.FileSystem;
+    }
+
+    protected override (bool, string) OnShowDialog()
+    {
+        if (Dialog.ShowDialog() == DialogResult.OK)
+        {
+            return (true,
+                    Dialog.FileNames.Any()
+                        ? Dialog.FileNames.Aggregate("", (s, i) => s + i + Path.PathSeparator)
+                        : Dialog.FileName);
+        }
+
+        return (false, "");
     }
 }

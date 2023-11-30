@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Sts.Lib.Collections.Generic;
 using Sts.Lib.Collections.Generic.Dictionaries;
 
 namespace Sts.Lib.Win.Windows.Forms;
@@ -18,11 +17,21 @@ public class TxtButtonControl : UserControl, ControlStatePersister.ISaveStateCon
 
     public override string Text
     {
-        get { return txt.Text; }
-        set { txt.Text = value; }
+        get
+        {
+            return txt.Text;
+        }
+        set
+        {
+            txt.Text = value;
+        }
     }
 
-    public virtual bool SaveControlState { get; set; }
+    public virtual bool SaveControlState
+    {
+        get;
+        set;
+    }
 
     public virtual void SetControlStateData(Dictionary<string, object> data)
     {
@@ -49,44 +58,43 @@ public class TxtButtonControl : UserControl, ControlStatePersister.ISaveStateCon
 
     protected virtual void InitializeComponent()
     {
-        this.btn = new Sts.Lib.Win.Windows.Forms.Button();
-        this.txt = new Sts.Lib.Win.Windows.Forms.TextBox();
-        this.SuspendLayout();
+        btn = new Button();
+        txt = new TextBox();
+        SuspendLayout();
         // 
         // _btn
         // 
-        this.btn.Location = new System.Drawing.Point(563, 0);
-        this.btn.Margin = new System.Windows.Forms.Padding(0);
-        this.btn.Name = "btn";
-        this.btn.Size = new System.Drawing.Size(34, 21);
-        this.btn.TabIndex = 1;
-        this.btn.Text = "...";
-        this.btn.UseVisualStyleBackColor = true;
-        this.btn.Click += new System.EventHandler(this.Btn_Click);
+        btn.Location = new Point(563, 0);
+        btn.Margin = new Padding(0);
+        btn.Name = "btn";
+        btn.Size = new Size(34, 21);
+        btn.TabIndex = 1;
+        btn.Text = "...";
+        btn.UseVisualStyleBackColor = true;
+        btn.Click += Btn_Click;
         // 
         // _txt
         // 
-        this.txt.Location = new System.Drawing.Point(0, 0);
-        this.txt.Margin = new System.Windows.Forms.Padding(0);
-        this.txt.Name = "txt";
-        this.txt.SaveControlState = false;
-        this.txt.Size = new System.Drawing.Size(563, 23);
-        this.txt.TabIndex = 0;
-        this.txt.TextChanged += new System.EventHandler(this.Txt_TextChanged);
-        this.txt.DoubleClick += new System.EventHandler(this.Txt_DoubleClick);
-        this.txt.Leave += new System.EventHandler(this.Txt_Leave);
-        this.txt.Validated += new System.EventHandler(this.Txt_Validated);
+        txt.Location = new Point(0, 0);
+        txt.Margin = new Padding(0);
+        txt.Name = "txt";
+        txt.SaveControlState = false;
+        txt.Size = new Size(563, 23);
+        txt.TabIndex = 0;
+        txt.TextChanged += Txt_TextChanged;
+        txt.DoubleClick += Txt_DoubleClick;
+        txt.Leave += Txt_Leave;
+        txt.Validated += Txt_Validated;
         // 
         // TxtButtonControl
         // 
-        this.Controls.Add(this.txt);
-        this.Controls.Add(this.btn);
-        this.Margin = new System.Windows.Forms.Padding(0);
-        this.Name = "TxtButtonControl";
-        this.Size = new System.Drawing.Size(597, 27);
-        this.ResumeLayout(false);
-        this.PerformLayout();
-
+        Controls.Add(txt);
+        Controls.Add(btn);
+        Margin = new Padding(0);
+        Name = "TxtButtonControl";
+        Size = new Size(597, 27);
+        ResumeLayout(false);
+        PerformLayout();
     }
 
     private void Txt_Leave(object sender, EventArgs e)
@@ -105,24 +113,19 @@ public class TxtButtonControl : UserControl, ControlStatePersister.ISaveStateCon
     }
 
     protected virtual void OnTextLeave()
-    {
-    }
+    { }
 
     protected virtual void OnTextChanged()
-    {
-    }
+    { }
 
     protected virtual void OnTextValidated()
-    {
-    }
+    { }
 
     protected virtual void OnBtnClick()
-    {
-    }
+    { }
 
     protected virtual void OnTxtDblClick()
-    {
-    }
+    { }
 
     private void Btn_Click(object sender, EventArgs e)
     {

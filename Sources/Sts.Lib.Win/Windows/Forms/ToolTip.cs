@@ -6,6 +6,7 @@ public class ToolTip : System.Windows.Forms.ToolTip
 {
     public ToolTip()
     { }
-    public ToolTip(IContainer container):base(container)
+
+    public ToolTip(IContainer container) : base(container)
     { }
 }

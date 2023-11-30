@@ -11,8 +11,9 @@ public abstract class HookHelper : IDisposable
         LowLevelMouse = 14
     }
 
-    private IntPtr _keyboardHook = IntPtr.Zero;
     private readonly HookProc hookProc;
+
+    private IntPtr _keyboardHook = IntPtr.Zero;
 
     protected HookHelper()
     {

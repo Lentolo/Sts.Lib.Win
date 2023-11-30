@@ -10,6 +10,339 @@ namespace Sts.Lib.Win.Windows.Forms;
 
 public class SyntaxHighLighter : RichTextBox
 {
+    private readonly Thread _hilightThread = new();
+    private List<string> _functions = new();
+    private bool _hilightSintax = true;
+    private List<string> _keyWords = new();
+    private DateTime _lastModification = DateTime.MinValue;
+    private List<char> _lineSeparators = new();
+    private bool _needHighLight;
+    private List<char> _tokenSeparators = new();
+
+    public SyntaxHighLighter()
+    {
+        _hilightThread.ThreadJob += m_HilightThread_ThreadJob;
+        _hilightThread.SynchronizeInvokeObject = this;
+        //m_HilightThread.SetTimerInterval(1000, 1000);
+        //m_HilightThread.Start();
+    }
+
+    private StringComparer StringComparer
+    {
+        get;
+        set;
+    } = StringComparer.CurrentCulture;
+
+    public bool CaseSensitiveLanguage
+    {
+        get
+        {
+            return StringComparer == StringComparer.CurrentCulture;
+        }
+        set
+        {
+            if (value)
+            {
+                StringComparer = StringComparer.CurrentCulture;
+            }
+            else
+            {
+                StringComparer = StringComparer.CurrentCultureIgnoreCase;
+            }
+
+            _functions.Sort(StringComparer);
+            _keyWords.Sort(StringComparer);
+        }
+    }
+
+    public string[] KeyWords
+    {
+        get
+        {
+            return _keyWords.ToArray();
+        }
+        set
+        {
+            _keyWords = new List<string>(value);
+            _keyWords.Sort(StringComparer);
+        }
+    }
+
+    public string[] Functions
+    {
+        get
+        {
+            return _functions.ToArray();
+        }
+        set
+        {
+            _functions = new List<string>(value);
+            _functions.Sort(StringComparer);
+        }
+    }
+
+    public char[] LineSeparators
+    {
+        get
+        {
+            return _lineSeparators.ToArray();
+        }
+        set
+        {
+            _lineSeparators = new List<char>(value);
+            _lineSeparators.Sort();
+        }
+    }
+
+    public char[] TokenSeparators
+    {
+        get
+        {
+            return _tokenSeparators.ToArray();
+        }
+        set
+        {
+            _tokenSeparators = new List<char>(value);
+            _tokenSeparators.Sort();
+        }
+    }
+
+    public bool HighlightSyntax
+    {
+        get
+        {
+            return false;
+        }
+        set
+        {
+            _hilightSintax = value;
+        }
+    }
+
+    private Point ScrollPos
+    {
+        get
+        {
+            var pt = new Point(0, 0);
+            using var uo = new UnmanagedObject<Point>(pt);
+            Win32.SendMessage(Handle, Win32.Constants.EmGetscrollpos, 0, uo.Pointer());
+            pt = uo.Structure;
+
+            return pt;
+        }
+        set
+        {
+            using var uo = new UnmanagedObject<Point>(value);
+            Win32.SendMessage(Handle, Win32.Constants.EmSetscrollpos, 0, uo.Pointer());
+        }
+    }
+
+    public void SetLanguageElements(ILanguageElements languageElements)
+    {
+        CaseSensitiveLanguage = languageElements.GetCaseSensitiveLanguage();
+        TokenSeparators = languageElements.GetTokenSeparators();
+        LineSeparators = languageElements.GetLineSeparators();
+        KeyWords = languageElements.GetKeyWords();
+        Functions = languageElements.GetFunctions();
+    }
+
+    private void m_HilightThread_ThreadJob(Thread instance, object parameters)
+    {
+        System.Threading.Thread.Sleep(1000);
+        instance.SynchronizeInvoke(new HighLightDelegate(HighLight), null);
+    }
+
+    protected override void WndProc(ref Message m)
+    {
+        base.WndProc(ref m);
+    }
+
+    private void StartThread()
+    {
+        //System.Diagnostics.Debug.WriteLine("" + m_HilightThread.ThreadState.ToString());
+        //if (m_HilightThread.ThreadState == System.Threading.ThreadState.Stopped ||
+        //    m_HilightThread.ThreadState == System.Threading.ThreadState.Unstarted)
+        //{
+        //    m_HilightThread.Start();
+        //}
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        base.OnKeyDown(e);
+
+        if (e.Control && e.KeyCode == Keys.V)
+        {
+            var rtb = new RichTextBox();
+            rtb.Paste();
+            SelectedText = rtb.Text;
+            e.Handled = true;
+        }
+
+        _lastModification = DateTime.Now;
+        _needHighLight = true;
+        StartThread();
+    }
+
+    protected override void OnHScroll(EventArgs e)
+    {
+        base.OnHScroll(e);
+        _lastModification = DateTime.Now;
+        _needHighLight = true;
+        StartThread();
+    }
+
+    protected override void OnMouseDown(MouseEventArgs e)
+    {
+        base.OnMouseDown(e);
+        _lastModification = DateTime.Now;
+        _needHighLight = true;
+        StartThread();
+    }
+
+    protected override void OnMouseWheel(MouseEventArgs e)
+    {
+        base.OnMouseWheel(e);
+        _lastModification = DateTime.Now;
+        _needHighLight = true;
+        StartThread();
+    }
+
+    protected override void OnVScroll(EventArgs e)
+    {
+        base.OnVScroll(e);
+        _lastModification = DateTime.Now;
+        _needHighLight = true;
+        StartThread();
+    }
+
+    private bool Modifying()
+    {
+        return (DateTime.Now - _lastModification).TotalMilliseconds < 500;
+    }
+
+    private int StopUpdateUi()
+    {
+        Win32.SendMessage(Handle, (int)Win32.Enums.WmConstants.WmSetredraw, 0, IntPtr.Zero);
+        return Win32.SendMessage(Handle, Win32.Constants.EmGeteventmask, 0, IntPtr.Zero);
+    }
+
+    private void StartUpdateUi(int eventMask)
+    {
+        Win32.SendMessage(Handle, Win32.Constants.EmSeteventmask, 0, eventMask);
+        Win32.SendMessage(Handle, (int)Win32.Enums.WmConstants.WmSetredraw, 1, IntPtr.Zero);
+    }
+
+    private void HighLight(int selStart, int selEnd)
+    {
+        var iniScrollPos = ScrollPos;
+        var iniSelectionStart = SelectionStart;
+        var iniSelectionLength = SelectionLength;
+        var eventMask = StopUpdateUi();
+
+        try
+        {
+            Debug.WriteLine("**************************************************");
+            Debug.WriteLine(selStart);
+            Debug.WriteLine(selEnd);
+            Debug.WriteLine(selStart < selEnd);
+            Debug.WriteLine(HighlightSyntax);
+            Debug.WriteLine(_needHighLight);
+
+            while (selStart < selEnd && HighlightSyntax && _needHighLight)
+            {
+                while (selStart < selEnd && _tokenSeparators.BinarySearch(Text[selStart]) >= 0)
+                {
+                    selStart++;
+                }
+
+                var selLength = 1;
+
+                while (selStart + selLength < selEnd && _tokenSeparators.BinarySearch(Text[selStart + selLength]) < 0)
+                {
+                    selLength++;
+                }
+
+                Select(selStart, selLength);
+                var token = SelectedText;
+                Debug.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@");
+                Debug.WriteLine(token);
+                Debug.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@");
+
+                if (IsKeyword(token))
+                {
+                    SelectionColor = Color.Blue;
+                }
+                else if (IsString(token))
+                {
+                    SelectionColor = Color.Red;
+                }
+                else if (IsFunction(token))
+                {
+                    SelectionColor = Color.Magenta;
+                }
+                else
+                {
+                    SelectionColor = ForeColor;
+                }
+
+                selStart += token.Length;
+                Application.DoEvents();
+                Debug.WriteLine("--------------------------------------------------");
+                Debug.WriteLine(selStart);
+                Debug.WriteLine(selEnd);
+                Debug.WriteLine(selStart < selEnd);
+                Debug.WriteLine(HighlightSyntax);
+                Debug.WriteLine(_needHighLight);
+            }
+        }
+        finally
+        {
+            _needHighLight = _needHighLight && selStart < selEnd;
+            Select(iniSelectionStart, iniSelectionLength);
+            ScrollPos = iniScrollPos;
+            StartUpdateUi(eventMask);
+            Invalidate();
+            //m_NeedHighLight = false;
+        }
+    }
+
+    private void HighLight()
+    {
+        var start = GetFirstCharIndexFromLine(GetLineFromCharIndex(GetCharIndexFromPosition(new Point(0, 0))));
+        var end = GetFirstCharIndexFromLine(GetLineFromCharIndex(GetCharIndexFromPosition(new Point(Width, Height))) + 1);
+
+        if (end < 0)
+        {
+            end = GetFirstCharIndexFromLine(GetLineFromCharIndex(GetCharIndexFromPosition(new Point(Width, Height))));
+        }
+
+        HighLight(start, end);
+    }
+
+    private void m_HilightThread_TimerThreadJob(TimerThread instance, EventArgs args)
+    { }
+
+    private bool IsKeyword(string token)
+    {
+        return _keyWords.BinarySearch(token, StringComparer) > -1;
+    }
+
+    private bool IsFunction(string token)
+    {
+        return _functions.BinarySearch(token, StringComparer) > -1;
+    }
+
+    private bool IsString(string token)
+    {
+        if (string.IsNullOrEmpty(token))
+        {
+            return false;
+        }
+
+        return token[0] == '\'';
+    }
+
     public class LanguagePlsql : ILanguageElements
     {
         public string[] GetFunctions()
@@ -216,6 +549,7 @@ public class SyntaxHighLighter : RichTextBox
             sqlFunctions.Add("XMLTRANSFORM");
             return sqlFunctions.ToArray();
         }
+
         public string[] GetKeyWords()
         {
             var sqlKeyWords = new List<string>();
@@ -333,6 +667,7 @@ public class SyntaxHighLighter : RichTextBox
             sqlKeyWords.Add("ZONE");
             return sqlKeyWords.ToArray();
         }
+
         public char[] GetTokenSeparators()
         {
             char[] sqlTokenSeparators =
@@ -351,6 +686,7 @@ public class SyntaxHighLighter : RichTextBox
             };
             return sqlTokenSeparators;
         }
+
         public char[] GetLineSeparators()
         {
             char[] sqlLineSeparators =
@@ -359,11 +695,13 @@ public class SyntaxHighLighter : RichTextBox
             };
             return sqlLineSeparators;
         }
+
         public bool GetCaseSensitiveLanguage()
         {
             return false;
         }
     }
+
     public class LanguageTsql : ILanguageElements
     {
         public string[] GetFunctions()
@@ -580,6 +918,7 @@ public class SyntaxHighLighter : RichTextBox
             sqlFunctions.Add("ISNULL");
             return sqlFunctions.ToArray();
         }
+
         public string[] GetKeyWords()
         {
             var sqlKeyWords = new List<string>();
@@ -759,6 +1098,7 @@ public class SyntaxHighLighter : RichTextBox
             sqlKeyWords.Add("WRITETEXT");
             return sqlKeyWords.ToArray();
         }
+
         public char[] GetTokenSeparators()
         {
             char[] sqlTokenSeparators =
@@ -777,6 +1117,7 @@ public class SyntaxHighLighter : RichTextBox
             };
             return sqlTokenSeparators;
         }
+
         public char[] GetLineSeparators()
         {
             char[] sqlLineSeparators =
@@ -785,11 +1126,13 @@ public class SyntaxHighLighter : RichTextBox
             };
             return sqlLineSeparators;
         }
+
         public bool GetCaseSensitiveLanguage()
         {
             return false;
         }
     }
+
     public class LanguageMySql : ILanguageElements
     {
         public string[] GetFunctions()
@@ -809,7 +1152,7 @@ public class SyntaxHighLighter : RichTextBox
             SQLFunctions.Add("VAR");
             SQLFunctions.Add("MAX");
             SQLFunctions.Add("VARP");
-            //Configuration SQLFunctions 
+            //Configuration SQLFunctions
             SQLFunctions.Add("@@DATEFIRST");
             SQLFunctions.Add("@@OPTIONS");
             SQLFunctions.Add("@@DBTS");
@@ -825,7 +1168,7 @@ public class SyntaxHighLighter : RichTextBox
             SQLFunctions.Add("@@MAX_PRECISION");
             SQLFunctions.Add("@@VERSION");
             SQLFunctions.Add("@@NESTLEVEL");
-            //Cryptographic SQLFunctions 
+            //Cryptographic SQLFunctions
             SQLFunctions.Add("EncryptByKey");
             SQLFunctions.Add("DecryptByKey");
             SQLFunctions.Add("EncryptByPassPhrase");
@@ -844,11 +1187,11 @@ public class SyntaxHighLighter : RichTextBox
             SQLFunctions.Add("SignByCert");
             SQLFunctions.Add("VerifySignedByCert");
             SQLFunctions.Add("DecryptByKeyAutoCert");
-            //Cursor SQLFunctions 
+            //Cursor SQLFunctions
             SQLFunctions.Add("@@CURSOR_ROWS");
             SQLFunctions.Add("CURSOR_STATUS");
             SQLFunctions.Add("@@FETCH_STATUS");
-            //Date and Time SQLFunctions 
+            //Date and Time SQLFunctions
             SQLFunctions.Add("SYSDATETIME");
             SQLFunctions.Add("SYSDATETIMEOFFSET");
             SQLFunctions.Add("SYSUTCDATETIME");
@@ -871,7 +1214,7 @@ public class SyntaxHighLighter : RichTextBox
             SQLFunctions.Add("SET LANGUAGE");
             SQLFunctions.Add("sp_helplanguage");
             SQLFunctions.Add("ISDATE");
-            //Rowset SQLFunctions 
+            //Rowset SQLFunctions
             SQLFunctions.Add("CONTAINSTABLE");
             SQLFunctions.Add("OPENQUERY");
             SQLFunctions.Add("FREETEXTTABLE");
@@ -902,7 +1245,7 @@ public class SyntaxHighLighter : RichTextBox
             SQLFunctions.Add("TAN");
             SQLFunctions.Add("COT");
             SQLFunctions.Add("RADIANS");
-            //Metadata SQLFunctions 
+            //Metadata SQLFunctions
             SQLFunctions.Add("@@PROCID");
             SQLFunctions.Add("FULLTEXTCATALOGPROPERTY");
             SQLFunctions.Add("AsymKey_ID");
@@ -945,14 +1288,14 @@ public class SyntaxHighLighter : RichTextBox
             SQLFunctions.Add("TYPE_NAME");
             SQLFunctions.Add("fn_listextendedproperty");
             SQLFunctions.Add("TYPEPROPERTY");
-            //Ranking SQLFunctions 
+            //Ranking SQLFunctions
             SQLFunctions.Add("RANK");
             SQLFunctions.Add("NTILE");
             SQLFunctions.Add("DENSE_RANK");
             SQLFunctions.Add("ROW_NUMBER");
-            //Replication SQLFunctions 
+            //Replication SQLFunctions
             SQLFunctions.Add("PUBLISHINGSERVERNAME");
-            //Security SQLFunctions 
+            //Security SQLFunctions
             SQLFunctions.Add("CURRENT_USER");
             SQLFunctions.Add("SESSION_USER");
             SQLFunctions.Add("fn_builtin_permissions");
@@ -995,7 +1338,7 @@ public class SyntaxHighLighter : RichTextBox
             SQLFunctions.Add("UPPER");
             SQLFunctions.Add("LTRIM");
             SQLFunctions.Add("RTRIM");
-            //System Statistical SQLFunctions 
+            //System Statistical SQLFunctions
             SQLFunctions.Add("@@CONNECTIONS");
             SQLFunctions.Add("@@PACK_RECEIVED");
             SQLFunctions.Add("@@CPU_BUSY");
@@ -1008,7 +1351,7 @@ public class SyntaxHighLighter : RichTextBox
             SQLFunctions.Add("@@TOTAL_READ");
             SQLFunctions.Add("@@PACKET_ERRORS");
             SQLFunctions.Add("@@TOTAL_WRITE");
-            //Text and Image SQLFunctions 
+            //Text and Image SQLFunctions
             SQLFunctions.Add("PATINDEX");
             SQLFunctions.Add("TEXTVALID");
             SQLFunctions.Add("TEXTPTR");
@@ -1017,6 +1360,7 @@ public class SyntaxHighLighter : RichTextBox
              * */
             return sqlFunctions.ToArray();
         }
+
         public string[] GetKeyWords()
         {
             var sqlKeyWords = new List<string>();
@@ -1196,6 +1540,7 @@ public class SyntaxHighLighter : RichTextBox
             sqlKeyWords.Add("WRITETEXT");
             return sqlKeyWords.ToArray();
         }
+
         public char[] GetTokenSeparators()
         {
             char[] sqlTokenSeparators =
@@ -1214,6 +1559,7 @@ public class SyntaxHighLighter : RichTextBox
             };
             return sqlTokenSeparators;
         }
+
         public char[] GetLineSeparators()
         {
             char[] sqlLineSeparators =
@@ -1222,11 +1568,13 @@ public class SyntaxHighLighter : RichTextBox
             };
             return sqlLineSeparators;
         }
+
         public bool GetCaseSensitiveLanguage()
         {
             return false;
         }
     }
+
     public interface ILanguageElements
     {
         string[] GetFunctions();
@@ -1235,290 +1583,6 @@ public class SyntaxHighLighter : RichTextBox
         char[] GetLineSeparators();
         bool GetCaseSensitiveLanguage();
     }
+
     private delegate void HighLightDelegate();
-    private readonly Sts.Lib.Threading.Thread _hilightThread = new Sts.Lib.Threading.Thread();
-    private List<string> _functions = new List<string>();
-    private bool _hilightSintax = true;
-    private List<string> _keyWords = new List<string>();
-    private DateTime _lastModification = DateTime.MinValue;
-    private List<char> _lineSeparators = new List<char>();
-    private bool _needHighLight;
-    private List<char> _tokenSeparators = new List<char>();
-    public SyntaxHighLighter()
-    {
-        _hilightThread.ThreadJob += m_HilightThread_ThreadJob;
-        _hilightThread.SynchronizeInvokeObject = this;
-        //m_HilightThread.SetTimerInterval(1000, 1000);
-        //m_HilightThread.Start();
-    }
-    private StringComparer StringComparer
-    {
-        get;
-        set;
-    } = StringComparer.CurrentCulture;
-    public bool CaseSensitiveLanguage
-    {
-        get { return StringComparer == StringComparer.CurrentCulture; }
-        set
-        {
-            if (value)
-            {
-                StringComparer = StringComparer.CurrentCulture;
-            }
-            else
-            {
-                StringComparer = StringComparer.CurrentCultureIgnoreCase;
-            }
-
-            _functions.Sort(StringComparer);
-            _keyWords.Sort(StringComparer);
-        }
-    }
-
-    public string[] KeyWords
-    {
-        get { return _keyWords.ToArray(); }
-        set
-        {
-            _keyWords = new List<string>(value);
-            _keyWords.Sort(StringComparer);
-        }
-    }
-
-    public string[] Functions
-    {
-        get { return _functions.ToArray(); }
-        set
-        {
-            _functions = new List<string>(value);
-            _functions.Sort(StringComparer);
-        }
-    }
-
-    public char[] LineSeparators
-    {
-        get { return _lineSeparators.ToArray(); }
-        set
-        {
-            _lineSeparators = new List<char>(value);
-            _lineSeparators.Sort();
-        }
-    }
-
-    public char[] TokenSeparators
-    {
-        get { return _tokenSeparators.ToArray(); }
-        set
-        {
-            _tokenSeparators = new List<char>(value);
-            _tokenSeparators.Sort();
-        }
-    }
-
-    public bool HighlightSyntax
-    {
-        get { return false; }
-        set { _hilightSintax = value; }
-    }
-
-    private Point ScrollPos
-    {
-        get
-        {
-            var pt = new Point(0, 0);
-            using var uo = new UnmanagedObject<Point>(pt);
-            Win32.SendMessage(Handle, Win32.Constants.EmGetscrollpos, 0, uo.Pointer());
-            pt = uo.Structure;
-
-            return pt;
-        }
-        set
-        {
-            using var uo = new UnmanagedObject<Point>(value);
-            Win32.SendMessage(Handle, Win32.Constants.EmSetscrollpos, 0, uo.Pointer());
-        }
-    }
-    public void SetLanguageElements(ILanguageElements languageElements)
-    {
-        CaseSensitiveLanguage = languageElements.GetCaseSensitiveLanguage();
-        TokenSeparators = languageElements.GetTokenSeparators();
-        LineSeparators = languageElements.GetLineSeparators();
-        KeyWords = languageElements.GetKeyWords();
-        Functions = languageElements.GetFunctions();
-    }
-    private void m_HilightThread_ThreadJob(Sts.Lib.Threading.Thread instance, object parameters)
-    {
-        System.Threading.Thread.Sleep(1000);
-        instance.SynchronizeInvoke(new HighLightDelegate(HighLight), null);
-    }
-    protected override void WndProc(ref Message m)
-    {
-        base.WndProc(ref m);
-    }
-    private void StartThread()
-    {
-        //System.Diagnostics.Debug.WriteLine("" + m_HilightThread.ThreadState.ToString());
-        //if (m_HilightThread.ThreadState == System.Threading.ThreadState.Stopped ||
-        //    m_HilightThread.ThreadState == System.Threading.ThreadState.Unstarted)
-        //{
-        //    m_HilightThread.Start();
-        //}
-    }
-    protected override void OnKeyDown(KeyEventArgs e)
-    {
-        base.OnKeyDown(e);
-        if (e.Control && e.KeyCode == Keys.V)
-        {
-            var rtb = new RichTextBox();
-            rtb.Paste();
-            SelectedText = rtb.Text;
-            e.Handled = true;
-        }
-
-        _lastModification = DateTime.Now;
-        _needHighLight = true;
-        StartThread();
-    }
-    protected override void OnHScroll(EventArgs e)
-    {
-        base.OnHScroll(e);
-        _lastModification = DateTime.Now;
-        _needHighLight = true;
-        StartThread();
-    }
-    protected override void OnMouseDown(MouseEventArgs e)
-    {
-        base.OnMouseDown(e);
-        _lastModification = DateTime.Now;
-        _needHighLight = true;
-        StartThread();
-    }
-    protected override void OnMouseWheel(MouseEventArgs e)
-    {
-        base.OnMouseWheel(e);
-        _lastModification = DateTime.Now;
-        _needHighLight = true;
-        StartThread();
-    }
-    protected override void OnVScroll(EventArgs e)
-    {
-        base.OnVScroll(e);
-        _lastModification = DateTime.Now;
-        _needHighLight = true;
-        StartThread();
-    }
-    private bool Modifying()
-    {
-        return (DateTime.Now - _lastModification).TotalMilliseconds < 500;
-    }
-    private int StopUpdateUi()
-    {
-        Win32.SendMessage(Handle, (int) Win32.Enums.WmConstants.WmSetredraw, 0, IntPtr.Zero);
-        return Win32.SendMessage(Handle, Win32.Constants.EmGeteventmask, 0, IntPtr.Zero);
-    }
-    private void StartUpdateUi(int eventMask)
-    {
-        Win32.SendMessage(Handle, Win32.Constants.EmSeteventmask, 0, (IntPtr) eventMask);
-        Win32.SendMessage(Handle, (int) Win32.Enums.WmConstants.WmSetredraw, 1, IntPtr.Zero);
-    }
-    private void HighLight(int selStart, int selEnd)
-    {
-        var iniScrollPos = ScrollPos;
-        var iniSelectionStart = SelectionStart;
-        var iniSelectionLength = SelectionLength;
-        var eventMask = StopUpdateUi();
-        try
-        {
-            Debug.WriteLine("**************************************************");
-            Debug.WriteLine(selStart);
-            Debug.WriteLine(selEnd);
-            Debug.WriteLine(selStart < selEnd);
-            Debug.WriteLine(HighlightSyntax);
-            Debug.WriteLine(_needHighLight);
-            while (selStart < selEnd && HighlightSyntax && _needHighLight)
-            {
-                while (selStart < selEnd && _tokenSeparators.BinarySearch(Text[selStart]) >= 0)
-                {
-                    selStart++;
-                }
-
-                var selLength = 1;
-                while (selStart + selLength < selEnd && _tokenSeparators.BinarySearch(Text[selStart + selLength]) < 0)
-                {
-                    selLength++;
-                }
-
-                Select(selStart, selLength);
-                var token = SelectedText;
-                Debug.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@");
-                Debug.WriteLine(token);
-                Debug.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@");
-                if (IsKeyword(token))
-                {
-                    SelectionColor = Color.Blue;
-                }
-                else if (IsString(token))
-                {
-                    SelectionColor = Color.Red;
-                }
-                else if (IsFunction(token))
-                {
-                    SelectionColor = Color.Magenta;
-                }
-                else
-                {
-                    SelectionColor = ForeColor;
-                }
-
-                selStart += token.Length;
-                Application.DoEvents();
-                Debug.WriteLine("--------------------------------------------------");
-                Debug.WriteLine(selStart);
-                Debug.WriteLine(selEnd);
-                Debug.WriteLine(selStart < selEnd);
-                Debug.WriteLine(HighlightSyntax);
-                Debug.WriteLine(_needHighLight);
-            }
-        }
-        finally
-        {
-            _needHighLight = _needHighLight && selStart < selEnd;
-            Select(iniSelectionStart, iniSelectionLength);
-            ScrollPos = iniScrollPos;
-            StartUpdateUi(eventMask);
-            Invalidate();
-            //m_NeedHighLight = false;
-        }
-    }
-    private void HighLight()
-    {
-        var start = GetFirstCharIndexFromLine(GetLineFromCharIndex(GetCharIndexFromPosition(new Point(0, 0))));
-        var end = GetFirstCharIndexFromLine(GetLineFromCharIndex(GetCharIndexFromPosition(new Point(Width, Height))) + 1);
-        if (end < 0)
-        {
-            end = GetFirstCharIndexFromLine(GetLineFromCharIndex(GetCharIndexFromPosition(new Point(Width, Height))));
-        }
-
-        HighLight(start, end);
-    }
-    private void m_HilightThread_TimerThreadJob(TimerThread instance, EventArgs args)
-    {
-    }
-    private bool IsKeyword(string token)
-    {
-        return _keyWords.BinarySearch(token, StringComparer) > -1;
-    }
-    private bool IsFunction(string token)
-    {
-        return _functions.BinarySearch(token, StringComparer) > -1;
-    }
-    private bool IsString(string token)
-    {
-        if (string.IsNullOrEmpty(token))
-        {
-            return false;
-        }
-
-        return token[0] == '\'';
-    }
 }

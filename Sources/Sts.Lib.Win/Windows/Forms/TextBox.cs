@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Windows.Forms;
-using Sts.Lib.Collections.Generic;
 using Sts.Lib.Collections.Generic.Dictionaries;
 
 namespace Sts.Lib.Win.Windows.Forms;
 
 public class TextBox : System.Windows.Forms.TextBox, ControlStatePersister.ISaveStateControl
 {
-    public bool SaveControlState { get; set; }
+    public bool SaveControlState
+    {
+        get;
+        set;
+    }
 
     public void SetControlStateData(Dictionary<string, object> data)
     {
@@ -22,14 +25,17 @@ public class TextBox : System.Windows.Forms.TextBox, ControlStatePersister.ISave
     protected override void OnGotFocus(EventArgs e)
     {
         base.OnGotFocus(e);
+
         if (!string.IsNullOrEmpty(Text))
         {
             SelectAll();
         }
     }
+
     protected override void OnKeyDown(KeyEventArgs e)
     {
         base.OnKeyDown(e);
+
         if (!e.Alt && e.Control && !e.Shift && e.KeyCode == Keys.A)
         {
             SelectAll();

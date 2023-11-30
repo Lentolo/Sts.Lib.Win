@@ -29,10 +29,13 @@ public abstract class ServiceBase<T>
             {
                 serviceConfigurator.ConstructUsing(name => new T());
                 serviceConfigurator.WhenContinued(serviceBase => serviceBase.Continue());
-                serviceConfigurator.WhenCustomCommandReceived((serviceBase, hostControl, command) => serviceBase.CustomCommandReceived(hostControl, command));
+                serviceConfigurator.WhenCustomCommandReceived((serviceBase, hostControl, command) =>
+                                                                  serviceBase.CustomCommandReceived(hostControl, command));
                 serviceConfigurator.WhenPaused(serviceBase => serviceBase.Pause());
-                serviceConfigurator.WhenPowerEvent((serviceBase, hostControl, powerEventArguments) => serviceBase.PowerEvent(hostControl, powerEventArguments));
-                serviceConfigurator.WhenSessionChanged((serviceBase, hostControl, sessionChangedArguments) => serviceBase.SessionChanged(hostControl, sessionChangedArguments));
+                serviceConfigurator.WhenPowerEvent((serviceBase, hostControl, powerEventArguments) =>
+                                                       serviceBase.PowerEvent(hostControl, powerEventArguments));
+                serviceConfigurator.WhenSessionChanged((serviceBase, hostControl, sessionChangedArguments) =>
+                                                           serviceBase.SessionChanged(hostControl, sessionChangedArguments));
                 serviceConfigurator.WhenShutdown(serviceBase => serviceBase.Shutdown());
                 serviceConfigurator.WhenStarted(serviceBase => serviceBase.Start(commandLine));
                 serviceConfigurator.WhenStopped(serviceBase => serviceBase.Stop());
@@ -46,7 +49,7 @@ public abstract class ServiceBase<T>
             hostConfigurator.Disabled();
         });
 
-        return (int) Convert.ChangeType(code, code.GetTypeCode());
+        return (int)Convert.ChangeType(code, code.GetTypeCode());
     }
 
     protected virtual void SessionChanged(HostControl hostControl, SessionChangedArguments changedArguments)

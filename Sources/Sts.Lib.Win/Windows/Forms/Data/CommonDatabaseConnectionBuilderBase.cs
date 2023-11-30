@@ -1,11 +1,8 @@
 using System;
-using System.Data;
-using System.Linq;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Sts.Lib.Data.Extensions;
 using Sts.Lib.Data.Interfaces;
-using Sts.Lib.Win.Windows.Forms.Extensions;
 
 namespace Sts.Lib.Win.Windows.Forms.Data;
 
@@ -16,156 +13,208 @@ public class CommonDatabaseConnectionBuilderBase : DatabaseConnectionBuilderBase
         InitializeComponent();
     }
 
-    protected ComboBox CmbDB { get; set; }
-    protected Label Label1 { get; set; }
-    protected Label Label2 { get; set; }
-    protected Label Label3 { get; set; }
-    protected Label Label4 { get; set; }
-    protected Label Label5 { get; set; }
-    protected TextBox TxtPort { get; set; }
-    protected TextBox TxtPwd { get; set; }
-    protected TextBox TxtSrv { get; set; }
-    protected TextBox TxtUid { get; set; }
+    protected ComboBox CmbDB
+    {
+        get;
+        set;
+    }
+
+    protected Label Label1
+    {
+        get;
+        set;
+    }
+
+    protected Label Label2
+    {
+        get;
+        set;
+    }
+
+    protected Label Label3
+    {
+        get;
+        set;
+    }
+
+    protected Label Label4
+    {
+        get;
+        set;
+    }
+
+    protected Label Label5
+    {
+        get;
+        set;
+    }
+
+    protected TextBox TxtPort
+    {
+        get;
+        set;
+    }
+
+    protected TextBox TxtPwd
+    {
+        get;
+        set;
+    }
+
+    protected TextBox TxtSrv
+    {
+        get;
+        set;
+    }
+
+    protected TextBox TxtUid
+    {
+        get;
+        set;
+    }
 
     private void InitializeComponent()
     {
-        this.Label1 = new Sts.Lib.Win.Windows.Forms.Label();
-        this.TxtSrv = new Sts.Lib.Win.Windows.Forms.TextBox();
-        this.TxtPort = new Sts.Lib.Win.Windows.Forms.TextBox();
-        this.Label2 = new Sts.Lib.Win.Windows.Forms.Label();
-        this.TxtPwd = new Sts.Lib.Win.Windows.Forms.TextBox();
-        this.Label3 = new Sts.Lib.Win.Windows.Forms.Label();
-        this.TxtUid = new Sts.Lib.Win.Windows.Forms.TextBox();
-        this.Label4 = new Sts.Lib.Win.Windows.Forms.Label();
-        this.CmbDB = new Sts.Lib.Win.Windows.Forms.ComboBox();
-        this.Label5 = new Sts.Lib.Win.Windows.Forms.Label();
-        this.SuspendLayout();
+        Label1 = new Label();
+        TxtSrv = new TextBox();
+        TxtPort = new TextBox();
+        Label2 = new Label();
+        TxtPwd = new TextBox();
+        Label3 = new Label();
+        TxtUid = new TextBox();
+        Label4 = new Label();
+        CmbDB = new ComboBox();
+        Label5 = new Label();
+        SuspendLayout();
         // 
         // label1
         // 
-        this.Label1.AutoSize = true;
-        this.Label1.Location = new System.Drawing.Point(3, 18);
-        this.Label1.Name = "Label1";
-        this.Label1.Size = new System.Drawing.Size(39, 15);
-        this.Label1.TabIndex = 0;
-        this.Label1.Text = "Server";
+        Label1.AutoSize = true;
+        Label1.Location = new Point(3, 18);
+        Label1.Name = "Label1";
+        Label1.Size = new Size(39, 15);
+        Label1.TabIndex = 0;
+        Label1.Text = "Server";
         // 
         // txtSrv
         // 
-        this.TxtSrv.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left
-                                                                                                       | System.Windows.Forms.AnchorStyles.Right);
-        this.TxtSrv.Location = new System.Drawing.Point(78, 15);
-        this.TxtSrv.Name = "TxtSrv";
-        this.TxtSrv.SaveControlState = false;
-        this.TxtSrv.Size = new System.Drawing.Size(370, 23);
-        this.TxtSrv.TabIndex = 1;
-        this.TxtSrv.TextChanged += new System.EventHandler(this.field_Changed);
-        this.TxtSrv.Leave += new System.EventHandler(this.field_Leave);
+        TxtSrv.Anchor = AnchorStyles.Top
+                        | AnchorStyles.Left
+                        | AnchorStyles.Right;
+        TxtSrv.Location = new Point(78, 15);
+        TxtSrv.Name = "TxtSrv";
+        TxtSrv.SaveControlState = false;
+        TxtSrv.Size = new Size(370, 23);
+        TxtSrv.TabIndex = 1;
+        TxtSrv.TextChanged += field_Changed;
+        TxtSrv.Leave += field_Leave;
         // 
         // txtPort
         // 
-        this.TxtPort.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
-        this.TxtPort.Location = new System.Drawing.Point(364, 99);
-        this.TxtPort.Name = "TxtPort";
-        this.TxtPort.SaveControlState = false;
-        this.TxtPort.Size = new System.Drawing.Size(84, 23);
-        this.TxtPort.TabIndex = 9;
-        this.TxtPort.Text = "1433";
-        this.TxtPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-        this.TxtPort.TextChanged += new System.EventHandler(this.field_Changed);
-        this.TxtPort.Leave += new System.EventHandler(this.field_Leave);
-        this.TxtPort.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPort_KeyPress);
+        TxtPort.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        TxtPort.Location = new Point(364, 99);
+        TxtPort.Name = "TxtPort";
+        TxtPort.SaveControlState = false;
+        TxtPort.Size = new Size(84, 23);
+        TxtPort.TabIndex = 9;
+        TxtPort.Text = "1433";
+        TxtPort.TextAlign = HorizontalAlignment.Right;
+        TxtPort.TextChanged += field_Changed;
+        TxtPort.Leave += field_Leave;
+        TxtPort.KeyPress += txtPort_KeyPress;
         // 
         // label2
         // 
-        this.Label2.AutoSize = true;
-        this.Label2.Location = new System.Drawing.Point(3, 102);
-        this.Label2.Name = "Label2";
-        this.Label2.Size = new System.Drawing.Size(55, 15);
-        this.Label2.TabIndex = 6;
-        this.Label2.Text = "Database";
+        Label2.AutoSize = true;
+        Label2.Location = new Point(3, 102);
+        Label2.Name = "Label2";
+        Label2.Size = new Size(55, 15);
+        Label2.TabIndex = 6;
+        Label2.Text = "Database";
         // 
         // txtPwd
         // 
-        this.TxtPwd.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left
-                                                                                                       | System.Windows.Forms.AnchorStyles.Right);
-        this.TxtPwd.Location = new System.Drawing.Point(78, 71);
-        this.TxtPwd.Name = "TxtPwd";
-        this.TxtPwd.PasswordChar = '*';
-        this.TxtPwd.SaveControlState = false;
-        this.TxtPwd.Size = new System.Drawing.Size(370, 23);
-        this.TxtPwd.TabIndex = 5;
-        this.TxtPwd.TextChanged += new System.EventHandler(this.field_Changed);
-        this.TxtPwd.Leave += new System.EventHandler(this.field_Leave);
+        TxtPwd.Anchor = AnchorStyles.Top
+                        | AnchorStyles.Left
+                        | AnchorStyles.Right;
+        TxtPwd.Location = new Point(78, 71);
+        TxtPwd.Name = "TxtPwd";
+        TxtPwd.PasswordChar = '*';
+        TxtPwd.SaveControlState = false;
+        TxtPwd.Size = new Size(370, 23);
+        TxtPwd.TabIndex = 5;
+        TxtPwd.TextChanged += field_Changed;
+        TxtPwd.Leave += field_Leave;
         // 
         // label3
         // 
-        this.Label3.AutoSize = true;
-        this.Label3.Location = new System.Drawing.Point(3, 74);
-        this.Label3.Name = "Label3";
-        this.Label3.Size = new System.Drawing.Size(57, 15);
-        this.Label3.TabIndex = 4;
-        this.Label3.Text = "Password";
+        Label3.AutoSize = true;
+        Label3.Location = new Point(3, 74);
+        Label3.Name = "Label3";
+        Label3.Size = new Size(57, 15);
+        Label3.TabIndex = 4;
+        Label3.Text = "Password";
         // 
         // txtUid
         // 
-        this.TxtUid.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left
-                                                                                                       | System.Windows.Forms.AnchorStyles.Right);
-        this.TxtUid.Location = new System.Drawing.Point(78, 43);
-        this.TxtUid.Name = "TxtUid";
-        this.TxtUid.SaveControlState = false;
-        this.TxtUid.Size = new System.Drawing.Size(370, 23);
-        this.TxtUid.TabIndex = 3;
-        this.TxtUid.TextChanged += new System.EventHandler(this.field_Changed);
-        this.TxtUid.Leave += new System.EventHandler(this.field_Leave);
+        TxtUid.Anchor = AnchorStyles.Top
+                        | AnchorStyles.Left
+                        | AnchorStyles.Right;
+        TxtUid.Location = new Point(78, 43);
+        TxtUid.Name = "TxtUid";
+        TxtUid.SaveControlState = false;
+        TxtUid.Size = new Size(370, 23);
+        TxtUid.TabIndex = 3;
+        TxtUid.TextChanged += field_Changed;
+        TxtUid.Leave += field_Leave;
         // 
         // label4
         // 
-        this.Label4.AutoSize = true;
-        this.Label4.Location = new System.Drawing.Point(3, 46);
-        this.Label4.Name = "Label4";
-        this.Label4.Size = new System.Drawing.Size(30, 15);
-        this.Label4.TabIndex = 2;
-        this.Label4.Text = "User";
+        Label4.AutoSize = true;
+        Label4.Location = new Point(3, 46);
+        Label4.Name = "Label4";
+        Label4.Size = new Size(30, 15);
+        Label4.TabIndex = 2;
+        Label4.Text = "User";
         // 
         // cmbDB
         // 
-        this.CmbDB.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left
-                                                                                                      | System.Windows.Forms.AnchorStyles.Right);
-        this.CmbDB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-        this.CmbDB.FormattingEnabled = true;
-        this.CmbDB.Location = new System.Drawing.Point(78, 99);
-        this.CmbDB.Name = "CmbDB";
-        this.CmbDB.Size = new System.Drawing.Size(240, 23);
-        this.CmbDB.TabIndex = 7;
+        CmbDB.Anchor = AnchorStyles.Top
+                       | AnchorStyles.Left
+                       | AnchorStyles.Right;
+        CmbDB.DropDownStyle = ComboBoxStyle.DropDownList;
+        CmbDB.FormattingEnabled = true;
+        CmbDB.Location = new Point(78, 99);
+        CmbDB.Name = "CmbDB";
+        CmbDB.Size = new Size(240, 23);
+        CmbDB.TabIndex = 7;
         // 
         // label5
         // 
-        this.Label5.Anchor = (System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
-        this.Label5.AutoSize = true;
-        this.Label5.Location = new System.Drawing.Point(324, 102);
-        this.Label5.Name = "Label5";
-        this.Label5.Size = new System.Drawing.Size(29, 15);
-        this.Label5.TabIndex = 8;
-        this.Label5.Text = "Port";
+        Label5.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        Label5.AutoSize = true;
+        Label5.Location = new Point(324, 102);
+        Label5.Name = "Label5";
+        Label5.Size = new Size(29, 15);
+        Label5.TabIndex = 8;
+        Label5.Text = "Port";
         // 
         // DatabaseConnectionBuilder
         // 
-        this.Controls.Add(this.Label5);
-        this.Controls.Add(this.CmbDB);
-        this.Controls.Add(this.TxtUid);
-        this.Controls.Add(this.Label4);
-        this.Controls.Add(this.TxtPwd);
-        this.Controls.Add(this.Label3);
-        this.Controls.Add(this.TxtPort);
-        this.Controls.Add(this.Label2);
-        this.Controls.Add(this.TxtSrv);
-        this.Controls.Add(this.Label1);
-        this.Name = "DatabaseConnectionBuilder";
-        this.Size = new System.Drawing.Size(451, 129);
-        this.ResumeLayout(false);
-        this.PerformLayout();
-
+        Controls.Add(Label5);
+        Controls.Add(CmbDB);
+        Controls.Add(TxtUid);
+        Controls.Add(Label4);
+        Controls.Add(TxtPwd);
+        Controls.Add(Label3);
+        Controls.Add(TxtPort);
+        Controls.Add(Label2);
+        Controls.Add(TxtSrv);
+        Controls.Add(Label1);
+        Name = "DatabaseConnectionBuilder";
+        Size = new Size(451, 129);
+        ResumeLayout(false);
+        PerformLayout();
     }
 
     private void txtPort_KeyPress(object sender, KeyPressEventArgs e)
@@ -186,8 +235,7 @@ public class CommonDatabaseConnectionBuilderBase : DatabaseConnectionBuilderBase
                 CmbDB.Items.AddRange(GetDatabases(db));
             }
             catch
-            {
-            }
+            { }
         }
     }
 

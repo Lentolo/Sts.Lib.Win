@@ -27,7 +27,8 @@ public partial class DlgConnectionstringBuilder : Form
     {
         get
         {
-            return GrpControl.Controls.OfType<DatabaseConnectionBuilderBase>().FirstOrDefault(c => c.DatabaseTypeName.EqualsNoCase(CmbCnType.SelectedItem as string));
+            return GrpControl.Controls.OfType<DatabaseConnectionBuilderBase>()
+                             .FirstOrDefault(c => c.DatabaseTypeName.EqualsNoCase(CmbCnType.SelectedItem as string));
         }
     }
 
@@ -52,7 +53,13 @@ public partial class DlgConnectionstringBuilder : Form
 
         if (!connectionBuilders.Any())
         {
-            connectionBuilders = Reflection.Utils.LoadTypesFromFolder(Path.GetDirectoryName(GetType().Assembly.Location), type => type != builderType && Linq.Utils.GetAncestorsWhile(type, t => t.BaseType, t => t != null).Any(t => builderType.FullName == t.FullName) && type.GetConstructors().Any(c => !c.GetParameters().Any())).Select(T => Reflection.Utils.CreateInstance<DatabaseConnectionBuilderBase>(T)).ToList();
+            connectionBuilders = Reflection.Utils
+                                           .LoadTypesFromFolder(Path.GetDirectoryName(GetType().Assembly.Location),
+                                                                type => type != builderType
+                                                                        && Linq.Utils.GetAncestorsWhile(type, t => t.BaseType, t => t != null)
+                                                                               .Any(t => builderType.FullName == t.FullName)
+                                                                        && type.GetConstructors().Any(c => !c.GetParameters().Any())).Select(T =>
+                                                                                                                                                 Reflection.Utils.CreateInstance<DatabaseConnectionBuilderBase>(T)).ToList();
         }
 
         foreach (var ctl in connectionBuilders)
@@ -81,7 +88,8 @@ public partial class DlgConnectionstringBuilder : Form
 
         if (e.Cancel)
         {
-            System.Windows.Forms.MessageBox.Show(this, "Invalid connection string", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            System.Windows.Forms.MessageBox.Show(this, "Invalid connection string", "", MessageBoxButtons.OK,
+                                                 MessageBoxIcon.Warning);
         }
         else
         {
@@ -97,16 +105,19 @@ public partial class DlgConnectionstringBuilder : Form
         {
             if (val.Value)
             {
-                System.Windows.Forms.MessageBox.Show(this, "Connected", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                System.Windows.Forms.MessageBox.Show(this, "Connected", "", MessageBoxButtons.OK,
+                                                     MessageBoxIcon.Information);
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show(this, "Unable to connect", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                System.Windows.Forms.MessageBox.Show(this, "Unable to connect", "", MessageBoxButtons.OK,
+                                                     MessageBoxIcon.Exclamation);
             }
         }
         else
         {
-            System.Windows.Forms.MessageBox.Show(this, "No database selected", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            System.Windows.Forms.MessageBox.Show(this, "No database selected", "", MessageBoxButtons.OK,
+                                                 MessageBoxIcon.Exclamation);
         }
     }
 
