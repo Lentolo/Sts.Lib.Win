@@ -1,111 +1,123 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Forms;
+using Sts.Lib.Common;
 using Sts.Lib.Data;
-using Sts.Lib.Data.Interfaces;
-using Sts.Lib.Win.Windows.Forms.Extensions;
 
-namespace Sts.Lib.Win.Windows.Forms.Data
+namespace Sts.Lib.Win.Windows.Forms.Data;
+
+public class TxtConnectionStringBuilder : TxtButtonControl
 {
-    public class TxtConnectionStringBuilder : TxtButtonControl
+    private bool _setText;
+
+    public GenericConnectionString ConnectionString
     {
-        public string ConnectionStringNoProvider
+        get;
+        private set;
+    }
+
+    public List<DatabaseConnectionBuilderBase> ConnectionStringBuilders
+    {
+        get;
+    } = new();
+
+    public override bool SaveControlState
+    {
+        get
         {
-            get;
-            private set;
+            return false;
         }
+        set
+        { }
+    }
 
-        public Type ConnectionType
+    public bool NoProviderInConnectionString
+    {
+        get;
+        set;
+    }
+
+    protected override void OnTextChanged()
+    {
+        base.OnTextChanged();
+
+        if (!_setText)
         {
-            get;
-            private set;
+            ConnectionString = new GenericConnectionString(Text);
         }
+    }
 
-        public string ConnectionString
+    protected override void OnBtnClick()
+    {
+        var dlg = new DlgConnectionstringBuilder
         {
-            get;
-            private set;
-        }
+            StartPosition = FormStartPosition.CenterParent
+        };
+        dlg.ConnectionStringBuilders.AddRange(ConnectionStringBuilders);
 
-        public bool NoProviderInConnectionString
+        if (dlg.ShowDialog(this) == DialogResult.OK)
         {
-            get;
-            set;
-        } = false;
-
-        public List<DatabaseConnectionBuilderBase> ConnectionStringBuilders
-        {
-            get;
-        } = new List<DatabaseConnectionBuilderBase>();
-
-        public override bool SaveControlState
-        {
-            get
+            using (DisposableDelegate.Create(() => _setText = true, () => _setText = false))
             {
-                return false;
-            }
-            set
-            { }
-        }
-
-        protected override void OnBtnClick()
-        {
-            var dlg = new DlgConnectionstringBuilder
-            {
-                StartPosition = FormStartPosition.CenterParent
-            };
-            dlg.ConnectionStringBuilders.AddRange(ConnectionStringBuilders);
-            if (dlg.ShowDialog(this) == DialogResult.OK)
-            {
-                Text = NoProviderInConnectionString ? dlg.ConnectionStringNoProvider : dlg.ConnectionString;
-                ConnectionStringNoProvider = dlg.ConnectionStringNoProvider;
+                Text = NoProviderInConnectionString
+                           ? dlg.ConnectionString.ConnectionString
+                           : dlg.ConnectionString.FullConnectionString;
                 ConnectionString = dlg.ConnectionString;
-                ConnectionType = dlg.ConnectionType;
-                RaiseOnConnectionStringAvailable();
             }
-        }
 
-        public IDatabaseConnection CreateConnection()
-        {
-            try
-            {
-                return DatabaseConnectionUtils.CreateAndOpen(this.Invoke(c => c.ConnectionString), null);
-            }
-            catch
-            { }
-
-            return null;
-        }
-
-        public event EventHandler ConnectionStringAvailable;
-
-        protected virtual void OnConnectionStringAvailable()
-        {
-            ConnectionStringAvailable?.Invoke(this, EventArgs.Empty);
-        }
-
-        private async void RaiseOnConnectionStringAvailable()
-        {
-            var raise = await Task.Run(() =>
-            {
-                return Delegates.Utils.TryExecuteExecuteFunc(() =>
-                {
-                    using (var cn = CreateConnection())
-                    {
-                        return cn != null;
-                    }
-                }, false);
-            });
-            if (raise)
-            {
-                OnConnectionStringAvailable();
-            }
-        }
-
-        protected override void OnTextValidated()
-        {
             RaiseOnConnectionStringAvailable();
         }
+    }
+
+    public event EventHandler ConnectionStringAvailable;
+
+    protected virtual void OnConnectionStringAvailable()
+    {
+        ConnectionStringAvailable?.Invoke(this, EventArgs.Empty);
+    }
+
+    private async void RaiseOnConnectionStringAvailable()
+    {
+        var raise = false;
+
+        try
+        {
+            using var cn = await ConnectionString.CreateAndOpenConnectionAsync();
+            raise = cn != null;
+        }
+        catch
+        {
+            raise = false;
+        }
+
+        if (raise)
+        {
+            OnConnectionStringAvailable();
+        }
+    }
+
+    protected override void OnTextValidated()
+    {
+        RaiseOnConnectionStringAvailable();
+    }
+
+    private void InitializeComponent()
+    {
+        SuspendLayout();
+        // 
+        // _btn
+        // 
+        btn.Location = new Point(563, 3);
+        // 
+        // _txt
+        // 
+        txt.Location = new Point(0, 2);
+        // 
+        // TxtConnectionStringBuilder
+        // 
+        Name = "TxtConnectionStringBuilder";
+        ResumeLayout(false);
+        PerformLayout();
     }
 }

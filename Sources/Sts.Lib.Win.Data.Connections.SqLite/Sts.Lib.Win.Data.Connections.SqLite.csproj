@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon />
     <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Sts.Lib\Sources\Sts.Lib.Data.Connections.SqLite\StsLib.Data.Connections.SqLite.csproj" />
+    <ProjectReference Include="..\..\..\Sts.Lib\Sources\Sts.Lib.Data.Connections.SqLite\Sts.Lib.Data.Connections.SqLite.csproj" />
     <ProjectReference Include="..\Sts.Lib.Win\Sts.Lib.Win.csproj" />
   </ItemGroup>
 
