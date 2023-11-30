@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Drawing;
-using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Data.Sqlite;
 using Sts.Lib.Data;
+using Sts.Lib.Data.Connections.SqLite;
+using Sts.Lib.Data.Generic;
 using Sts.Lib.Win.Windows.Forms.Data;
-using StsLib.Data.Connections.SqLite;
 
-namespace Sts.Lib.Win.Data.Connections.SqlServer
+namespace Sts.Lib.Win.Data.Connections.SqLite
 {
     public class DatabaseConnectionBuilder : DatabaseConnectionBuilderBase
     {
@@ -15,7 +16,7 @@ namespace Sts.Lib.Win.Data.Connections.SqlServer
             InitializeComponent();
         }
         private Sts.Lib.Win.Windows.Forms.Label label1;
-        private Sts.Lib.Win.Windows.Forms. TextBox txtSrv;
+        private Sts.Lib.Win.Windows.Forms.TextBox txtSrv;
         private Sts.Lib.Win.Windows.Forms.TextBox txtPwd;
         private Sts.Lib.Win.Windows.Forms.Button btnBrowse;
         private OpenFileDialog ofdBrowseDB;
@@ -42,7 +43,7 @@ namespace Sts.Lib.Win.Data.Connections.SqlServer
             // 
             // txtSrv
             // 
-            this.txtSrv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtSrv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSrv.SaveControlState = false;
             this.txtSrv.Location = new System.Drawing.Point(104, 15);
@@ -52,7 +53,7 @@ namespace Sts.Lib.Win.Data.Connections.SqlServer
             // 
             // txtPwd
             // 
-            this.txtPwd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtPwd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPwd.SaveControlState = false;
             this.txtPwd.Location = new System.Drawing.Point(104, 43);
@@ -98,24 +99,21 @@ namespace Sts.Lib.Win.Data.Connections.SqlServer
             this.PerformLayout();
 
         }
-        public override string ConnectionString
+        public override GenericConnectionString ConnectionString
         {
             get
             {
-                return  DatabaseConnectionUtils.DBProvider+ "=" + typeof(DatabaseConnection).FullName + ";" + ConnectionStringNoProvider;
-            }
-        }
-        public override string ConnectionStringNoProvider
-        {
-            get
-            {
-                var connectionStringNoProvider = $"Data Source={txtSrv.Text};";
+                var builder = new Microsoft.Data.Sqlite.SqliteConnectionStringBuilder
+                {
+                    DataSource = txtSrv.Text
+                };
+
                 if (!string.IsNullOrEmpty(txtPwd.Text))
                 {
-                    connectionStringNoProvider += $"Password={txtPwd.Text};";
+                    builder.Password = txtPwd.Text;
                 }
 
-                return connectionStringNoProvider;
+                return new GenericConnectionString(typeof(SqLiteEnhancedConnection), builder.ConnectionString);
             }
         }
         public override string DatabaseTypeName
@@ -125,25 +123,12 @@ namespace Sts.Lib.Win.Data.Connections.SqlServer
                 return "SqLite";
             }
         }
-        public override Type DatabaseConnectionType
-        {
-            get
-            {
-                return typeof(DatabaseConnection);
-            }
-        }
         public override bool Test()
         {
             try
             {
-                using (var db = new DatabaseConnection
-                {
-                    ConnectionString = ConnectionStringNoProvider
-                })
-                {
-                    db.Open();
-                    return true;
-                }
+                using var db = ConnectionString.CreateAndOpenConnection();
+                return true;
             }
             catch
             { }
