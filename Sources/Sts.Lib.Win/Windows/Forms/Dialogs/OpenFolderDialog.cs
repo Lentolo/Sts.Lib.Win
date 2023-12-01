@@ -416,7 +416,7 @@ internal partial class OpenFolderDialog : Form
 
     private int FindSelectedPathIndex(string itemPath)
     {
-        return SelectedPathControls.FindFirstIndex(s =>
+        return SelectedPathControls.IndexOf(s =>
                                                        string.Compare(itemPath, s.Path, StringComparison.OrdinalIgnoreCase) == 0);
     }
 
