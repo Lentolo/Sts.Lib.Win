@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Sts.Lib\Sources\Sts.Lib.Data.Connections.Tests\StsLib.Data.Connections.Tests.csproj" />
     <ProjectReference Include="..\..\..\Sts.Lib\Sources\Sts.Lib\Sts.Lib.csproj" />
     <ProjectReference Include="..\Sts.Lib.Win.Data.Connections.OleDB\Sts.Lib.Win.Data.Connections.OleDB.csproj" />
     <ProjectReference Include="..\Sts.Lib.Win.Data.Connections.Oracle\Sts.Lib.Win.Data.Connections.Oracle.csproj" />
