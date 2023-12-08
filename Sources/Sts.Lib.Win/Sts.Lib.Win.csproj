@@ -56,5 +56,7 @@
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
-
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="powershell.exe -File &quot;..\..\..\DevOps\CreateCommitInfo.ps1&quot; $(ProjectDir)\CommitInfo.cs" />
+  </Target>
 </Project>
