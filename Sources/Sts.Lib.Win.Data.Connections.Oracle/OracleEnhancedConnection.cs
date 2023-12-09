@@ -5,30 +5,29 @@ using Sts.Lib.Data.Generic;
 using Sts.Lib.Data.Interfaces;
 using Sts.Lib.Data.Schema;
 
-namespace Sts.Lib.Win.Data.Connections.Oracle
+namespace Sts.Lib.Win.Data.Connections.Oracle;
+
+[DbProvider("Sts.Db.Oracle")]
+public class OracleEnhancedConnection : EnhancedDbConnectionBase<OracleConnection>
 {
-    [DbProvider("Sts.Db.Oracle")]
-    public class OracleEnhancedConnection : EnhancedDbConnectionBase<OracleConnection>
+    public override IServerSchemaExtractor ServerSchemaExtractor
     {
-        public override IServerSchemaExtractor ServerSchemaExtractor
+        get
         {
-            get
-            {
-                return new ServerSchemaExtractor(this, SqlConverter);
-            }
+            return new ServerSchemaExtractor(this, SqlConverter);
         }
+    }
 
-        public override ISqlConverter SqlConverter
-        {
-            get;
-        } = new SqlConverter();
+    public override ISqlConverter SqlConverter
+    {
+        get;
+    } = new SqlConverter();
 
-        public override ISqlExpressionHelper SqlExpressionHelper
+    public override ISqlExpressionHelper SqlExpressionHelper
+    {
+        get
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
         }
     }
 }
