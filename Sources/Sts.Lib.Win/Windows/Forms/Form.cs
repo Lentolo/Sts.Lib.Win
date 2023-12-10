@@ -57,7 +57,7 @@ public class Form : System.Windows.Forms.Form
         var s = Screen.FromControl(this).WorkingArea;
         var container = new Rectangle(s.X, s.Y, s.Width, s.Height);
         var content = new Rectangle(Left, Top, Width, Height);
-        var point = Drawing.Utils.EnsureVisible(container, content);
+        var point = Lib.Drawing.Utils.EnsureVisible(container, content);
         SetDesktopLocation(point.X, point.Y);
     }
 }
